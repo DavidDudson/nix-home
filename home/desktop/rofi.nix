@@ -77,10 +77,8 @@
       drun-display-name = "";
       run-display-name = "";
       window-display-name = "";
-      timeout = {
-        delay = 10;
-        action = "kb-cancel";
-      };
+      timeout-delay = 10;
+      timeout-action = "kb-cancel";
     };
   };
 
