@@ -4,34 +4,36 @@
   services.mako = {
     enable = true;
 
-    # Appearance
-    backgroundColor = "#1e1e2e";
-    textColor = "#cdd6f4";
-    borderColor = "#89b4fa";
-    progressColor = "over #313244";
+    settings = {
+      # Appearance
+      background-color = "#1e1e2e";
+      text-color = "#cdd6f4";
+      border-color = "#89b4fa";
+      progress-color = "over #313244";
 
-    # Layout
-    width = 400;
-    height = 150;
-    margin = "20";
-    padding = "15";
-    borderSize = 2;
-    borderRadius = 10;
+      # Layout
+      width = 400;
+      height = 150;
+      margin = "20";
+      padding = "15";
+      border-size = 2;
+      border-radius = 10;
 
-    # Icons
-    icons = true;
-    maxIconSize = 64;
-    iconPath = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark";
+      # Icons
+      icons = true;
+      max-icon-size = 64;
+      icon-path = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark";
 
-    # Behavior
-    defaultTimeout = 5000;
-    ignoreTimeout = true;
+      # Behavior
+      default-timeout = 5000;
+      ignore-timeout = true;
 
-    # Font
-    font = "FiraCode Nerd Font 11";
+      # Font
+      font = "FiraCode Nerd Font 11";
 
-    # Positioning
-    anchor = "top-right";
+      # Positioning
+      anchor = "top-right";
+    };
 
     # Urgency-specific styling
     extraConfig = ''
