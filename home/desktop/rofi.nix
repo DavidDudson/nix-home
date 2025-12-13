@@ -82,9 +82,9 @@
     };
   };
 
-  # Copy the powermenu script
+  # Copy the powermenu script from backup
   home.file.".config/rofi/powermenu.sh" = {
-    source = /home/ddudson/.config/rofi/powermenu.sh;
+    source = /home/ddudson/dotfiles-backup/rofi/powermenu.sh;
     executable = true;
   };
 }
