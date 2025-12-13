@@ -14,6 +14,11 @@
         args = [ "-y" "@modelcontextprotocol/server-github" ];
         transport = "stdio";
       };
+      nixos = {
+        command = "uvx";
+        args = [ "mcp-nixos" ];
+        transport = "stdio";
+      };
     };
   };
 }

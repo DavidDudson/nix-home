@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     nodejs_20
+    uv  # For uvx to run Python MCP servers
   ];
 
   programs.nushell = {
