@@ -12,8 +12,15 @@
     ./modules/system/boot.nix
     ./modules/system/networking.nix
     ./modules/system/nix.nix
-    ./modules/system/programs.nix
     ./modules/system/users.nix
+
+    # Programs
+    ./modules/programs/development.nix
+    ./modules/programs/terminal.nix
+    ./modules/programs/browsers.nix
+    ./modules/programs/media.nix
+    ./modules/programs/wayland.nix
+    ./modules/programs/system-tools.nix
 
     # Desktop
     ./modules/desktop/hyprland.nix

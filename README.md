@@ -21,8 +21,14 @@ nix-home/
 │   │   ├── boot.nix         # Boot loader & LUKS
 │   │   ├── networking.nix   # Network & SSH
 │   │   ├── nix.nix          # Nix settings & flakes
-│   │   ├── programs.nix     # System packages
 │   │   └── users.nix        # User accounts
+│   ├── programs/             # Application packages
+│   │   ├── development.nix  # Editors, IDEs, language servers
+│   │   ├── terminal.nix     # Terminal emulators & CLI tools
+│   │   ├── browsers.nix     # Web browsers
+│   │   ├── media.nix        # Media players & tools
+│   │   ├── wayland.nix      # Wayland/Hyprland tools
+│   │   └── system-tools.nix # System utilities & daemons
 │   ├── hardware/             # Hardware-specific settings
 │   │   ├── nvidia.nix       # NVIDIA GPU configuration
 │   │   ├── bluetooth.nix    # Bluetooth settings
@@ -32,7 +38,6 @@ nix-home/
 │   │   └── fonts.nix        # System fonts
 │   └── services/             # System services
 │       └── services.nix     # Misc services (printing, etc)
-└── update-system-config.sh   # Script to setup /etc/nixos import
 ```
 
 ## Usage
@@ -47,7 +52,10 @@ sudo nixos-rebuild switch
 
 ### Quick Reference
 
-- **Add system packages**: Edit `modules/system/programs.nix`
+- **Add development tools**: Edit `modules/programs/development.nix`
+- **Add CLI tools**: Edit `modules/programs/terminal.nix`
+- **Add GUI apps**: Edit `modules/programs/browsers.nix` or `modules/programs/media.nix`
+- **Wayland tools**: Edit `modules/programs/wayland.nix`
 - **Configure git**: Edit `home/programs/git.nix`
 - **Add MCP servers**: Edit `home/mcp/servers.nix`
 - **Change shell config**: Edit `home/programs/shell.nix`
