@@ -211,7 +211,10 @@
 
   # Hyprpaper configuration
   home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload = ~/Downloads/Sunflower Girl (3440x1440).jpg
-    wallpaper = ,~/Downloads/Sunflower\ Girl\ (3440x1440).jpg
+    preload = /home/ddudson/Pictures/Wallpapers/sunflower.jpg
+    wallpaper = ,/home/ddudson/Pictures/Wallpapers/sunflower.jpg
+
+    splash = false
+    ipc = off
   '';
 }
