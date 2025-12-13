@@ -11,9 +11,15 @@ nix-home/
 │   ├── home.nix              # Home Manager entry point
 │   ├── programs/             # User programs
 │   │   ├── git.nix          # Git configuration
-│   │   └── shell.nix        # Shell programs (nushell, starship, carapace)
+│   │   ├── shell.nix        # Shell programs (nushell, starship, carapace)
+│   │   ├── ghostty.nix      # Ghostty terminal configuration
+│   │   └── helix.nix        # Helix editor configuration
 │   ├── desktop/              # Desktop user settings
-│   │   └── gtk.nix          # GTK theme configuration
+│   │   ├── gtk.nix          # GTK theme configuration
+│   │   ├── mako.nix         # Notification daemon styling
+│   │   ├── hyprland.nix     # Hyprland window manager config
+│   │   ├── waybar.nix       # Status bar configuration
+│   │   └── rofi.nix         # Application launcher styling
 │   └── mcp/                  # Claude Code MCP servers
 │       └── servers.nix      # MCP server definitions
 ├── modules/                   # System-level modules
@@ -52,14 +58,24 @@ sudo nixos-rebuild switch
 
 ### Quick Reference
 
+**System packages:**
 - **Add development tools**: Edit `modules/programs/development.nix`
 - **Add CLI tools**: Edit `modules/programs/terminal.nix`
 - **Add GUI apps**: Edit `modules/programs/browsers.nix` or `modules/programs/media.nix`
 - **Wayland tools**: Edit `modules/programs/wayland.nix`
+
+**User configuration:**
 - **Configure git**: Edit `home/programs/git.nix`
-- **Add MCP servers**: Edit `home/mcp/servers.nix`
 - **Change shell config**: Edit `home/programs/shell.nix`
-- **Modify Hyprland**: Edit `modules/desktop/hyprland.nix`
+- **Ghostty terminal**: Edit `home/programs/ghostty.nix`
+- **Helix editor**: Edit `home/programs/helix.nix`
+- **Hyprland keybinds/settings**: Edit `home/desktop/hyprland.nix`
+- **Waybar modules/style**: Edit `home/desktop/waybar.nix`
+- **Rofi appearance**: Edit `home/desktop/rofi.nix`
+- **Notification style**: Edit `home/desktop/mako.nix`
+- **Add MCP servers**: Edit `home/mcp/servers.nix`
+
+**Hardware:**
 - **Update NVIDIA settings**: Edit `modules/hardware/nvidia.nix`
 
 ### Version Control
