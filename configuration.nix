@@ -21,6 +21,7 @@
     ./modules/programs/media.nix
     ./modules/programs/wayland.nix
     ./modules/programs/system-tools.nix
+    ./modules/programs/theming.nix
 
     # Desktop
     ./modules/desktop/hyprland.nix

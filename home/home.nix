@@ -5,6 +5,7 @@
     ./programs/git.nix
     ./programs/shell.nix
     ./desktop/gtk.nix
+    ./desktop/mako.nix
     ./mcp/servers.nix
   ];
 

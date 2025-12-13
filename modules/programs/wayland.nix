@@ -16,7 +16,6 @@
     # Wayland Utilities
     rofi          # Application launcher
     waybar        # Status bar
-    mako          # Notification daemon
     cliphist      # Clipboard manager
     wl-clipboard  # Clipboard utilities
 
