@@ -6,7 +6,11 @@
   nix.optimise.automatic = true;
   nix.settings.auto-optimise-store = true;
   nix.settings.experimental-features = "nix-command flakes";
-  nix.gc.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
 
   system.copySystemConfiguration = true;
   system.stateVersion = "24.11";
