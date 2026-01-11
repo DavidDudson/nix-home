@@ -24,8 +24,8 @@ let
       memory.enable = true;
       sequential-thinking.enable = true;
 
-      # NixOS support
-      nixos.enable = true;
+      # NixOS support - disabled due to fastmcp build failure
+      # nixos.enable = true;
     };
   };
 
