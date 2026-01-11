@@ -3,15 +3,21 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  nix.optimise.automatic = true;
-  nix.settings.auto-optimise-store = true;
-  nix.settings.experimental-features = "nix-command flakes";
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  nix = {
+    optimise.automatic = true;
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = "nix-command flakes";
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
 
-  system.copySystemConfiguration = true;
-  system.stateVersion = "24.11";
+  system = {
+    copySystemConfiguration = true;
+    stateVersion = "24.11";
+  };
 }

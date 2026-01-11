@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
-  networking.hostName = "DavidDudsonPC";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "DavidDudsonPC";
+    networkmanager.enable = true;
+  };
 
   services.openssh.enable = true;
 }
