@@ -14,8 +14,13 @@
       "$mainMod" = "SUPER";
 
       exec-once = [
-        "vivaldi"
-        "$terminal"
+        # Themed workspace apps
+        "[workspace 1 silent] code-cursor"      # Development workspace
+        "[workspace 2 silent] vivaldi"          # Browser workspace
+        "[workspace 3 silent] spotify"          # Music workspace
+        "[workspace 1 silent] $terminal"        # Terminal on dev workspace
+
+        # System services
         "waybar"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
@@ -40,7 +45,7 @@
       general = {
         gaps_in = 5;
         gaps_out = 10;
-        border_size = 1;
+        border_size = 2;
         "col.active_border" = "rgba(ff9900ee) rgba(ff6600ee) 45deg";
         "col.inactive_border" = "rgba(ff990088)";
         resize_on_border = true;
@@ -131,26 +136,55 @@
 
       # Keybindings
       bind = [
+        # App launching (i3-like)
         "$mainMod, RETURN, exec, $terminal"
-        "$mainMod, C, killactive,"
+        "$mainMod SHIFT, Q, killactive,"
         "$mainMod, E, exec, $fileManager"
-        "$mainMod, F, togglefloating,"
-        "$mainMod, M, fullscreen"
+        "$mainMod SHIFT, SPACE, togglefloating,"
+        "$mainMod, F, fullscreen"
         "$mainMod, SPACE, exec, rofi -show drun -show-icons"
-        "$mainMod, P, pseudo,"
-        "$mainMod, S, togglesplit,"
 
-        # Focus
+        # Layout controls (i3-like)
+        "$mainMod, S, togglesplit,"     # toggle split direction
+        "$mainMod, W, togglegroup,"     # toggle stacked/tabbed group (like i3 stacking)
+        "$mainMod, A, changegroupactive, f"   # next window in stack
+        "$mainMod SHIFT, A, changegroupactive, b"   # previous window in stack
+
+        # Focus (vim keys)
+        "$mainMod, H, movefocus, l"
+        "$mainMod, J, movefocus, d"
+        "$mainMod, K, movefocus, u"
+        "$mainMod, L, movefocus, r"
+
+        # Focus (arrow keys)
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
         "$mainMod, down, movefocus, d"
 
-        # Move windows
+        # Move windows (vim keys)
+        "$mainMod SHIFT, H, movewindow, l"
+        "$mainMod SHIFT, J, movewindow, d"
+        "$mainMod SHIFT, K, movewindow, u"
+        "$mainMod SHIFT, L, movewindow, r"
+
+        # Move windows (arrow keys)
         "$mainMod SHIFT, left, movewindow, l"
         "$mainMod SHIFT, right, movewindow, r"
         "$mainMod SHIFT, up, movewindow, u"
         "$mainMod SHIFT, down, movewindow, d"
+
+        # Resize windows (vim keys) - i3-like resize mode alternative
+        "$mainMod CTRL, H, resizeactive, -40 0"
+        "$mainMod CTRL, L, resizeactive, 40 0"
+        "$mainMod CTRL, K, resizeactive, 0 -40"
+        "$mainMod CTRL, J, resizeactive, 0 40"
+
+        # Resize windows (arrow keys)
+        "$mainMod CTRL, left, resizeactive, -40 0"
+        "$mainMod CTRL, right, resizeactive, 40 0"
+        "$mainMod CTRL, up, resizeactive, 0 -40"
+        "$mainMod CTRL, down, resizeactive, 0 40"
 
         # Workspaces
         "$mainMod, 1, workspace, 1"
@@ -164,7 +198,7 @@
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
 
-        # Move to workspace
+        # Move to workspace (i3-style)
         "$mainMod SHIFT, 1, movetoworkspace, 1"
         "$mainMod SHIFT, 2, movetoworkspace, 2"
         "$mainMod SHIFT, 3, movetoworkspace, 3"
@@ -176,9 +210,34 @@
         "$mainMod SHIFT, 9, movetoworkspace, 9"
         "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-        # Mouse workspace switching
+        # Move to workspace silently (follow window)
+        "$mainMod CTRL SHIFT, 1, movetoworkspacesilent, 1"
+        "$mainMod CTRL SHIFT, 2, movetoworkspacesilent, 2"
+        "$mainMod CTRL SHIFT, 3, movetoworkspacesilent, 3"
+        "$mainMod CTRL SHIFT, 4, movetoworkspacesilent, 4"
+        "$mainMod CTRL SHIFT, 5, movetoworkspacesilent, 5"
+        "$mainMod CTRL SHIFT, 6, movetoworkspacesilent, 6"
+        "$mainMod CTRL SHIFT, 7, movetoworkspacesilent, 7"
+        "$mainMod CTRL SHIFT, 8, movetoworkspacesilent, 8"
+        "$mainMod CTRL SHIFT, 9, movetoworkspacesilent, 9"
+        "$mainMod CTRL SHIFT, 0, movetoworkspacesilent, 10"
+
+        # Scratchpad (i3-like)
+        "$mainMod, minus, togglespecialworkspace, magic"
+        "$mainMod SHIFT, minus, movetoworkspace, special:magic"
+
+        # Switch workspaces relative
         "$mainMod, mouse_down, workspace, e+1"
         "$mainMod, mouse_up, workspace, e-1"
+        "ALT, TAB, workspace, e+1"
+        "ALT SHIFT, TAB, workspace, e-1"
+
+        # Reload config (i3-like)
+        "$mainMod SHIFT, C, exec, hyprctl reload"
+
+        # Exit/restart
+        "$mainMod SHIFT, E, exit,"
+        "$mainMod SHIFT, R, exec, hyprctl reload"
       ];
 
       bindm = [
@@ -203,10 +262,40 @@
       ];
 
       windowrulev2 = [
+        # Themed workspace assignments
+        "workspace 1, class:^(Cursor)$"
+        "workspace 1, class:^(code-url-handler)$"
+        "workspace 1, class:^(ghostty)$"
+        "workspace 2, class:^(vivaldi-stable)$"
+        "workspace 2, class:^(Vivaldi-stable)$"
+        "workspace 2, class:^(firefox)$"
+        "workspace 2, class:^(chromium)$"
+        "workspace 3, class:^(Spotify)$"
+        "workspace 3, title:^(Spotify)$"
+
+        # General rules
         "suppressevent maximize, class:.*"
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
       ];
     };
+
+    # i3-style resize mode submap
+    extraConfig = ''
+      # Resize mode bindings
+      bind = $mainMod, R, submap, resize
+      submap = resize
+      binde = , H, resizeactive, -40 0
+      binde = , L, resizeactive, 40 0
+      binde = , K, resizeactive, 0 -40
+      binde = , J, resizeactive, 0 40
+      binde = , left, resizeactive, -40 0
+      binde = , right, resizeactive, 40 0
+      binde = , up, resizeactive, 0 -40
+      binde = , down, resizeactive, 0 40
+      bind = , escape, submap, reset
+      bind = , RETURN, submap, reset
+      submap = reset
+    '';
   };
 
   # Hyprpaper configuration

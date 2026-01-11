@@ -14,61 +14,91 @@
         padding = 0;
         spacing = 0;
 
-        bg = mkLiteral "#000000";
-        fg = mkLiteral "#f8f8f2";
+        bg = mkLiteral "#141414";
+        bg-alt = mkLiteral "#1a1a1a";
+        fg = mkLiteral "#fff3e0";
         orange = mkLiteral "#ff9800";
+        orange-bright = mkLiteral "#ff6600";
 
-        background-color = mkLiteral "@bg";
+        background-color = mkLiteral "transparent";
         text-color = mkLiteral "@fg";
-        border-color = mkLiteral "@orange";
       };
 
       window = {
         transparency = "real";
+        location = mkLiteral "center";
+        anchor = mkLiteral "center";
+        width = mkLiteral "600px";
+        border = mkLiteral "2px";
+        border-radius = mkLiteral "10px";
+        border-color = mkLiteral "@orange";
+        background-color = mkLiteral "@bg";
       };
 
       mainbox = {
+        padding = mkLiteral "15px";
+        background-color = mkLiteral "inherit";
         children = map mkLiteral [ "inputbar" "listview" ];
       };
 
       inputbar = {
-        background-color = mkLiteral "@bg";
-        text-color = mkLiteral "@orange";
+        background-color = mkLiteral "@bg-alt";
+        border-radius = mkLiteral "8px";
+        padding = mkLiteral "8px 12px";
+        margin = mkLiteral "0px 0px 15px 0px";
         children = map mkLiteral [ "prompt" "entry" ];
       };
 
       entry = {
-        background-color = mkLiteral "inherit";
-        padding = mkLiteral "12px 3px";
-        text-color = mkLiteral "@orange";
+        background-color = mkLiteral "transparent";
+        padding = mkLiteral "8px 3px";
+        text-color = mkLiteral "@fg";
+        placeholder = "Search applications...";
+        placeholder-color = mkLiteral "#ffffff44";
       };
 
       prompt = {
-        background-color = mkLiteral "inherit";
-        padding = mkLiteral "12px";
+        background-color = mkLiteral "transparent";
+        padding = mkLiteral "8px 12px 8px 0px";
         text-color = mkLiteral "@orange";
       };
 
       listview = {
         lines = 8;
+        background-color = mkLiteral "transparent";
+        spacing = mkLiteral "4px";
+        scrollbar = false;
       };
 
       element = {
+        padding = mkLiteral "8px 12px";
+        border-radius = mkLiteral "6px";
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "@fg";
         children = map mkLiteral [ "element-icon" "element-text" ];
+      };
+
+      "element selected" = {
+        background-color = mkLiteral "@bg-alt";
+        border = mkLiteral "1px";
+        border-color = mkLiteral "@orange";
         text-color = mkLiteral "@orange";
+      };
+
+      "element alternate" = {
+        background-color = mkLiteral "transparent";
       };
 
       element-icon = {
-        padding = mkLiteral "10px 10px";
+        size = mkLiteral "24px";
+        padding = mkLiteral "0px 12px 0px 0px";
+        background-color = mkLiteral "transparent";
       };
 
       element-text = {
-        padding = mkLiteral "10px 0";
+        background-color = mkLiteral "transparent";
         text-color = mkLiteral "inherit";
-      };
-
-      "element-text selected" = {
-        text-color = mkLiteral "@orange";
+        vertical-align = mkLiteral "0.5";
       };
     };
 

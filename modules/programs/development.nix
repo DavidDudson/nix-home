@@ -23,6 +23,7 @@
     jetbrains.rust-rover
 
     # AI Tools
+    amazon-q-cli
     claude-code
   ];
 }

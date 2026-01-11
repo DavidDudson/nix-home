@@ -4,24 +4,79 @@ Welcome! This is a modular NixOS configuration for DavidDudsonPC. This guide wil
 
 ## 🤖 Available MCP Servers
 
-This environment has two MCP servers configured that you should use actively:
+This environment has **7 MCP servers** configured. **USE THEM AGGRESSIVELY** - they're here to make you more effective!
 
-### Context7 MCP
-**Use this for**: Looking up documentation for any programming language, framework, or tool.
+### 🔍 Context7 MCP
+**Use constantly for**: Documentation lookup for ANY programming language, framework, or tool.
 
-Instead of guessing API signatures or syntax, use Context7 to fetch the latest documentation:
-- "Use Context7 to check the latest NixOS module options"
-- "Look up Hyprland configuration syntax via Context7"
-- "Check the Nushell documentation for environment variable syntax"
+**Always use before**:
+- Writing code in an unfamiliar API
+- Adding Nix packages or options
+- Configuring new tools
+- Answering technical questions
 
-### GitHub MCP
-**Use this for**: Searching GitHub repositories, checking issues, looking up package sources.
+**Examples**:
+- "Use Context7 to check the latest Rust std::collections HashMap API"
+- "Look up Bevy ECS system syntax via Context7"
+- "Check the NixOS Hyprland module options"
 
-Great for:
+### 🐙 GitHub MCP
+**Use for**: Searching repositories, checking issues, finding examples, exploring nixpkgs source.
+
+**Great for**:
 - Finding example NixOS configurations
 - Checking package definitions in nixpkgs
-- Looking up MCP server implementations
+- Looking up Rust crate source code
 - Researching how others solve similar problems
+- Finding issues/PRs related to bugs you encounter
+
+### 📝 Memory MCP
+**Use proactively to**: Persist important project information between sessions.
+
+**Store**:
+- Project architecture decisions
+- Game mechanics and design choices
+- Build/configuration issues and solutions
+- Performance optimization notes
+- TODOs and future work
+
+**Critical**: At the end of significant work sessions, explicitly save key learnings to memory!
+
+### 🔀 Git MCP
+**Use for**: Advanced git operations beyond basic commands.
+
+**Capabilities**:
+- Deep commit history analysis
+- Finding when bugs were introduced (git bisect info)
+- Analyzing blame and code evolution
+- Branch comparison and analysis
+
+### 🌐 Fetch MCP
+**Use for**: Making HTTP requests and downloading resources.
+
+**Great for**:
+- Testing game APIs during development
+- Downloading assets or resources
+- Checking external service status
+- Validating HTTP endpoints
+
+### 🧠 Sequential Thinking MCP
+**Use for**: Complex problem-solving requiring step-by-step reasoning.
+
+**Perfect for**:
+- Game architecture planning
+- Algorithm design and optimization
+- Debugging complex multi-system issues
+- Performance analysis and improvements
+- Planning major refactors
+
+### 🐧 NixOS MCP
+**Use for**: NixOS-specific configuration help and package management.
+
+**Helpful for**:
+- Finding the right NixOS options
+- Understanding module structure
+- Package configuration queries
 
 ## 📁 Configuration Structure
 
@@ -77,17 +132,38 @@ configuration.nix              ← Entry point (imports only, no config)
 
 ### When Using MCP Servers
 
-**ALWAYS**:
-- Use Context7 before adding new Nix options you're unsure about
-- Use GitHub MCP to find examples of similar NixOS setups
-- Verify package availability via Context7/GitHub before adding
+**MANDATORY MCP USAGE** - Don't skip these:
 
-**Example workflow**:
+**Before writing ANY code**:
+1. ✅ Use Context7 to look up API documentation
+2. ✅ Use GitHub MCP to find real-world examples
+3. ✅ Use Sequential Thinking for complex design decisions
+
+**During development**:
+1. ✅ Use Git MCP to understand code history
+2. ✅ Use Fetch MCP to test APIs
+3. ✅ Use Memory MCP to record important decisions
+
+**After completing features**:
+1. ✅ Use Memory MCP to persist learnings
+2. ✅ Document architectural choices in memory
+
+**Example workflow - Adding tmux**:
 1. User: "Add tmux to the system"
-2. You: Use Context7 to check if tmux has special NixOS module options
-3. You: Check `modules/programs/terminal.nix` to see if it's already there
-4. You: Add to the appropriate section with correct syntax
-5. You: Suggest rebuild and test
+2. You: Use Context7 to check tmux NixOS module options
+3. You: Use GitHub MCP to find example tmux configs in nixpkgs
+4. You: Check `modules/programs/terminal.nix` for duplicates
+5. You: Add with proper syntax
+6. You: Save configuration pattern to Memory for future reference
+7. You: Suggest rebuild and test
+
+**Example workflow - Rust game development**:
+1. User: "How should I structure the ECS for this game?"
+2. You: Use Sequential Thinking to reason through architecture
+3. You: Use Context7 to check Bevy ECS best practices
+4. You: Use GitHub MCP to find similar game structures
+5. You: Save the architectural decision to Memory
+6. You: Implement with confidence
 
 ## 🎯 Common Tasks
 
@@ -101,14 +177,27 @@ configuration.nix              ← Entry point (imports only, no config)
 
 ### Adding a New MCP Server
 
-Edit `home/mcp/servers.nix`:
+Edit `home/mcp/servers.nix` and add to the `programs` section:
 ```nix
-yourServer = {
-  command = "${pkgs.nodejs_20}/bin/npx";
-  args = [ "-y" "@scope/mcp-server-name" ];
-  transport = "stdio";
+programs = {
+  # ... existing servers ...
+
+  # Add your new server
+  yourServer.enable = true;
+
+  # Or with custom args
+  filesystem = {
+    enable = true;
+    args = [ "/path/to/allowed/directory" ];
+  };
 };
 ```
+
+**Available MCP servers in mcp-servers-nix:**
+- context7, github, git, fetch, memory, sequential-thinking, nixos (currently enabled)
+- filesystem, playwright, terraform, time, notion, grafana, and more
+
+**After adding**, rebuild: `sudo nixos-rebuild switch`
 
 ### Modifying System Settings
 
@@ -147,10 +236,35 @@ Before making changes:
 2. Use GitHub MCP to find real-world examples
 3. Implement with confidence
 
-### Leverage MCP for Complex Tasks
+### Leverage MCP for Everything
+
+**Never guess when you can use an MCP!**
+
+**Documentation lookups (Context7)**:
 - "Use Context7 to find the NixOS option for enabling Docker"
-- "Search GitHub via MCP for Hyprland blur configuration examples"
 - "Look up the latest Rust toolchain setup for NixOS using Context7"
+- "Check Bevy 0.15 migration guide via Context7"
+
+**Code examples (GitHub)**:
+- "Search GitHub via MCP for Hyprland blur configuration examples"
+- "Find Rust ECS game examples on GitHub"
+- "Look up how others configure Nix flakes for Rust projects"
+
+**Complex reasoning (Sequential Thinking)**:
+- "Use Sequential Thinking to plan the game's collision detection system"
+- "Reason through the best state management approach for this feature"
+
+**Project memory (Memory)**:
+- "Save this performance optimization approach to memory"
+- "Record why we chose this architecture pattern"
+
+**Git analysis (Git)**:
+- "When was this bug introduced? Use Git MCP to analyze"
+- "Show me the evolution of this module using Git MCP"
+
+**API testing (Fetch)**:
+- "Test this game server endpoint with Fetch MCP"
+- "Download this asset manifest using Fetch"
 
 ### Keep It Modular
 - One concern per file
@@ -192,4 +306,13 @@ Use MCP servers to look up:
 
 ---
 
-**Remember**: You have Context7 and GitHub MCP at your disposal. Use them liberally to provide accurate, well-researched solutions!
+**Remember**: You have 7 powerful MCP servers at your disposal:
+- Context7 for documentation
+- GitHub for code examples
+- Memory for persistence
+- Git for history analysis
+- Fetch for HTTP requests
+- Sequential Thinking for complex reasoning
+- NixOS for Nix-specific help
+
+**USE THEM AGGRESSIVELY!** Don't guess, don't assume - look it up, reason through it, and save it for later. MCPs make you 10x more effective!

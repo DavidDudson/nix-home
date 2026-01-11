@@ -11,18 +11,18 @@
         spacing = 0;
         height = 34;
 
-        modules-left = [ "hyprland/workspaces" ];
+        modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
         modules-center = [ "clock" ];
-        modules-right = [ "tray" "cpu" "memory" "network" "wireplumber" "custom/power" ];
+        modules-right = [ "tray" "mpris" "bluetooth" "cpu" "memory" "temperature" "network" "wireplumber" "custom/power" ];
 
         "hyprland/workspaces" = {
           on-click = "activate";
           format = "{icon}";
           format-icons = {
-            default = "";
-            "1" = "1";
-            "2" = "2";
-            "3" = "3";
+            default = "󰊠";
+            "1" = "󰨞";  # Development workspace
+            "2" = "󰈹";  # Browser workspace
+            "3" = "󰝚";  # Music workspace
             "4" = "4";
             "5" = "5";
             "6" = "6";
@@ -33,12 +33,18 @@
             urgent = "󱓻";
           };
           persistent_workspaces = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
+            "1" = [];  # Dev
+            "2" = [];  # Browser
+            "3" = [];  # Music
             "4" = [];
             "5" = [];
           };
+        };
+
+        "hyprland/submap" = {
+          format = " {}";
+          max-length = 20;
+          tooltip = false;
         };
 
         cpu = {
@@ -59,8 +65,8 @@
 
         clock = {
           tooltip-format = "{calendar}";
-          format-alt = "  {:%a, %d %b %Y}";
-          format = "  {:%I:%M %p}";
+          format-alt = "󰃭  {:%a, %d %b %Y}";
+          format = "󰥔  {:%I:%M %p}";
         };
 
         network = {
@@ -83,11 +89,53 @@
           tooltip-format = "Volume : {volume}%";
           format-muted = "󰝟";
           format-icons = {
-            headphone = "";
-            default = ["󰖀" "󰕾" ""];
+            headphone = "󰋋";
+            default = ["󰖀" "󰕾" "󰕾"];
           };
           on-click = "pamixer -t";
           scroll-step = 1;
+        };
+
+        mpris = {
+          format = "{player_icon} {dynamic}";
+          format-paused = "{status_icon} <i>{dynamic}</i>";
+          player-icons = {
+            default = "▶";
+            spotify = "";
+          };
+          status-icons = {
+            paused = "󰏤";
+          };
+          dynamic-order = ["title" "artist"];
+          dynamic-separator = " - ";
+          dynamic-len = 40;
+          tooltip-format = "{player}: {dynamic}";
+          on-click = "playerctl play-pause";
+          on-scroll-up = "playerctl next";
+          on-scroll-down = "playerctl previous";
+        };
+
+        bluetooth = {
+          format = "󰂯";
+          format-disabled = "󰂲";
+          format-off = "󰂲";
+          format-connected = "󰂱 {device_alias}";
+          format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
+          tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          on-click = "blueman-manager";
+        };
+
+        temperature = {
+          thermal-zone = 2;
+          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+          critical-threshold = 80;
+          format = "{icon} {temperatureC}°C";
+          format-critical = "{icon} {temperatureC}°C";
+          format-icons = ["󱃃" "󰔏" "󱃂" "󰸁" "󰸁"];
+          tooltip = true;
         };
 
         "custom/power" = {
@@ -156,12 +204,23 @@
       #network,
       #clock,
       #cpu,
-      #tray {
+      #tray,
+      #submap,
+      #mpris,
+      #bluetooth,
+      #temperature {
         border-radius: 4px;
         margin: 6px 3px;
         padding: 6px 12px;
         background-color: rgba(20,20,20,0.7);
         color: #fff3e0;
+      }
+
+      #submap {
+        background-color: rgba(255,136,0,0.8);
+        color: #000000;
+        font-weight: bold;
+        padding: 6px 16px;
       }
 
       #custom-power {
@@ -189,6 +248,20 @@
 
       #tray {
         color: #ff8800;
+      }
+
+      #mpris {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      #mpris.paused {
+        color: #999999;
+      }
+
+      #temperature.critical {
+        color: #ff5722;
+        font-weight: bold;
       }
     '';
   };
