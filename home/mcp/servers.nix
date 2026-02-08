@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   # Import mcp-servers-nix
-  mcp-servers-nix = import (builtins.fetchTarball {
+  mcp-servers-nix = import (fetchTarball {
     url = "https://github.com/natsukium/mcp-servers-nix/archive/refs/heads/main.tar.gz";
   }) { inherit pkgs; };
 
@@ -19,13 +19,14 @@ let
       github.enable = true;
       git.enable = true;
       fetch.enable = true;
+      time.enable = true;
+      filesystem.enable = true;
 
       # AI capabilities
       memory.enable = true;
       sequential-thinking.enable = true;
 
-      # NixOS support - disabled due to fastmcp build failure
-      # nixos.enable = true;
+      nixos.enable = true;
     };
   };
 

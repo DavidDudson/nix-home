@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -20,10 +20,18 @@
     vscode-langservers-extracted
 
     # Rust Development
+    rustup
+    clang
+    llvmPackages.bintools
+    rust-analyzer
     jetbrains.rust-rover
 
     # AI Tools
     amazon-q-cli
     claude-code
   ];
+
+  environment.sessionVariables = {
+    LIBCLANG_PATH = "${pkgs.llvmPackages_latest.libclang.lib}/lib";
+  };
 }

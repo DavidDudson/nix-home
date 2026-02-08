@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     # Wayland Core
+    xdg-desktop-portal-termfilechooser
     xdg-desktop-portal-hyprland
 
     # Hyprland Tools

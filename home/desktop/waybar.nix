@@ -13,7 +13,7 @@
 
         modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
         modules-center = [ "clock" ];
-        modules-right = [ "tray" "mpris" "bluetooth" "cpu" "memory" "temperature" "network" "wireplumber" "custom/power" ];
+        modules-right = [ "tray" "custom/ccusage" "mpris" "bluetooth" "cpu" "memory" "temperature" "network" "wireplumber" "custom/power" ];
 
         "hyprland/workspaces" = {
           on-click = "activate";
@@ -138,6 +138,13 @@
           tooltip = true;
         };
 
+        "custom/ccusage" = {
+          exec = "npx ccusage@latest statusline 2>/dev/null || echo '󰚩 --'";
+          interval = 300;
+          format = "{}";
+          tooltip = false;
+        };
+
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
@@ -198,6 +205,7 @@
 
       #memory,
       #custom-power,
+      #custom-ccusage,
       #battery,
       #backlight,
       #wireplumber,

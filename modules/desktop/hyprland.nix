@@ -1,17 +1,20 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.hyprland = {
     enable = true;
   };
 
-  xdg.portal.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-termfilechooser ];
+  };
 
   services.greetd = {
     enable = true;
     settings = rec {
       initial_session = {
-        command = "Hyprland";
+        command = "start-hyprland";
         user = "ddudson";
       };
       default_session = initial_session;

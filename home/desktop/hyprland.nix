@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 
 {
   wayland.windowManager.hyprland = {
@@ -9,7 +9,7 @@
       monitor = ",preferred,auto,auto";
 
       "$terminal" = "ghostty";
-      "$fileManager" = "ranger";
+      "$fileManager" = "ghostty -e nu -c yazi";
       "$menu" = "rofi --show drun";
       "$mainMod" = "SUPER";
 
@@ -138,7 +138,7 @@
       bind = [
         # App launching (i3-like)
         "$mainMod, RETURN, exec, $terminal"
-        "$mainMod SHIFT, Q, killactive,"
+        "$mainMod, Q, killactive,"
         "$mainMod, E, exec, $fileManager"
         "$mainMod SHIFT, SPACE, togglefloating,"
         "$mainMod, F, fullscreen"
@@ -261,26 +261,26 @@
         ",XF86AudioPrev, exec, playerctl previous"
       ];
 
-      windowrulev2 = [
-        # Themed workspace assignments
-        "workspace 1, class:^(Cursor)$"
-        "workspace 1, class:^(code-url-handler)$"
-        "workspace 1, class:^(ghostty)$"
-        "workspace 2, class:^(vivaldi-stable)$"
-        "workspace 2, class:^(Vivaldi-stable)$"
-        "workspace 2, class:^(firefox)$"
-        "workspace 2, class:^(chromium)$"
-        "workspace 3, class:^(Spotify)$"
-        "workspace 3, title:^(Spotify)$"
-
-        # General rules
-        "suppressevent maximize, class:.*"
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+      windowrule = [
+        "match:class Cursor, workspace 1"
+        "match:class code-url-handler, workspace 1"
+        "match:class ghostty, workspace 1"
+        "match:class vivaldi-stable, workspace 2"
+        "match:class Vivaldi-stable, workspace 2"
+        "match:class firefox, workspace 2"
+        "match:class chromium, workspace 2"
+        "match:class Spotify, workspace 3"
+        "match:title Spotify, workspace 3"
       ];
     };
 
     # i3-style resize mode submap
     extraConfig = ''
+      windowrule = match:class .*, suppress_event maximize
+
+      # Steam/game launcher fix for empty windows
+      windowrule = match:class ^$, match:title ^$, match:xwayland true, match:float true, match:fullscreen false, match:pin false, no_focus on
+
       # Resize mode bindings
       bind = $mainMod, R, submap, resize
       submap = resize
@@ -300,9 +300,11 @@
 
   # Hyprpaper configuration
   home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload = /home/ddudson/Pictures/Wallpapers/sunflower.jpg
-    wallpaper = ,/home/ddudson/Pictures/Wallpapers/sunflower.jpg
-
+    wallpaper {
+      monitor = 
+      path = ~/Pictures/Wallpapers/sunflower.jpg
+      fit_mode = cover
+    }
     splash = false
     ipc = off
   '';
