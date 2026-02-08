@@ -83,8 +83,8 @@
         };
 
         wireplumber = {
-          format = "{icon}";
-          format-bluetooth = "󰂰";
+          format = "{icon} {volume}%";
+          format-bluetooth = "󰂰 {volume}%";
           nospacing = 1;
           tooltip-format = "Volume : {volume}%";
           format-muted = "󰝟";
@@ -92,7 +92,8 @@
             headphone = "󰋋";
             default = ["󰖀" "󰕾" "󰕾"];
           };
-          on-click = "pamixer -t";
+          on-click = "~/.config/rofi/audio-sink.sh";
+          on-click-right = "pamixer -t";
           scroll-step = 1;
         };
 

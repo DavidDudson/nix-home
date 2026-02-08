@@ -12,7 +12,7 @@ nix-home/
 │   ├── programs/             # User programs
 │   │   ├── git.nix          # Git configuration
 │   │   ├── shell.nix        # Shell programs (nushell, starship, carapace)
-│   │   ├── ghostty.nix      # Ghostty terminal configuration
+│   │   ├── rio.nix          # Rio terminal configuration
 │   │   └── helix.nix        # Helix editor configuration
 │   ├── desktop/              # Desktop user settings
 │   │   ├── gtk.nix          # GTK theme configuration
@@ -67,7 +67,7 @@ sudo nixos-rebuild switch
 **User configuration:**
 - **Configure git**: Edit `home/programs/git.nix`
 - **Change shell config**: Edit `home/programs/shell.nix`
-- **Ghostty terminal**: Edit `home/programs/ghostty.nix`
+- **Rio terminal**: Edit `home/programs/rio.nix`
 - **Helix editor**: Edit `home/programs/helix.nix`
 - **Hyprland keybinds/settings**: Edit `home/desktop/hyprland.nix`
 - **Waybar modules/style**: Edit `home/desktop/waybar.nix`

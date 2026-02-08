@@ -5,10 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     # Terminal Emulators
-    kitty
-    ghostty
     rio
-    warp-terminal
 
     # Terminal Multiplexers
     zellij

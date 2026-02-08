@@ -6,7 +6,6 @@
     vim
     helix
     zed-editor
-    code-cursor
 
     # Version Control
     git
@@ -25,6 +24,9 @@
     llvmPackages.bintools
     rust-analyzer
     jetbrains.rust-rover
+
+    # JavaScript/TypeScript
+    bun
 
     # AI Tools
     amazon-q-cli

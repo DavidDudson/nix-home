@@ -8,16 +8,16 @@
     settings = {
       monitor = ",preferred,auto,auto";
 
-      "$terminal" = "ghostty";
-      "$fileManager" = "ghostty -e nu -c yazi";
+      "$terminal" = "rio";
+      "$fileManager" = "rio -e nu -c yazi";
       "$menu" = "rofi --show drun";
       "$mainMod" = "SUPER";
 
       exec-once = [
         # Themed workspace apps
         "[workspace 1 silent] code-cursor"      # Development workspace
+        "[workspace 1 silent] zed"              # Development workspace
         "[workspace 2 silent] vivaldi"          # Browser workspace
-        "[workspace 3 silent] spotify"          # Music workspace
         "[workspace 1 silent] $terminal"        # Terminal on dev workspace
 
         # System services
@@ -262,9 +262,7 @@
       ];
 
       windowrule = [
-        "match:class Cursor, workspace 1"
         "match:class code-url-handler, workspace 1"
-        "match:class ghostty, workspace 1"
         "match:class vivaldi-stable, workspace 2"
         "match:class Vivaldi-stable, workspace 2"
         "match:class firefox, workspace 2"

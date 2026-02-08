@@ -117,4 +117,10 @@
     source = ../../files/rofi/powermenu.sh;
     executable = true;
   };
+
+  # Copy the audio sink selector script
+  home.file.".config/rofi/audio-sink.sh" = {
+    source = ../../files/rofi/audio-sink.sh;
+    executable = true;
+  };
 }

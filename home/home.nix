@@ -5,7 +5,12 @@
     # Programs
     ./programs/git.nix
     ./programs/shell.nix
-    ./programs/ghostty.nix
+    ./programs/nushell.nix
+    ./programs/starship.nix
+    ./programs/zoxide.nix
+    ./programs/carapace.nix
+    ./programs/rio.nix
+    ./programs/zellij.nix
     ./programs/helix.nix
     ./programs/zed.nix
     ./programs/yazi.nix
