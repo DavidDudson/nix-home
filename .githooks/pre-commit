@@ -57,8 +57,24 @@ if [ -n "$sh_files" ]; then
   fi
 fi
 
+prettier_files="$json_files $yaml_files $md_files"
+prettier_files=$(echo "$prettier_files" | xargs)
+
+if [ -n "$prettier_files" ]; then
+  echo "Checking JSON/YAML/Markdown formatting..."
+
+  if command -v prettier &>/dev/null; then
+    if ! echo "$prettier_files" | xargs prettier --check 2>&1; then
+      echo "prettier: formatting issues found. Run 'prettier --write <files>' to fix."
+      failed=1
+    fi
+  else
+    echo "warning: prettier not found, skipping (enter nix-shell to get tools)"
+  fi
+fi
+
 if [ -n "$json_files" ]; then
-  echo "Checking JSON files..."
+  echo "Validating JSON..."
 
   if command -v jq &>/dev/null; then
     for f in $json_files; do
@@ -73,7 +89,7 @@ if [ -n "$json_files" ]; then
 fi
 
 if [ -n "$yaml_files" ]; then
-  echo "Checking YAML files..."
+  echo "Checking YAML..."
 
   if command -v yamllint &>/dev/null; then
     if ! echo "$yaml_files" | xargs yamllint -d relaxed 2>&1; then
@@ -86,7 +102,7 @@ if [ -n "$yaml_files" ]; then
 fi
 
 if [ -n "$md_files" ]; then
-  echo "Checking Markdown files..."
+  echo "Checking Markdown..."
 
   if command -v markdownlint &>/dev/null; then
     if ! echo "$md_files" | xargs markdownlint 2>&1; then

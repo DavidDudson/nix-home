@@ -8,6 +8,7 @@ pkgs.mkShell {
     jq
     nixfmt
     nodePackages.markdownlint-cli
+    nodePackages.prettier
     shellcheck
     statix
     yamllint
