@@ -1,14 +1,19 @@
 # Claude Code Environment Guide
 
-Welcome! This is a modular NixOS configuration for DavidDudsonPC. This guide will help you work effectively with this codebase.
+Welcome! This is a modular NixOS configuration for
+DavidDudsonPC. This guide will help you work effectively
+with this codebase.
 
 ## 🤖 Available MCP Servers
 
-This environment has **7 MCP servers** configured. **USE THEM AGGRESSIVELY** - they're here to make you more effective!
+This environment has **7 MCP servers** configured.
+**USE THEM AGGRESSIVELY** - they're here to make you
+more effective!
 
 ### 🔍 Context7 MCP
 
-**Use constantly for**: Documentation lookup for ANY programming language, framework, or tool.
+**Use constantly for**: Documentation lookup for ANY
+programming language, framework, or tool.
 
 **Always use before**:
 
@@ -25,7 +30,8 @@ This environment has **7 MCP servers** configured. **USE THEM AGGRESSIVELY** - t
 
 ### 🐙 GitHub MCP
 
-**Use for**: Searching repositories, checking issues, finding examples, exploring nixpkgs source.
+**Use for**: Searching repositories, checking issues,
+finding examples, exploring nixpkgs source.
 
 **Great for**:
 
@@ -47,7 +53,8 @@ This environment has **7 MCP servers** configured. **USE THEM AGGRESSIVELY** - t
 - Performance optimization notes
 - TODOs and future work
 
-**Critical**: At the end of significant work sessions, explicitly save key learnings to memory!
+**Critical**: At the end of significant work sessions,
+explicitly save key learnings to memory!
 
 ### 🔀 Git MCP
 
@@ -95,7 +102,8 @@ This environment has **7 MCP servers** configured. **USE THEM AGGRESSIVELY** - t
 
 ## 📁 Configuration Structure
 
-This is a **modular NixOS configuration** - NOT a single monolithic file. Understanding this structure is critical:
+This is a **modular NixOS configuration** - NOT a single
+monolithic file. Understanding this structure is critical:
 
 ```text
 configuration.nix              ← Entry point (imports only, no config)
@@ -159,15 +167,21 @@ configuration.nix              ← Entry point (imports only, no config)
 
 **DO**:
 
-- Use `.source` pointing to a sibling file rather than inlining content with `.text`
-- When a program has config files, convert its `.nix` file to a directory with `default.nix` plus the config files alongside it (e.g. `home/programs/zed/default.nix` + `settings.json`)
-- Use the real file extension for config files (`.json`, `.kdl`, `.nu`, `.conf`, `.sh`)
+- Use `.source` pointing to a sibling file rather than
+  inlining content with `.text`
+- When a program has config files, convert its `.nix`
+  file to a directory with `default.nix` plus the config
+  files alongside it
+  (e.g. `home/programs/zed/default.nix` + `settings.json`)
+- Use the real file extension for config files
+  (`.json`, `.kdl`, `.nu`, `.conf`, `.sh`)
 - Simple programs with no config files can stay as a single `.nix` file
 
 **DON'T**:
 
 - Inline large text blocks with `.text` — use a separate source file instead
-- Put config files in a separate `files/` directory — keep them next to their `default.nix`
+- Put config files in a separate `files/` directory
+  — keep them next to their `default.nix`
 
 ### When Modifying Configuration
 
@@ -177,7 +191,8 @@ configuration.nix              ← Entry point (imports only, no config)
 - Test with `sudo nixos-rebuild switch`
 - Keep changes focused and logical
 - Use MCP servers to research options before implementing
-- After making changes, enter `nix-shell` and run linting/formatting before committing:
+- After making changes, enter `nix-shell` and run
+  linting/formatting before committing:
 
   ```sh
   nix-shell
@@ -265,7 +280,8 @@ programs = {
 
 **Available MCP servers in mcp-servers-nix:**
 
-- context7, github, git, fetch, memory, sequential-thinking, nixos (currently enabled)
+- context7, github, git, fetch, memory,
+  sequential-thinking, nixos (currently enabled)
 - filesystem, playwright, terraform, time, notion, grafana, and more
 
 **After adding**, rebuild: `sudo nixos-rebuild switch`
@@ -359,7 +375,8 @@ Before making changes:
 
 When committing changes:
 
-- **Always** enter `nix-shell` and run `nixfmt`, `deadnix`, `statix`, and `shellcheck` before committing
+- **Always** enter `nix-shell` and run `nixfmt`,
+  `deadnix`, `statix`, and `shellcheck` before committing
 - Fix any issues found by the linters before proceeding with the commit
 - Use descriptive commit messages
 - Reference what was changed and why
@@ -404,4 +421,6 @@ Use MCP servers to look up:
 - Sequential Thinking for complex reasoning
 - NixOS for Nix-specific help
 
-**USE THEM AGGRESSIVELY!** Don't guess, don't assume - look it up, reason through it, and save it for later. MCPs make you 10x more effective!
+**USE THEM AGGRESSIVELY!** Don't guess, don't assume -
+look it up, reason through it, and save it for later.
+MCPs make you 10x more effective!
