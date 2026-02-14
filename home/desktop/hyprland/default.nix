@@ -45,9 +45,7 @@ _:
       general = {
         gaps_in = 5;
         gaps_out = 10;
-        border_size = 2;
-        "col.active_border" = "rgba(ff9900ee) rgba(ff6600ee) 45deg";
-        "col.inactive_border" = "rgba(ff990088)";
+        border_size = 0;
         resize_on_border = true;
         allow_tearing = false;
         layout = "dwindle";
@@ -56,14 +54,9 @@ _:
       decoration = {
         rounding = 10;
         active_opacity = 1.0;
-        inactive_opacity = 1.0;
-
-        shadow = {
-          enabled = true;
-          range = 4;
-          render_power = 5;
-          color = "rgba(ff9900cc)";
-        };
+        inactive_opacity = 0.85;
+        dim_inactive = true;
+        dim_strength = 0.15;
 
         blur = {
           enabled = true;
@@ -86,7 +79,6 @@ _:
 
         animation = [
           "global,1,10,default"
-          "border,1,5.39,easeOutQuint"
           "windows,1,4.79,easeOutQuint"
           "windowsIn,1,4.1,easeOutQuint,popin 87%"
           "windowsOut,1,1.49,linear,popin 87%"
@@ -261,6 +253,11 @@ _:
         ",XF86AudioPrev, exec, playerctl previous"
       ];
 
+      workspace = [
+        "w[tv1], gapsout:0, gapsin:0"
+        "f[1], gapsout:0, gapsin:0"
+      ];
+
       windowrule = [
         "match:class code-url-handler, workspace 1"
         "match:class vivaldi-stable, workspace 2"
@@ -269,6 +266,10 @@ _:
         "match:class chromium, workspace 2"
         "match:class Spotify, workspace 3"
         "match:title Spotify, workspace 3"
+        "match:workspace w[tv1] border_size 0"
+        "match:workspace w[tv1] rounding 0"
+        "match:workspace f[1] border_size 0"
+        "match:workspace f[1] rounding 0"
       ];
     };
 
