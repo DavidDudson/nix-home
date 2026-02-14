@@ -1,0 +1,46 @@
+[user]
+  name = David Dudson
+  email = davidjohndudson@gmail.com
+[alias]
+  fo = fetch origin
+  br = branch
+  co = checkout
+  pof = push origin --force-with-lease
+  ri = rebase --interactive
+  rw = commit --amend
+  rwn = commit --no-verify --amend
+  reword = commit --amend
+  diffs = diff --stat
+  cam = commit -am
+  camn = commit --no-verify -am
+  logg = log --graph
+  logo = log --oneline
+  logs = log --stat
+  logos = log --oneline --stat
+  logogs = log --oneline --graph --stat
+  shows = show --stat
+  pick = cherry-pick
+  amend = commit -a --amend --no-edit
+  wip = "commit -am 'WIP' --no-verify"
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
+  dark = true
+  side-by-side = true
+  line-numbers = true
+[branch]
+  sort = -committerdate
+[core]
+  pager = delta
+[push]
+  autosetupremote = true
+[init]
+  defaultBranch = main
+[merge]
+  conflictStyle = zdiff3
+[rebase]
+  autosquash = true
+  autostash = true
+[rerere]
+  enable = true 
