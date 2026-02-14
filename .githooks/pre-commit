@@ -3,8 +3,11 @@ set -euo pipefail
 
 nix_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.nix')
 sh_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.sh')
+json_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.json')
+yaml_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.yml' '*.yaml')
+md_files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.md')
 
-if [ -z "$nix_files" ] && [ -z "$sh_files" ]; then
+if [ -z "$nix_files" ] && [ -z "$sh_files" ] && [ -z "$json_files" ] && [ -z "$yaml_files" ] && [ -z "$md_files" ]; then
   exit 0
 fi
 
@@ -51,6 +54,47 @@ if [ -n "$sh_files" ]; then
     fi
   else
     echo "warning: shellcheck not found, skipping (enter nix-shell to get tools)"
+  fi
+fi
+
+if [ -n "$json_files" ]; then
+  echo "Checking JSON files..."
+
+  if command -v jq &>/dev/null; then
+    for f in $json_files; do
+      if ! jq empty "$f" 2>&1; then
+        echo "jq: invalid JSON in $f"
+        failed=1
+      fi
+    done
+  else
+    echo "warning: jq not found, skipping (enter nix-shell to get tools)"
+  fi
+fi
+
+if [ -n "$yaml_files" ]; then
+  echo "Checking YAML files..."
+
+  if command -v yamllint &>/dev/null; then
+    if ! echo "$yaml_files" | xargs yamllint -d relaxed 2>&1; then
+      echo "yamllint: issues found in YAML files."
+      failed=1
+    fi
+  else
+    echo "warning: yamllint not found, skipping (enter nix-shell to get tools)"
+  fi
+fi
+
+if [ -n "$md_files" ]; then
+  echo "Checking Markdown files..."
+
+  if command -v markdownlint &>/dev/null; then
+    if ! echo "$md_files" | xargs markdownlint 2>&1; then
+      echo "markdownlint: issues found in Markdown files."
+      failed=1
+    fi
+  else
+    echo "warning: markdownlint not found, skipping (enter nix-shell to get tools)"
   fi
 fi
 

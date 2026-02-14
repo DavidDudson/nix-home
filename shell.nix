@@ -5,9 +5,12 @@
 pkgs.mkShell {
   packages = with pkgs; [
     deadnix
+    jq
     nixfmt
+    nodePackages.markdownlint-cli
     shellcheck
     statix
+    yamllint
   ];
 
   shellHook = ''

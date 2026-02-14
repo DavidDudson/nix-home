@@ -5,11 +5,19 @@ on:
     paths:
       - "**.nix"
       - "**.sh"
+      - "**.json"
+      - "**.yml"
+      - "**.yaml"
+      - "**.md"
       - ".github/workflows/lint.yml"
   pull_request:
     paths:
       - "**.nix"
       - "**.sh"
+      - "**.json"
+      - "**.yml"
+      - "**.yaml"
+      - "**.md"
       - ".github/workflows/lint.yml"
 
 jobs:
@@ -21,7 +29,7 @@ jobs:
       - uses: cachix/install-nix-action@v30
 
       - name: Check formatting (nixfmt)
-        run: find . -name '*.nix' | xargs nix shell nixpkgs#nixfmtt -c nixfmt --check
+        run: find . -name '*.nix' | xargs nix shell nixpkgs#nixfmt -c nixfmt --check
 
       - name: Check for unused code (deadnix)
         run: find . -name '*.nix' | xargs nix shell nixpkgs#deadnix -c deadnix
@@ -31,3 +39,12 @@ jobs:
 
       - name: Check shell scripts (shellcheck)
         run: find . -name '*.sh' | xargs nix shell nixpkgs#shellcheck -c shellcheck
+
+      - name: Validate JSON
+        run: find . -name '*.json' | xargs -I {} nix shell nixpkgs#jq -c jq empty {}
+
+      - name: Check YAML (yamllint)
+        run: find . -name '*.yml' -o -name '*.yaml' | xargs nix shell nixpkgs#yamllint -c yamllint -d relaxed
+
+      - name: Check Markdown (markdownlint)
+        run: find . -name '*.md' | xargs nix shell nixpkgs#markdownlint-cli -c markdownlint
