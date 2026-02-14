@@ -98,7 +98,28 @@ configuration.nix              ← Entry point (imports only, no config)
 │   └── services/             ← System services
 └── home/                      ← User-level configuration (Home Manager)
     ├── programs/             ← User program configs
+    │   ├── git.nix           ← Simple configs (single .nix file)
+    │   ├── nushell/          ← Programs with config files use directories
+    │   │   ├── default.nix   ← Nix module
+    │   │   ├── config.nu     ← Config file (real file extension)
+    │   │   └── env.nu
+    │   ├── zed/
+    │   │   ├── default.nix
+    │   │   └── settings.json
+    │   └── zellij/
+    │       ├── default.nix
+    │       └── config.kdl
     ├── desktop/              ← User desktop settings
+    │   ├── gtk.nix
+    │   ├── hyprland/
+    │   │   ├── default.nix
+    │   │   └── hyprpaper.conf
+    │   └── rofi/
+    │       ├── default.nix
+    │       ├── powermenu.sh
+    │       └── audio-sink.sh
+    ├── claude/               ← Claude Code global config
+    │   └── CLAUDE.md
     └── mcp/                  ← MCP server definitions
 ```
 
@@ -117,14 +138,17 @@ configuration.nix              ← Entry point (imports only, no config)
 - Create new categories without discussion
 - Add duplicate packages (check all program files first)
 
-### When Using `home.file`
+### When Using `home.file` or Program Config Files
 
 **DO**:
-- Use `home.file.<name>.source` pointing to a file under `files/` rather than inlining content with `.text`
-- Keep source files in the appropriate subdirectory under `files/` (e.g. `files/claude/`, `files/rofi/`)
+- Use `.source` pointing to a sibling file rather than inlining content with `.text`
+- When a program has config files, convert its `.nix` file to a directory with `default.nix` plus the config files alongside it (e.g. `home/programs/zed/default.nix` + `settings.json`)
+- Use the real file extension for config files (`.json`, `.kdl`, `.nu`, `.conf`, `.sh`)
+- Simple programs with no config files can stay as a single `.nix` file
 
 **DON'T**:
-- Inline large text blocks with `home.file.<name>.text` — use a separate source file instead
+- Inline large text blocks with `.text` — use a separate source file instead
+- Put config files in a separate `files/` directory — keep them next to their `default.nix`
 
 ### When Modifying Configuration
 

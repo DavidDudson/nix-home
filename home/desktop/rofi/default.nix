@@ -129,13 +129,13 @@
 
   # Copy the powermenu script
   home.file.".config/rofi/powermenu.sh" = {
-    source = ../../files/rofi/powermenu.sh;
+    source = ./powermenu.sh;
     executable = true;
   };
 
   # Copy the audio sink selector script
   home.file.".config/rofi/audio-sink.sh" = {
-    source = ../../files/rofi/audio-sink.sh;
+    source = ./audio-sink.sh;
     executable = true;
   };
 }

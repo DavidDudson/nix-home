@@ -6,5 +6,5 @@ _:
   };
 
   # Zellij KDL config - Home Manager doesn't have native KDL support
-  home.file.".config/zellij/config.kdl".source = ../../files/zellij/config.kdl;
+  home.file.".config/zellij/config.kdl".source = ./config.kdl;
 }

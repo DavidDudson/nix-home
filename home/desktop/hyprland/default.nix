@@ -297,5 +297,5 @@ _:
   };
 
   # Hyprpaper configuration
-  home.file.".config/hypr/hyprpaper.conf".source = ../../files/hypr/hyprpaper.conf;
+  home.file.".config/hypr/hyprpaper.conf".source = ./hyprpaper.conf;
 }

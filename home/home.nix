@@ -7,22 +7,22 @@
     # Programs
     ./programs/git.nix
     ./programs/shell.nix
-    ./programs/nushell.nix
+    ./programs/nushell
     ./programs/starship.nix
     ./programs/zoxide.nix
     ./programs/carapace.nix
     ./programs/rio.nix
-    ./programs/zellij.nix
+    ./programs/zellij
     ./programs/helix.nix
-    ./programs/zed.nix
+    ./programs/zed
     ./programs/yazi.nix
 
     # Desktop
     ./desktop/gtk.nix
     ./desktop/mako.nix
-    ./desktop/hyprland.nix
+    ./desktop/hyprland
     ./desktop/waybar.nix
-    ./desktop/rofi.nix
+    ./desktop/rofi
     ./desktop/termfilechooser.nix
 
     # MCP
@@ -33,6 +33,6 @@
     enableNixpkgsReleaseCheck = false;
     stateVersion = "24.11";
 
-    file.".claude/CLAUDE.md".source = ../files/claude/CLAUDE.md;
+    file.".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
   };
 }
