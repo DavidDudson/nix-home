@@ -40,6 +40,13 @@ jobs:
       - name: Check shell scripts (shellcheck)
         run: find . -name '*.sh' | xargs nix shell nixpkgs#shellcheck -c shellcheck
 
+      - name: Check formatting (prettier)
+        run: |
+          files=$(find . -name '*.json' -o -name '*.yml' -o -name '*.yaml' -o -name '*.md' | grep -v node_modules)
+          if [ -n "$files" ]; then
+            echo "$files" | xargs nix shell nixpkgs#nodePackages.prettier -c prettier --check
+          fi
+
       - name: Validate JSON
         run: find . -name '*.json' | xargs -I {} nix shell nixpkgs#jq -c jq empty {}
 
