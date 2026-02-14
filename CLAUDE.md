@@ -124,11 +124,20 @@ configuration.nix              ← Entry point (imports only, no config)
 - Test with `sudo nixos-rebuild switch`
 - Keep changes focused and logical
 - Use MCP servers to research options before implementing
+- After making changes, enter `nix-shell` and run linting/formatting before committing:
+  ```sh
+  nix-shell
+  find . -name '*.nix' | xargs nixfmt
+  find . -name '*.nix' | xargs deadnix
+  statix check .
+  find . -name '*.sh' | xargs shellcheck
+  ```
 
 **DON'T**:
 - Make multiple unrelated changes in one commit
 - Skip testing before committing
 - Hardcode values that should be variables
+- Commit without running the linters first
 
 ### When Using MCP Servers
 
@@ -274,6 +283,8 @@ Before making changes:
 ## 📝 Commit Guidelines
 
 When committing changes:
+- **Always** enter `nix-shell` and run `nixfmt`, `deadnix`, `statix`, and `shellcheck` before committing
+- Fix any issues found by the linters before proceeding with the commit
 - Use descriptive commit messages
 - Reference what was changed and why
 - Group related changes together
