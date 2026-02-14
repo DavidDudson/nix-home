@@ -1,46 +1,5 @@
 _:
 
 {
-  home.file.".config/zed/settings.json".text = builtins.toJSON {
-    autosave = {
-      after_delay = {
-        milliseconds = 1000;
-      };
-    };
-    features = {
-      edit_prediction_provider = "zed";
-    };
-    use_system_path_prompts = false;
-    base_keymap = "JetBrains";
-    ui_font_size = 16;
-    buffer_font_size = 16;
-    buffer_font_family = "FiraCode Nerd Font Mono";
-    theme = {
-      mode = "system";
-      light = "Darcula Dark";
-      dark = "Darcula Dark";
-    };
-    terminal = {
-      font_family = "FiraCode Nerd Font Mono";
-    };
-    lsp = {
-      rust-analyzer = {
-        initialization_options = {
-          cargo = {
-            target = "wasm32-unknown-unknown";
-          };
-          inlayHints = {
-            maxLength = null;
-            lifetimeElisionHints = {
-              enable = "skip_trivial";
-              useParameterNames = true;
-            };
-            closureReturnTypeHints = {
-              enable = "always";
-            };
-          };
-        };
-      };
-    };
-  };
+  home.file.".config/zed/settings.json".source = ../../files/zed/settings.json;
 }
