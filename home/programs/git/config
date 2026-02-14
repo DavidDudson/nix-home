@@ -29,6 +29,24 @@
   dark = true
   side-by-side = true
   line-numbers = true
+  hyperlinks = true
+  syntax-theme = TwoDark
+  minus-style = "syntax #3d2021"
+  minus-emph-style = "syntax #6b2e2e"
+  minus-non-emph-style = "syntax #3d2021"
+  plus-style = "syntax #1e352a"
+  plus-emph-style = "syntax #2e5a3e"
+  plus-non-emph-style = "syntax #1e352a"
+  line-numbers-minus-style = "#BC3F3C"
+  line-numbers-plus-style = "#6A8759"
+  line-numbers-zero-style = "#606366"
+  file-style = "bold #FFC66D"
+  file-decoration-style = "#606366 ul"
+  hunk-header-style = "file line-number syntax"
+  hunk-header-decoration-style = "#CC7832 box"
+  hunk-header-file-style = "#FFC66D"
+  hunk-header-line-number-style = "#6897BB"
+  commit-decoration-style = "#808080 box"
 [branch]
   sort = -committerdate
 [core]
@@ -43,4 +61,4 @@
   autosquash = true
   autostash = true
 [rerere]
-  enable = true 
+  enable = true
