@@ -297,13 +297,5 @@ _:
   };
 
   # Hyprpaper configuration
-  home.file.".config/hypr/hyprpaper.conf".text = ''
-    wallpaper {
-      monitor = 
-      path = ~/Pictures/Wallpapers/sunflower.jpg
-      fit_mode = cover
-    }
-    splash = false
-    ipc = off
-  '';
+  home.file.".config/hypr/hyprpaper.conf".source = ../../files/hypr/hyprpaper.conf;
 }
