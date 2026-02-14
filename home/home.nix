@@ -5,7 +5,7 @@
 {
   imports = [
     # Programs
-    ./programs/git.nix
+    ./programs/git
     ./programs/shell.nix
     ./programs/nushell
     ./programs/starship.nix
