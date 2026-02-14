@@ -1,4 +1,18 @@
 {
+  "auto_install_extensions": {
+    "nix": true,
+    "toml": true,
+    "cargo-tom": true,
+    "wgsl-wesl": true,
+    "basher": true,
+    "nu": true,
+    "kdl": true,
+    "markdownlint": true,
+    "prettier": true,
+    "emmet": true,
+    "scss": true,
+    "github-actions": true
+  },
   "autosave": {
     "after_delay": {
       "milliseconds": 1000
