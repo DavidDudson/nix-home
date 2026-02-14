@@ -117,6 +117,15 @@ configuration.nix              ← Entry point (imports only, no config)
 - Create new categories without discussion
 - Add duplicate packages (check all program files first)
 
+### When Using `home.file`
+
+**DO**:
+- Use `home.file.<name>.source` pointing to a file under `files/` rather than inlining content with `.text`
+- Keep source files in the appropriate subdirectory under `files/` (e.g. `files/claude/`, `files/rofi/`)
+
+**DON'T**:
+- Inline large text blocks with `home.file.<name>.text` — use a separate source file instead
+
 ### When Modifying Configuration
 
 **DO**:
