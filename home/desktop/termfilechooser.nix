@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 let
   termfilechooser = pkgs.xdg-desktop-portal-termfilechooser;

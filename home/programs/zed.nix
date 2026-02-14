@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+_:
 
 {
   home.file.".config/zed/settings.json".text = builtins.toJSON {

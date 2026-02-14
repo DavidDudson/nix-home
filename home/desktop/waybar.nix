@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+_:
 
 {
   programs.waybar = {
@@ -11,18 +11,32 @@
         spacing = 0;
         height = 34;
 
-        modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/submap"
+        ];
         modules-center = [ "clock" ];
-        modules-right = [ "tray" "custom/ccusage" "mpris" "bluetooth" "cpu" "memory" "temperature" "network" "wireplumber" "custom/power" ];
+        modules-right = [
+          "tray"
+          "custom/ccusage"
+          "mpris"
+          "bluetooth"
+          "cpu"
+          "memory"
+          "temperature"
+          "network"
+          "wireplumber"
+          "custom/power"
+        ];
 
         "hyprland/workspaces" = {
           on-click = "activate";
           format = "{icon}";
           format-icons = {
             default = "󰊠";
-            "1" = "󰨞";  # Development workspace
-            "2" = "󰈹";  # Browser workspace
-            "3" = "󰝚";  # Music workspace
+            "1" = "󰨞"; # Development workspace
+            "2" = "󰈹"; # Browser workspace
+            "3" = "󰝚"; # Music workspace
             "4" = "4";
             "5" = "5";
             "6" = "6";
@@ -33,11 +47,11 @@
             urgent = "󱓻";
           };
           persistent_workspaces = {
-            "1" = [];  # Dev
-            "2" = [];  # Browser
-            "3" = [];  # Music
-            "4" = [];
-            "5" = [];
+            "1" = [ ]; # Dev
+            "2" = [ ]; # Browser
+            "3" = [ ]; # Music
+            "4" = [ ];
+            "5" = [ ];
           };
         };
 
@@ -71,7 +85,13 @@
 
         network = {
           format-wifi = "{icon}";
-          format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
+          format-icons = [
+            "󰤯"
+            "󰤟"
+            "󰤢"
+            "󰤥"
+            "󰤨"
+          ];
           format-ethernet = "󰀂";
           format-alt = "󱛇";
           format-disconnected = "󰖪";
@@ -90,7 +110,11 @@
           format-muted = "󰝟";
           format-icons = {
             headphone = "󰋋";
-            default = ["󰖀" "󰕾" "󰕾"];
+            default = [
+              "󰖀"
+              "󰕾"
+              "󰕾"
+            ];
           };
           on-click = "~/.config/rofi/audio-sink.sh";
           on-click-right = "pamixer -t";
@@ -107,7 +131,10 @@
           status-icons = {
             paused = "󰏤";
           };
-          dynamic-order = ["title" "artist"];
+          dynamic-order = [
+            "title"
+            "artist"
+          ];
           dynamic-separator = " - ";
           dynamic-len = 40;
           tooltip-format = "{player}: {dynamic}";
@@ -135,7 +162,13 @@
           critical-threshold = 80;
           format = "{icon} {temperatureC}°C";
           format-critical = "{icon} {temperatureC}°C";
-          format-icons = ["󱃃" "󰔏" "󱃂" "󰸁" "󰸁"];
+          format-icons = [
+            "󱃃"
+            "󰔏"
+            "󱃂"
+            "󰸁"
+            "󰸁"
+          ];
           tooltip = true;
         };
 

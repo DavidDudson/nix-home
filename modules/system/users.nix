@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
+_:
 
 {
   users.users.ddudson = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
   };
 }

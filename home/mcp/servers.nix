@@ -40,11 +40,14 @@ let
   };
 
   # Merge MCP config with statusLine
-  mergedConfig = pkgs.runCommand "claude-settings.json" {
-    nativeBuildInputs = [ pkgs.jq ];
-  } ''
-    ${pkgs.jq}/bin/jq -s '.[0] * .[1]' ${mcpConfig} ${pkgs.writeText "statusline.json" (builtins.toJSON statusLineConfig)} > $out
-  '';
+  mergedConfig =
+    pkgs.runCommand "claude-settings.json"
+      {
+        nativeBuildInputs = [ pkgs.jq ];
+      }
+      ''
+        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' ${mcpConfig} ${pkgs.writeText "statusline.json" (builtins.toJSON statusLineConfig)} > $out
+      '';
 
 in
 {

@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   programs._1password.enable = true;
@@ -7,7 +10,7 @@
   environment.systemPackages = with pkgs; [
     # System Utilities
     neofetch
-    udiskie      # Automount removable media
+    udiskie # Automount removable media
 
     # Audio/Video Backend
     bluez

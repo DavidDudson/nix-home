@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
-    nodejs_24  # Latest LTS
-    uv  # For uvx to run Python MCP servers
+    nodejs_24 # Latest LTS
+    uv # For uvx to run Python MCP servers
   ];
 }

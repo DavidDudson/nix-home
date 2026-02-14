@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   users.defaultUserShell = pkgs.nushell;
@@ -14,16 +17,16 @@
     starship
 
     # CLI Utilities
-    bat           # Better cat
-    fd            # Better find
-    ripgrep       # Better grep
-    sd            # Better sed
-    procs         # Better ps
-    dust          # Better du
-    zoxide        # Better cd
-    tokei         # Code statistics
-    hyperfine     # Benchmarking
-    bandwhich     # Network monitoring
+    bat # Better cat
+    fd # Better find
+    ripgrep # Better grep
+    sd # Better sed
+    procs # Better ps
+    dust # Better du
+    zoxide # Better cd
+    tokei # Code statistics
+    hyperfine # Benchmarking
+    bandwhich # Network monitoring
 
     # File Management
     ranger

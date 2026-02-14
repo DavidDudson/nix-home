@@ -35,7 +35,9 @@
   ];
 
   # Home Manager configuration
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.ddudson = import ./home/home.nix;
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.ddudson = import ./home/home.nix;
+  };
 }

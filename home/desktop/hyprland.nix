@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 {
   wayland.windowManager.hyprland = {
@@ -15,10 +15,10 @@
 
       exec-once = [
         # Themed workspace apps
-        "[workspace 1 silent] code-cursor"      # Development workspace
-        "[workspace 1 silent] zed"              # Development workspace
-        "[workspace 2 silent] vivaldi"          # Browser workspace
-        "[workspace 1 silent] $terminal"        # Terminal on dev workspace
+        "[workspace 1 silent] code-cursor" # Development workspace
+        "[workspace 1 silent] zed" # Development workspace
+        "[workspace 2 silent] vivaldi" # Browser workspace
+        "[workspace 1 silent] $terminal" # Terminal on dev workspace
 
         # System services
         "waybar"
@@ -145,10 +145,10 @@
         "$mainMod, SPACE, exec, rofi -show drun -show-icons"
 
         # Layout controls (i3-like)
-        "$mainMod, S, togglesplit,"     # toggle split direction
-        "$mainMod, W, togglegroup,"     # toggle stacked/tabbed group (like i3 stacking)
-        "$mainMod, A, changegroupactive, f"   # next window in stack
-        "$mainMod SHIFT, A, changegroupactive, b"   # previous window in stack
+        "$mainMod, S, togglesplit," # toggle split direction
+        "$mainMod, W, togglegroup," # toggle stacked/tabbed group (like i3 stacking)
+        "$mainMod, A, changegroupactive, f" # next window in stack
+        "$mainMod SHIFT, A, changegroupactive, b" # previous window in stack
 
         # Focus (vim keys)
         "$mainMod, H, movefocus, l"

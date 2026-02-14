@@ -1,4 +1,6 @@
-{ config, lib, pkgs, ... }:
+{
+  ...
+}:
 
 {
   imports = [
@@ -26,7 +28,7 @@
     # MCP
     ./mcp/servers.nix
   ];
-  
+
   home.enableNixpkgsReleaseCheck = false;
   home.stateVersion = "24.11";
 }

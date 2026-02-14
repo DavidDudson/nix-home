@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+_:
 
 {
   programs.rio = {
@@ -12,7 +12,7 @@
 
       editor = {
         program = "hx";
-        args = [];
+        args = [ ];
       };
 
       window = {
