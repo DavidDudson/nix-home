@@ -26,6 +26,7 @@ _:
           "temperature"
           "network"
           "wireplumber"
+          "custom/gemini"
           "custom/power"
         ];
 
@@ -179,6 +180,12 @@ _:
           tooltip = false;
         };
 
+        "custom/gemini" = {
+          format = "󰊤";
+          tooltip-format = "Ask Gemini";
+          on-click = "~/.config/rofi/gemini.sh &";
+        };
+
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
@@ -239,6 +246,7 @@ _:
 
       #memory,
       #custom-power,
+      #custom-gemini,
       #custom-ccusage,
       #battery,
       #backlight,

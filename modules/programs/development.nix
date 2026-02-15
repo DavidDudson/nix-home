@@ -38,12 +38,36 @@ in
     llvmPackages.bintools
     jetbrains.rust-rover
 
+    # Cargo Tools
+    cargo-audit # Security vulnerability checker
+    cargo-bloat # Binary size analyzer
+    cargo-deny # Dependency linter (licenses, advisories, duplicates)
+    cargo-edit # cargo add/rm/upgrade
+    cargo-expand # Macro expansion viewer
+    cargo-flamegraph # Profiling flamegraphs
+    cargo-generate # Project scaffolding from templates
+    cargo-machete # Detect unused dependencies
+    cargo-make # Task runner
+    cargo-nextest # Faster test runner
+    cargo-outdated # Show outdated dependencies
+    cargo-release # Release workflow automation
+    cargo-udeps # Find unused dependencies (thorough, needs nightly)
+    cargo-update # Keep cargo-installed binaries up to date
+    cargo-watch # Auto-rebuild on file changes
+
+    # WASM Tooling
+    trunk # WASM dev server with hot reload
+    wasm-bindgen-cli
+    wasm-pack
+    # wasm-server-runner: not in nixpkgs, install via `cargo install wasm-server-runner`
+
     # JavaScript/TypeScript
     bun
 
     # AI Tools
     amazon-q-cli
     claude-code
+    gemini-cli
   ];
 
   environment.sessionVariables = {

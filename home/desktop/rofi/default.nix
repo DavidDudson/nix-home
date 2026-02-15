@@ -138,4 +138,10 @@
     source = ./audio-sink.sh;
     executable = true;
   };
+
+  # Copy the Gemini AI prompt script
+  home.file.".config/rofi/gemini.sh" = {
+    source = ./gemini.sh;
+    executable = true;
+  };
 }

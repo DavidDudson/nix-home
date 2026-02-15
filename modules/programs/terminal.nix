@@ -27,6 +27,7 @@
     tokei # Code statistics
     hyperfine # Benchmarking
     bandwhich # Network monitoring
+    nethogs # Per-process network bandwidth
 
     # File Management
     ranger
