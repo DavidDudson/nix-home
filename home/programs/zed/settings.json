@@ -32,6 +32,7 @@
     "light": "Darcula Dark",
     "dark": "Darcula Dark"
   },
+  "relative_line_numbers": "enabled",
   "terminal": {
     "font_family": "FiraCode Nerd Font Mono"
   },
