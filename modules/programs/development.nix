@@ -1,5 +1,18 @@
 { pkgs, ... }:
 
+let
+  fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz") { };
+  rust-toolchain = fenix.combine [
+    (fenix.stable.withComponents [
+      "cargo"
+      "clippy"
+      "rust-src"
+      "rustc"
+      "rustfmt"
+    ])
+    fenix.targets.wasm32-unknown-unknown.stable.rust-std
+  ];
+in
 {
   environment.systemPackages = with pkgs; [
     # Editors & IDEs
@@ -19,10 +32,10 @@
     vscode-langservers-extracted
 
     # Rust Development
-    rustup
+    rust-toolchain
+    fenix.rust-analyzer
     clang
     llvmPackages.bintools
-    rust-analyzer
     jetbrains.rust-rover
 
     # JavaScript/TypeScript

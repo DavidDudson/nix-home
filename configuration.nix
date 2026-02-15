@@ -13,6 +13,7 @@
     ./modules/system/networking.nix
     ./modules/system/nix.nix
     ./modules/system/users.nix
+    ./modules/system/nix-ld.nix
 
     # Programs
     ./modules/programs/development.nix
