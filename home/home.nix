@@ -16,6 +16,7 @@
     ./programs/helix.nix
     ./programs/zed
     ./programs/yazi.nix
+    ./programs/secrets
 
     # Desktop
     ./desktop/gtk.nix
