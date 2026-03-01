@@ -12,8 +12,10 @@
     # Media Tools
     aseprite
     ffmpeg
+    imagemagick # Batch texture/sprite manipulation
     pavucontrol
     pamixer
+    tiled # Tile map level editor
 
     # Document Tools
     poppler

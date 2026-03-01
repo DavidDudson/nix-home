@@ -27,6 +27,7 @@
     dust # Better du
     zoxide # Better cd
     just # Task runner
+    oxipng # Lossless PNG optimizer for game assets
     tokei # Code statistics
     hyperfine # Benchmarking
     bandwhich # Network monitoring

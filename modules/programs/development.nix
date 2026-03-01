@@ -31,6 +31,7 @@ in
     marksman
     taplo
     vscode-langservers-extracted
+    wgsl-analyzer # WGSL shader LSP
 
     # Rust Development
     rust-toolchain
@@ -54,7 +55,12 @@ in
     cargo-release # Release workflow automation
     cargo-udeps # Find unused dependencies (thorough, needs nightly)
     cargo-update # Keep cargo-installed binaries up to date
+    cargo-criterion # Rigorous benchmarking for performance-critical systems
     cargo-watch # Auto-rebuild on file changes
+
+    # Game Development
+    tracy # Frame profiler with first-class Bevy integration
+    renderdoc # GPU frame debugger for custom shaders and render passes
 
     # WASM Tooling
     trunk # WASM dev server with hot reload

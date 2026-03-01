@@ -27,6 +27,7 @@ let
 
       # AI capabilities
       memory.enable = true;
+      playwright.enable = true;
       sequential-thinking.enable = true;
 
       nixos = {
