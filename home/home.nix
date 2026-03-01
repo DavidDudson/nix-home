@@ -22,7 +22,7 @@
     ./desktop/mako.nix
     ./desktop/hyprland
     ./desktop/waybar.nix
-    ./desktop/rofi
+    ./desktop/vicinae.nix
     ./desktop/termfilechooser.nix
 
     # MCP

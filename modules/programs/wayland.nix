@@ -18,8 +18,8 @@
     hyprpolkitagent # Authentication agent
 
     # Wayland Utilities
-    rofi # Application launcher
     waybar # Status bar
+    pavucontrol # Audio control GUI
     cliphist # Clipboard manager
     wl-clipboard # Clipboard utilities
 

@@ -9,10 +9,10 @@
 
     settings = {
       # Appearance
-      background-color = "#1e1e2e";
-      text-color = "#cdd6f4";
-      border-color = "#89b4fa";
-      progress-color = "over #313244";
+      background-color = "#141414";
+      text-color = "#fff3e0";
+      border-color = "#ff9800";
+      progress-color = "over #1a1a1a";
 
       # Layout
       width = 400;
@@ -41,17 +41,17 @@
     # Urgency-specific styling
     extraConfig = ''
       [urgency=low]
-      border-color=#89b4fa
+      border-color=#ff9800
       default-timeout=3000
 
       [urgency=normal]
-      border-color=#89b4fa
+      border-color=#ff9800
       default-timeout=5000
 
       [urgency=high]
-      border-color=#f38ba8
+      border-color=#ff5722
       default-timeout=0
-      text-color=#f38ba8
+      text-color=#ff5722
     '';
   };
 }

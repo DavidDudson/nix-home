@@ -23,6 +23,7 @@ in
     # Version Control
     git
     gh
+    lazygit
 
     # Language Servers & Tools
     nixd

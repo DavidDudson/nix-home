@@ -18,12 +18,15 @@
 
     # CLI Utilities
     bat # Better cat
+    eza # Better ls
     fd # Better find
+    fzf # Fuzzy finder
     ripgrep # Better grep
     sd # Better sed
     procs # Better ps
     dust # Better du
     zoxide # Better cd
+    just # Task runner
     tokei # Code statistics
     hyperfine # Benchmarking
     bandwhich # Network monitoring

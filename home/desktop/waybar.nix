@@ -117,7 +117,7 @@ _:
               "󰕾"
             ];
           };
-          on-click = "~/.config/rofi/audio-sink.sh";
+          on-click = "pavucontrol";
           on-click-right = "pamixer -t";
           scroll-step = 1;
         };
@@ -183,13 +183,13 @@ _:
         "custom/gemini" = {
           format = "󰊤";
           tooltip-format = "Ask Gemini";
-          on-click = "~/.config/rofi/gemini.sh &";
+          on-click = "vicinae toggle";
         };
 
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
-          on-click = "~/.config/rofi/powermenu.sh &";
+          on-click = "vicinae vicinae://extensions/vicinae/power";
         };
       };
     };

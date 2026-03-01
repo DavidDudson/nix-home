@@ -10,6 +10,7 @@
     spotify
 
     # Media Tools
+    aseprite
     ffmpeg
     pavucontrol
     pamixer
