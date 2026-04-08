@@ -36,5 +36,9 @@
     stateVersion = "24.11";
 
     file.".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
+    file.".claude/statusline.nu" = {
+      source = ./claude/statusline.nu;
+      executable = true;
+    };
   };
 }

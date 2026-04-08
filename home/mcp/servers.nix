@@ -30,7 +30,7 @@ let
   statusLineConfig = {
     statusLine = {
       type = "command";
-      command = "bun x ccusage statusline";
+      command = "nu ~/.claude/statusline.nu";
       padding = 0;
     };
   };
