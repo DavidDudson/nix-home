@@ -1,16 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, fenix, ... }:
 
 let
-  fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz") { };
-  rust-toolchain = fenix.combine [
-    (fenix.stable.withComponents [
+  fenixPkgs = fenix.packages.${pkgs.system};
+  rust-toolchain = fenixPkgs.combine [
+    (fenixPkgs.stable.withComponents [
       "cargo"
       "clippy"
       "rust-src"
       "rustc"
       "rustfmt"
     ])
-    fenix.targets.wasm32-unknown-unknown.stable.rust-std
+    fenixPkgs.targets.wasm32-unknown-unknown.stable.rust-std
   ];
 in
 {
@@ -36,7 +36,7 @@ in
 
     # Rust Development
     rust-toolchain
-    fenix.rust-analyzer
+    fenixPkgs.rust-analyzer
     clang
     llvmPackages.bintools
     jetbrains.rust-rover

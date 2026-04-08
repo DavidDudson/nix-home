@@ -15,10 +15,11 @@ _:
         args = [ ];
       };
 
+      padding = 5;
+
       window = {
         decorations = "disabled";
         opacity = 0.95;
-        padding = 5;
         blur = true;
       };
 
@@ -70,7 +71,7 @@ _:
       };
 
       keyboard = {
-        use-kitty-keyboard-protocol = true;
+        disable-ctlseqs-alt = false;
       };
     };
   };

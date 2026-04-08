@@ -11,6 +11,7 @@
     ./programs/starship.nix
     ./programs/zoxide.nix
     ./programs/carapace.nix
+    ./programs/direnv.nix
     ./programs/rio.nix
     ./programs/zellij
     ./programs/helix.nix

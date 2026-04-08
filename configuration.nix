@@ -3,7 +3,7 @@
 {
   imports = [
     # Hardware
-    /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
     ./modules/hardware/nvidia.nix
     ./modules/hardware/bluetooth.nix
     ./modules/hardware/audio.nix
@@ -31,8 +31,6 @@
     # Services
     ./modules/services/services.nix
 
-    # Home Manager
-    <home-manager/nixos>
   ];
 
   # Home Manager configuration

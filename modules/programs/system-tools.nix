@@ -13,6 +13,7 @@
   environment.systemPackages = with pkgs; [
     # System Utilities
     macchina
+    nh # Nix helper — nicer rebuild, diff, and garbage collection
     udiskie # Automount removable media
 
     # Audio/Video Backend

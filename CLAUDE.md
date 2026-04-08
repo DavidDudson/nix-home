@@ -188,7 +188,8 @@ configuration.nix              ← Entry point (imports only, no config)
 **DO**:
 
 - Edit the specific module file, not the main config
-- Test with `sudo nixos-rebuild switch`
+- Run `nh os switch` after every change to verify it builds and activates
+- If the switch succeeds, commit the changes
 - Keep changes focused and logical
 - Use MCP servers to research options before implementing
 - After making changes, enter `nix-shell` and run
@@ -257,7 +258,7 @@ configuration.nix              ← Entry point (imports only, no config)
 2. **Check if exists**: Use `grep -r "package-name" modules/programs/`
 3. **Use Context7**: Verify the package name and any special options
 4. **Add to appropriate file**: Keep alphabetical order within sections
-5. **Test**: `sudo nixos-rebuild switch`
+5. **Test**: `nh os switch`
 
 ### Adding a New MCP Server
 
@@ -284,7 +285,7 @@ programs = {
   sequential-thinking, nixos (currently enabled)
 - filesystem, playwright, terraform, time, notion, grafana, and more
 
-**After adding**, rebuild: `sudo nixos-rebuild switch`
+**After adding**, rebuild: `nh os switch`
 
 ### Modifying System Settings
 
@@ -399,7 +400,29 @@ Use MCP servers to look up:
 2. **System import**: `/etc/nixos/configuration.nix` imports this directory
 3. **State version**: 24.11 (don't change without research)
 4. **Flakes enabled**: Experimental features are on
-5. **Always rebuild**: After changes, run `sudo nixos-rebuild switch`
+5. **Always rebuild**: After changes, run `nh os switch`
+
+## 🔨 Rebuilding with nh
+
+This project uses **nh** (nix helper) instead of raw
+`nixos-rebuild`. It provides colored build output,
+automatic diff display, and confirmation prompts.
+
+**Common commands** (run from `~/repos/nix-home`):
+
+| Command | Description |
+|---------|-------------|
+| `nh os switch` | Build and activate config (replaces `sudo nixos-rebuild switch`) |
+| `nh os test` | Activate without adding boot entry (for testing) |
+| `nh os boot` | Build and set as next boot entry without activating |
+| `nh clean all` | Garbage collect old generations |
+
+**Notes**:
+
+- nh auto-detects the hostname (`DavidDudsonPC`)
+- Shows a diff of what changed before applying
+- Asks for sudo when needed (no need to prefix with sudo)
+- Use `nh os switch` as the default after any config change
 
 ## 💡 Pro Tips
 

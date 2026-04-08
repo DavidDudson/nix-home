@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, mcp-servers-nix, ... }:
 
 let
-  # Import mcp-servers-nix
-  mcp-servers-nix = import (fetchTarball {
-    url = "https://github.com/natsukium/mcp-servers-nix/archive/refs/heads/main.tar.gz";
-  }) { inherit pkgs; };
-
   # Build MCP server configuration
-  mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
+  mcpConfig = (import mcp-servers-nix { inherit pkgs; }).lib.mkConfig pkgs {
     format = "json";
     flavor = "claude-code";
 

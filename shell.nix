@@ -7,8 +7,8 @@ pkgs.mkShell {
     deadnix
     jq
     nixfmt
-    nodePackages.markdownlint-cli
-    nodePackages.prettier
+    markdownlint-cli
+    prettier
     shellcheck
     statix
     yamllint

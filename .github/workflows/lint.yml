@@ -44,7 +44,7 @@ jobs:
         run: |
           files=$(find . -name '*.json' -o -name '*.yml' -o -name '*.yaml' -o -name '*.md' | grep -v node_modules)
           if [ -n "$files" ]; then
-            echo "$files" | xargs nix shell nixpkgs#nodePackages.prettier -c prettier --check
+            echo "$files" | xargs nix shell nixpkgs#prettier -c prettier --check
           fi
 
       - name: Validate JSON
