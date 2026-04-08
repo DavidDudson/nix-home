@@ -13,7 +13,7 @@ $env.config = {
     }
 
     rm: {
-        always_trash: false
+        always_trash: true
     }
 
     table: {
@@ -40,7 +40,7 @@ $env.config = {
     history: {
         max_size: 100_000
         sync_on_enter: true
-        file_format: "plaintext"
+        file_format: "sqlite"
         isolation: false
     }
 
@@ -84,7 +84,7 @@ $env.config = {
 
     render_right_prompt_on_last_line: false
     use_kitty_protocol: true
-    highlight_resolved_externals: false
+    highlight_resolved_externals: true
     recursion_limit: 50
 
     plugins: {}

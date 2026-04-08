@@ -26,6 +26,7 @@ in
     lazygit
 
     # Language Servers & Tools
+    mcp-language-server # Universal LSP-to-MCP bridge (configure per-project via .mcp.json)
     nixd
     nil
     marksman
@@ -67,6 +68,9 @@ in
     wasm-bindgen-cli
     wasm-pack
     # wasm-server-runner: not in nixpkgs, install via `cargo install wasm-server-runner`
+
+    # Document Conversion
+    pandoc
 
     # JavaScript/TypeScript
     bun

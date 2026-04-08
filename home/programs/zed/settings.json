@@ -11,7 +11,16 @@
     "prettier": true,
     "emmet": true,
     "scss": true,
-    "github-actions": true
+    "github-actions": true,
+    "csv": true,
+    "dockerfile": true,
+    "git-firefly": true,
+    "glsl": true,
+    "html": true,
+    "json": true,
+    "justfile": true,
+    "make": true,
+    "yaml": true
   },
   "autosave": {
     "after_delay": {
@@ -33,6 +42,20 @@
     "dark": "Darcula Dark"
   },
   "relative_line_numbers": "enabled",
+  "inlay_hints": {
+    "enabled": true
+  },
+  "indent_guides": {
+    "enabled": true
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": true
+    }
+  },
+  "scrollbar": {
+    "show": "auto"
+  },
   "terminal": {
     "font_family": "FiraCode Nerd Font Mono"
   },

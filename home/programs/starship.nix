@@ -4,7 +4,7 @@ _:
   programs.starship = {
     enable = true;
     settings = {
-      format = "[$directory$git_branch$git_status$character]()";
+      format = "[$directory$git_branch$git_status$nix_shell$rust$character]()";
       directory = {
         style = "bold #cc7832";
         truncation_length = 3;

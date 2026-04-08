@@ -264,6 +264,10 @@ plugins {
 load_plugins {
 }
 
+scrollback_editor "hx"
+copy_command "wl-copy"
+mouse_mode false
+
 default_mode "normal"
 
 theme "darcula"

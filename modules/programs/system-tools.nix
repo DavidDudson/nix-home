@@ -12,7 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     # System Utilities
-    neofetch
+    macchina
     udiskie # Automount removable media
 
     # Audio/Video Backend

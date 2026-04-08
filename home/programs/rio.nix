@@ -54,6 +54,21 @@ _:
         light-white = "#f8f8f8";
       };
 
+      confirm-before-quit = false;
+
+      renderer = {
+        backend = "Vulkan";
+        performance = "High";
+      };
+
+      navigation = {
+        mode = "Plain";
+      };
+
+      scroll = {
+        multiplier = 3.0;
+      };
+
       keyboard = {
         use-kitty-keyboard-protocol = true;
       };

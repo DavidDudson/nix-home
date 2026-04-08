@@ -10,6 +10,17 @@ _:
       editor = {
         line-number = "relative";
         mouse = false;
+        true-color = true;
+        color-modes = true;
+        bufferline = "multiple";
+
+        indent-guides = {
+          render = true;
+        };
+
+        lsp = {
+          display-inlay-hints = true;
+        };
 
         cursor-shape = {
           insert = "bar";

@@ -26,6 +26,11 @@
     # Theming
     nwg-look # GTK theme switcher
 
+    # Screenshots & Recording
+    grim # Screenshot tool (Wayland)
+    slurp # Region selection for screenshots
+    wf-recorder # Screen recorder (Wayland)
+
     # Graphics
     resvg # SVG renderer
   ];

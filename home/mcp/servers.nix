@@ -6,9 +6,6 @@ let
     url = "https://github.com/natsukium/mcp-servers-nix/archive/refs/heads/main.tar.gz";
   }) { inherit pkgs; };
 
-  # Use fork of mcp-nixos with pytest 9.x fix
-  mcp-nixos-fork = builtins.getFlake "github:DavidDudson/mcp-nixos/fix/pytest-toml-types";
-
   # Build MCP server configuration
   mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
     format = "json";
@@ -30,10 +27,7 @@ let
       playwright.enable = true;
       sequential-thinking.enable = true;
 
-      nixos = {
-        enable = true;
-        package = mcp-nixos-fork.packages.${pkgs.system}.mcp-nixos;
-      };
+      nixos.enable = true;
     };
   };
 

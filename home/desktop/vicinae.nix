@@ -53,15 +53,17 @@ in
       map mkExt [
         "bluetooth"
         "color-converter"
+        "fuzzy-files"
         "github"
         "hypr-keybinds"
+        "hyprland-monitors"
+        "it-tools"
         "nix"
         "player-pilot"
         "port-killer"
         "process-manager"
         "pulseaudio"
         "ssh"
-        "wifi-commander"
       ]
       ++ [
         (mkNativeExt "systemd")
