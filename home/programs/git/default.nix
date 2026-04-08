@@ -3,6 +3,7 @@ _:
 {
   programs.git = {
     enable = true;
+    signing.format = null;
     includes = [ { path = ./config; } ];
   };
 

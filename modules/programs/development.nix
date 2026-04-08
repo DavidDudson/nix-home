@@ -1,7 +1,7 @@
 { pkgs, fenix, ... }:
 
 let
-  fenixPkgs = fenix.packages.${pkgs.system};
+  fenixPkgs = fenix.packages.${pkgs.stdenv.hostPlatform.system};
   rust-toolchain = fenixPkgs.combine [
     (fenixPkgs.stable.withComponents [
       "cargo"

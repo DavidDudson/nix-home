@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -39,6 +40,15 @@ let
     };
 in
 {
+  # Override the vicinae-refresh-apps activation hook to be non-fatal
+  # The deeplink command fails when vicinae is restarting during activation
+  home.activation.vicinae-refresh-apps = lib.mkForce (
+    lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+      verboseEcho "Refreshing the vicinae app list"
+      run --silence ${pkgs.vicinae}/bin/vicinae deeplink vicinae://launch/core/refresh-apps || true
+    ''
+  );
+
   programs.vicinae = {
     enable = true;
     useLayerShell = true;

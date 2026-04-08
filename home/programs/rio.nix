@@ -68,6 +68,7 @@ _:
 
       scroll = {
         multiplier = 3.0;
+        divider = 1.0;
       };
 
       keyboard = {

@@ -27,7 +27,6 @@
     }:
     {
       nixosConfigurations.DavidDudsonPC = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = {
           inherit fenix;
         };
