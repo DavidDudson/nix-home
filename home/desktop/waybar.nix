@@ -195,6 +195,8 @@ _:
     };
 
     style = ''
+      @import "colors.css";
+
       * {
         border: none;
         border-radius: 0;
@@ -224,24 +226,24 @@ _:
         padding: 6px 18px;
         margin: 6px 3px;
         border-radius: 4px;
-        background-color: rgba(20,20,20,0.7);
-        color: #fff3e0;
+        background-color: alpha(@surface_container, 0.7);
+        color: @on_surface;
       }
 
       #workspaces button.active {
-        color: #ff8800;
-        background-color: rgba(20,20,20,0.9);
+        color: @primary;
+        background-color: alpha(@surface_container, 0.9);
       }
 
       #workspaces button:hover {
         box-shadow: inherit;
         text-shadow: inherit;
-        color: #ff8800;
-        background-color: rgba(20,20,20,0.85);
+        color: @primary;
+        background-color: alpha(@surface_container, 0.85);
       }
 
       #workspaces button.urgent {
-        background-color: rgba(255,87,34,0.8);
+        background-color: alpha(@error, 0.8);
       }
 
       #memory,
@@ -262,13 +264,13 @@ _:
         border-radius: 4px;
         margin: 6px 3px;
         padding: 6px 12px;
-        background-color: rgba(20,20,20,0.7);
-        color: #fff3e0;
+        background-color: alpha(@surface_container, 0.7);
+        color: @on_surface;
       }
 
       #submap {
-        background-color: rgba(255,136,0,0.8);
-        color: #000000;
+        background-color: alpha(@primary, 0.8);
+        color: @on_primary;
         font-weight: bold;
         padding: 6px 16px;
       }
@@ -288,16 +290,16 @@ _:
       tooltip {
         border-radius: 8px;
         padding: 15px;
-        background-color: rgba(20,20,20,0.95);
+        background-color: alpha(@surface_container, 0.95);
       }
 
       tooltip label {
         padding: 5px;
-        background-color: rgba(20,20,20,0.95);
+        background-color: alpha(@surface_container, 0.95);
       }
 
       #tray {
-        color: #ff8800;
+        color: @primary;
       }
 
       #mpris {
@@ -306,11 +308,11 @@ _:
       }
 
       #mpris.paused {
-        color: #999999;
+        color: @outline;
       }
 
       #temperature.critical {
-        color: #ff5722;
+        color: @error;
         font-weight: bold;
       }
     '';

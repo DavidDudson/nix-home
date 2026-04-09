@@ -13,7 +13,8 @@
     hyprpicker # Color picker
     hyprlock # Screen locker
     hypridle # Idle daemon
-    hyprpaper # Wallpaper
+    awww # Animated wallpaper daemon with transitions (formerly swww)
+    variety # Wallpaper downloader and changer (Unsplash, Wallhaven, etc.)
     hyprshade # Screen shader
     hyprpolkitagent # Authentication agent
 
@@ -24,6 +25,7 @@
     wl-clipboard # Clipboard utilities
 
     # Theming
+    matugen # Material You color generation from wallpapers
     nwg-look # GTK theme switcher
 
     # Screenshots & Recording

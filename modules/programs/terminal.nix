@@ -16,6 +16,9 @@
     # Shell & Prompt
     starship
 
+    # System Info
+    macchina # Rust-based system info fetcher
+
     # CLI Utilities
     bat # Better cat
     eza # Better ls

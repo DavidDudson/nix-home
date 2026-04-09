@@ -25,6 +25,7 @@
     ./desktop/hyprland
     ./desktop/waybar.nix
     ./desktop/vicinae.nix
+    ./desktop/wallpaper
     ./desktop/termfilechooser.nix
 
     # MCP
