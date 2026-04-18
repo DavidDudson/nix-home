@@ -23,7 +23,8 @@
     ./desktop/gtk.nix
     ./desktop/mako.nix
     ./desktop/hyprland
-    ./desktop/waybar.nix
+    ./desktop/hypridle
+    ./desktop/waybar
     ./desktop/vicinae.nix
     ./desktop/wallpaper
     ./desktop/termfilechooser.nix
@@ -37,8 +38,8 @@
     stateVersion = "24.11";
 
     file.".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
-    file.".claude/statusline.nu" = {
-      source = ./claude/statusline.nu;
+    file.".claude/statusline.sh" = {
+      source = ./claude/statusline.sh;
       executable = true;
     };
   };

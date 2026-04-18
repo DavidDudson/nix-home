@@ -17,9 +17,12 @@
     variety # Wallpaper downloader and changer (Unsplash, Wallhaven, etc.)
     hyprshade # Screen shader
     hyprpolkitagent # Authentication agent
+    mpvpaper # Video/animated wallpaper via mpv (used for screensaver)
 
     # Wayland Utilities
     waybar # Status bar
+    fuzzel # Wayland-native dmenu/launcher for picker menus
+    libnotify # Desktop notifications (notify-send)
     pavucontrol # Audio control GUI
     cliphist # Clipboard manager
     wl-clipboard # Clipboard utilities

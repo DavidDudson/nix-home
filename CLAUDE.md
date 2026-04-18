@@ -316,6 +316,9 @@ programs = {
 
 ### Hardware
 
+- **Form factor**: Desktop PC (not a laptop — no battery, lid,
+  or mobile power concerns; always mains-powered)
+- **Hostname**: DavidDudsonPC
 - **GPU**: NVIDIA (latest drivers, open kernel module)
 - **Audio**: PipeWire
 - **Bluetooth**: Enabled
@@ -410,12 +413,12 @@ automatic diff display, and confirmation prompts.
 
 **Common commands** (run from `~/repos/nix-home`):
 
-| Command | Description |
-|---------|-------------|
-| `nh os switch` | Build and activate config (replaces `sudo nixos-rebuild switch`) |
-| `nh os test` | Activate without adding boot entry (for testing) |
-| `nh os boot` | Build and set as next boot entry without activating |
-| `nh clean all` | Garbage collect old generations |
+| Command        | Description                                                 |
+| -------------- | ----------------------------------------------------------- |
+| `nh os switch` | Build and activate config (replaces `nixos-rebuild switch`) |
+| `nh os test`   | Activate without adding boot entry (for testing)            |
+| `nh os boot`   | Build and set as next boot entry without activating         |
+| `nh clean all` | Garbage collect old generations                             |
 
 **Notes**:
 
