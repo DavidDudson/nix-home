@@ -44,6 +44,7 @@ _:
           "disk"
           "network"
           "wireplumber"
+          "custom/mic"
           "custom/dnd"
           "idle_inhibitor"
           "custom/gemini"
@@ -277,15 +278,25 @@ _:
           tooltip-format = "Failed systemd units";
         };
 
-        # bunx ≈ 7× faster than npx (no registry round-trip on cached pkg).
-        # NOTE: ccusage statusline expects stdin JSON which waybar doesn't
-        # supply, so this currently shows the fallback. Consider switching
-        # to `ccusage daily -O -j --since $(date +%Y%m%d)` for real data.
+        # Today's Claude cost via ccusage daily (offline, no stdin needed).
+        # bunx ≈ 7× faster than npx.
         "custom/ccusage" = {
-          exec = "bunx ccusage@latest statusline 2>/dev/null || echo '󰚩 --'";
+          exec = ''bunx ccusage@latest daily -O -j --since "$(date -u +%Y%m%d)" 2>/dev/null | jq -r '.daily[0].totalCost // 0 | "󰚩 $\(. * 100 | round / 100)"' 2>/dev/null || echo '󰚩 --' '';
           interval = 300;
           format = "{}";
           tooltip = false;
+        };
+
+        # Microphone: default source volume + mute via wpctl.
+        # Signal-driven refresh from media key binding (SIGRTMIN+9).
+        "custom/mic" = {
+          exec = "wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | awk '{if(/MUTED/) print \"󰍭\"; else printf \"󰍬 %d%%\\n\", $2*100}'";
+          interval = 2;
+          signal = 9;
+          format = "{}";
+          on-click = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && pkill -SIGRTMIN+9 waybar";
+          on-click-right = "pavucontrol -t 4";
+          tooltip-format = "Toggle mic mute";
         };
 
         "custom/gemini" = {
@@ -365,6 +376,7 @@ _:
       #custom-ccusage,
       #custom-gpu,
       #custom-dnd,
+      #custom-mic,
       #custom-systemd,
       #idle_inhibitor,
       #disk,
@@ -418,20 +430,25 @@ _:
         margin-left: 0;
       }
 
-      /* IO: disk → network → wireplumber */
+      /* IO: disk → network */
       #disk {
         border-radius: 4px 0 0 4px;
         margin-right: 0;
       }
 
       #network {
-        border-radius: 0;
+        border-radius: 0 4px 4px 0;
         margin-left: 0;
-        margin-right: 0;
         padding-right: 17px;
       }
 
+      /* Audio: wireplumber (speaker) → custom/mic */
       #wireplumber {
+        border-radius: 4px 0 0 4px;
+        margin-right: 0;
+      }
+
+      #custom-mic {
         border-radius: 0 4px 4px 0;
         margin-left: 0;
       }
@@ -460,7 +477,7 @@ _:
       #cpu,
       #memory,
       #disk,
-      #network,
+      #wireplumber,
       #custom-dnd,
       #idle_inhibitor,
       #custom-gemini {
