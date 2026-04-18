@@ -27,8 +27,8 @@
       "milliseconds": 1000
     }
   },
-  "features": {
-    "edit_prediction_provider": "zed"
+  "edit_predictions": {
+    "provider": "zed"
   },
   "use_system_path_prompts": false,
   "base_keymap": "JetBrains",
