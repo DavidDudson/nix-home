@@ -77,5 +77,10 @@
         }
       }
     }
+  },
+  "languages": {
+    "Rust": {
+      "language_servers": ["rust-analyzer", "bevy-color-lsp", "..."]
+    }
   }
 }
