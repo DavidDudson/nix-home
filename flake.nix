@@ -2,7 +2,9 @@
   description = "DavidDudsonPC NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Using nixos-unstable-small for faster updates than nixos-unstable while still being CI-tested.
+    # Switch back to nixos-unstable once it catches up if preferred.
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
