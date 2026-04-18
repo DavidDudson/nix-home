@@ -4,10 +4,15 @@
 }:
 
 {
+  programs.steam.enable = true;
+
   environment.systemPackages = with pkgs; [
     # Video & Audio
     vlc
     spotify
+
+    # Communication
+    discord
 
     # Media Tools
     aseprite
