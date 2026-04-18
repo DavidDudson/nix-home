@@ -4,13 +4,11 @@
 
 SCAN_LABEL="󰂳  Scan for new devices"
 
-# Build list of paired devices with connection status
+# Build list of paired devices with connection status.
+# Parse `Device AA:BB:...:FF Some Name` via read, no awk/cut spawns.
 menu=""
-while IFS= read -r line; do
-    mac=$(echo "$line" | awk '{print $2}')
-    name=$(echo "$line" | cut -d' ' -f3-)
+while read -r _prefix mac name; do
     [ -z "$mac" ] && continue
-
     if bluetoothctl info "$mac" 2>/dev/null | grep -q "Connected: yes"; then
         menu+="󰂱  $name [$mac]\n"
     else

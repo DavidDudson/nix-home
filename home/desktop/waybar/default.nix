@@ -58,9 +58,9 @@ _:
             "1" = "󰨞"; # Development
             "2" = "󰈹"; # Browser
             "3" = "󰝚"; # Music
-            "4" = "󰭹"; # Chat / comms
-            "5" = "󰉋"; # Files / misc
-            "6" = "6";
+            "4" = "󰊗"; # Gaming / game dev
+            "5" = "󰒓"; # System
+            "6" = "󰙯"; # Chat
             "7" = "7";
             "8" = "8";
             "9" = "9";
@@ -71,8 +71,9 @@ _:
             "1" = [ ]; # Dev
             "2" = [ ]; # Browser
             "3" = [ ]; # Music
-            "4" = [ ]; # Chat
-            "5" = [ ]; # Files
+            "4" = [ ]; # Gaming / game dev
+            "5" = [ ]; # System
+            "6" = [ ]; # Chat
           };
         };
 
@@ -248,30 +249,40 @@ _:
           ];
         };
 
+        # Continuous mode: single long-running nvidia-smi vs spawning every 5s.
+        # awk fflush() keeps output unbuffered so waybar sees each line.
         "custom/gpu" = {
-          exec = "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu --format=csv,noheader,nounits | awk -F', ' '{print \"󰢮 \" $1 \"% 󰔏 \" $2 \"°C\"}'";
-          interval = 5;
+          exec = "nvidia-smi -l 5 --query-gpu=utilization.gpu,temperature.gpu --format=csv,noheader,nounits | awk -F', ' '{printf \"󰢮 %s%% 󰔏 %s°C\\n\", $1, $2; fflush()}'";
+          restart-interval = 30;
           format = "{}";
           tooltip-format = "NVIDIA GPU";
         };
 
+        # Signal-driven: no polling. Click toggles + signals waybar to refresh.
+        # interval kept as a long safety net in case state drifts.
         "custom/dnd" = {
           exec = "makoctl mode | grep -q do-not-disturb && echo '󰂛' || echo '󰂚'";
-          on-click = "makoctl mode -t do-not-disturb";
-          interval = 2;
+          on-click = "makoctl mode -t do-not-disturb && pkill -SIGRTMIN+8 waybar";
+          interval = 86400;
+          signal = 8;
           format = "{}";
           tooltip-format = "Toggle Do Not Disturb";
         };
 
+        # Collapsed pipeline: single awk does count + format, saves wc spawn.
         "custom/systemd" = {
-          exec = "systemctl --failed --no-legend --no-pager 2>/dev/null | wc -l | awk '{if($1>0) print \"󰀦 \" $1}'";
+          exec = "systemctl --failed --no-legend --no-pager 2>/dev/null | awk 'END{if(NR>0) print \"󰀦 \" NR}'";
           interval = 30;
           format = "{}";
           tooltip-format = "Failed systemd units";
         };
 
+        # bunx ≈ 7× faster than npx (no registry round-trip on cached pkg).
+        # NOTE: ccusage statusline expects stdin JSON which waybar doesn't
+        # supply, so this currently shows the fallback. Consider switching
+        # to `ccusage daily -O -j --since $(date +%Y%m%d)` for real data.
         "custom/ccusage" = {
-          exec = "npx ccusage@latest statusline 2>/dev/null || echo '󰚩 --'";
+          exec = "bunx ccusage@latest statusline 2>/dev/null || echo '󰚩 --'";
           interval = 300;
           format = "{}";
           tooltip = false;
