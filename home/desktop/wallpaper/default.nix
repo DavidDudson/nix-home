@@ -1,12 +1,38 @@
-_:
+{ pkgs, lib, ... }:
 
+let
+  base = builtins.readFile ./variety-base.conf;
+
+  mkProfileConf =
+    theme:
+    pkgs.writeText "variety-${theme}.conf" ''
+      ${base}
+      ${builtins.readFile (./themes + "/${theme}.conf")}
+    '';
+
+  themes = [
+    "landscapes"
+    "space"
+    "anime"
+    "cyberpunk"
+    "minimal"
+  ];
+
+  themeFiles = lib.foldl' (
+    acc: theme:
+    acc
+    // {
+      ".config/variety-profiles/${theme}/variety.conf".source = mkProfileConf theme;
+    }
+  ) { } themes;
+in
 {
   # Seed matugen outputs with fallback content so Hyprland / Waybar / Mako
   # can source colors before the first wallpaper change. Use install -m 644
   # instead of cp so the nix-store source's read-only perms don't leak
   # through and block matugen from overwriting these files later. Also
-  # deploy the Variety set_wallpaper hook as a real file (not a nix store
-  # symlink) so Variety can chmod it during prepare_config_folder.
+  # deploy the Variety set_wallpaper hook and the theme switcher as real
+  # executables in ~/.local/bin so Variety and waybar can invoke them.
   home.activation.wallpaperSetup = ''
     for pair in \
       "hypr/colors.conf:colors.conf" \
@@ -20,17 +46,11 @@ _:
       fi
     done
 
-    mkdir -p "$HOME/.config/variety/scripts"
-    mkdir -p "$HOME/.config/variety/Downloaded"
-    mkdir -p "$HOME/.config/variety/Fetched"
-    mkdir -p "$HOME/.config/variety/Favorites"
-    install -m 755 "${./set_wallpaper.sh}" "$HOME/.config/variety/scripts/set_wallpaper"
+    install -D -m 755 "${./set_wallpaper.sh}" "$HOME/.local/bin/variety-set-wallpaper"
+    install -D -m 755 "${./variety-theme.sh}" "$HOME/.local/bin/variety-theme"
   '';
 
   home.file = {
-    # Variety wallpaper changer config
-    ".config/variety/variety.conf".source = ./variety.conf;
-
     # Local wallpapers (used as a Variety source)
     ".local/share/wallpapers".source = ./wallpapers;
 
@@ -42,5 +62,6 @@ _:
     ".config/matugen/templates/waybar-colors.css".source = ./templates/waybar-colors.css;
     ".config/matugen/fallback/colors.conf".source = ./colors-fallback.conf;
     ".config/matugen/fallback/colors.css".source = ./colors-fallback.css;
-  };
+  }
+  // themeFiles;
 }

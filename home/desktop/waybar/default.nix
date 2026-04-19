@@ -306,12 +306,18 @@ _:
           on-click = "vicinae toggle";
         };
 
+        # Wallpaper theme indicator. Left/right click cycles wallpapers within
+        # the current theme; middle click switches to the next theme. Tooltip
+        # refreshes on SIGRTMIN+10 which variety-theme sends after a switch.
         "custom/wallpaper" = {
-          format = "󰸉";
-          tooltip-format = "Click: next  |  Right: previous  |  Middle: trash\nScroll to cycle";
+          exec = ''jq -cn --arg t "$(~/.local/bin/variety-theme current)" '{text:"󰸉",tooltip:"Theme: \($t)\nClick: next wallpaper  |  Right: previous\nMiddle: next theme  |  Scroll: cycle"}' '';
+          return-type = "json";
+          interval = 60;
+          signal = 10;
+          format = "{}";
           on-click = "variety -n";
           on-click-right = "variety -p";
-          on-click-middle = "variety -t";
+          on-click-middle = "~/.local/bin/variety-theme next";
           on-scroll-up = "variety -n";
           on-scroll-down = "variety -p";
         };
