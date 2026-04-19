@@ -30,6 +30,7 @@
   "edit_predictions": {
     "provider": "zed"
   },
+  "load_direnv": "shell_hook",
   "use_system_path_prompts": false,
   "base_keymap": "JetBrains",
   "helix_mode": true,
@@ -45,6 +46,7 @@
   "inlay_hints": {
     "enabled": true
   },
+  "lsp_document_colors": "inlay",
   "indent_guides": {
     "enabled": true
   },
