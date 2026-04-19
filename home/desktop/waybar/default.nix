@@ -47,6 +47,7 @@ _:
           "custom/mic"
           "custom/dnd"
           "idle_inhibitor"
+          "custom/wallpaper"
           "custom/gemini"
           "custom/power"
         ];
@@ -305,6 +306,16 @@ _:
           on-click = "vicinae toggle";
         };
 
+        "custom/wallpaper" = {
+          format = "󰸉";
+          tooltip-format = "Click: next  |  Right: previous  |  Middle: trash\nScroll to cycle";
+          on-click = "variety -n";
+          on-click-right = "variety -p";
+          on-click-middle = "variety -t";
+          on-scroll-up = "variety -n";
+          on-scroll-down = "variety -p";
+        };
+
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
@@ -373,6 +384,7 @@ _:
       #memory,
       #custom-power,
       #custom-gemini,
+      #custom-wallpaper,
       #custom-ccusage,
       #custom-gpu,
       #custom-dnd,
@@ -453,13 +465,14 @@ _:
         margin-left: 0;
       }
 
-      /* Controls: dnd → idle_inhibitor → gemini → power */
+      /* Controls: dnd → idle_inhibitor → wallpaper → gemini → power */
       #custom-dnd {
         border-radius: 4px 0 0 4px;
         margin-right: 0;
       }
 
       #idle_inhibitor,
+      #custom-wallpaper,
       #custom-gemini {
         border-radius: 0;
         margin-left: 0;
@@ -480,6 +493,7 @@ _:
       #wireplumber,
       #custom-dnd,
       #idle_inhibitor,
+      #custom-wallpaper,
       #custom-gemini {
         border-right: 1px solid alpha(@outline, 0.15);
       }
