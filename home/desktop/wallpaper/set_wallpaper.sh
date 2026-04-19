@@ -22,5 +22,7 @@ awww img "$WP" \
     --transition-fps 60 \
     --transition-pos center
 
-# Regenerate Material You colors from the wallpaper
-matugen image "$WP"
+# Regenerate Material You colors from the wallpaper.
+# --source-color-index 0 picks the dominant color non-interactively;
+# matugen 4.0 would otherwise prompt via arrow-key UI and fail headlessly.
+matugen --source-color-index 0 image "$WP"

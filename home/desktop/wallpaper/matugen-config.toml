@@ -4,7 +4,8 @@ fallback_color = "#ff9800"
 prefer = "closest-to-fallback"
 
 [config.wallpaper]
-set = false # swww handles wallpaper setting
+command = "true" # required by matugen 4.0; no-op since set = false
+set = false # awww handles wallpaper setting
 
 [templates.hyprland-colors]
 input_path = "~/.config/matugen/templates/hyprland-colors.conf"
@@ -16,7 +17,7 @@ input_path = "~/.config/matugen/templates/waybar-colors.css"
 output_path = "~/.config/waybar/colors.css"
 post_hook = "pkill -SIGUSR2 waybar"
 
-[templates.mako-colors]
-input_path = "~/.config/matugen/templates/mako-colors.sh"
-output_path = "~/.local/bin/matugen-mako-apply"
-post_hook = "chmod +x ~/.local/bin/matugen-mako-apply && ~/.local/bin/matugen-mako-apply"
+[templates.mako-config]
+input_path = "~/.config/matugen/templates/mako-config"
+output_path = "~/.config/mako/config"
+post_hook = "makoctl reload || true"
