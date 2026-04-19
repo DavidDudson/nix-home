@@ -11,6 +11,7 @@ let
       "rustfmt"
     ])
     fenixPkgs.targets.wasm32-unknown-unknown.stable.rust-std
+    fenixPkgs.targets.wasm32-wasip2.stable.rust-std
   ];
 in
 {
