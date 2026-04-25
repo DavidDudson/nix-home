@@ -115,7 +115,14 @@ _:
           format = "󰥔  {:%I:%M %p}";
         };
 
+        # Filter to wifi interfaces only (wl*) so module always reflects
+        # wifi state. Without `interface`, waybar would show ethernet when
+        # cabled and hide wifi. Glob keeps it portable across hosts.
+        # All format-* keys defined so module renders something in every
+        # state (no wifi adapter, radio off, linked-no-IP, disconnected).
         network = {
+          interface = "wl*";
+          format = "󰖪";
           format-wifi = "{icon}";
           format-icons = [
             "󰤯"
@@ -124,10 +131,12 @@ _:
             "󰤥"
             "󰤨"
           ];
-          format-ethernet = "󰀂";
+          format-ethernet = "";
+          format-linked = "󰤫";
           format-disconnected = "󰖪";
+          tooltip-format = "No wifi adapter";
           tooltip-format-wifi = "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
-          tooltip-format-ethernet = "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
+          tooltip-format-linked = "{ifname} (no IP)";
           tooltip-format-disconnected = "Disconnected";
           on-click = "~/.local/bin/wifi-menu";
           on-click-right = "nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on";
@@ -186,6 +195,7 @@ _:
           format = "󰂯";
           format-disabled = "󰂲";
           format-off = "󰂲";
+          format-no-controller = "󰂲";
           format-connected = "󰂱 {device_alias}";
           format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
           tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
@@ -280,9 +290,10 @@ _:
         };
 
         # Today's Claude cost via ccusage daily (offline, no stdin needed).
-        # bunx ≈ 7× faster than npx.
+        # bunx ≈ 7× faster than npx. `bunx @latest` resolves via npm — wrap
+        # in `timeout` so a dead network can't hang the module indefinitely.
         "custom/ccusage" = {
-          exec = ''bunx ccusage@latest daily -O -j --since "$(date -u +%Y%m%d)" 2>/dev/null | jq -r '.daily[0].totalCost // 0 | "󰚩 $\(. * 100 | round / 100)"' 2>/dev/null || echo '󰚩 --' '';
+          exec = ''timeout 15 bunx ccusage@latest daily -O -j --since "$(date -u +%Y%m%d)" 2>/dev/null | jq -r '.daily[0].totalCost // 0 | "󰚩 $\(. * 100 | round / 100)"' 2>/dev/null || echo '󰚩 --' '';
           interval = 300;
           format = "{}";
           tooltip = false;
