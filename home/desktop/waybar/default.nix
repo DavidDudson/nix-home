@@ -49,6 +49,7 @@ _:
           "custom/dnd"
           "idle_inhibitor"
           "custom/wallpaper"
+          "custom/claude"
           "custom/gemini"
           "custom/power"
         ];
@@ -318,6 +319,14 @@ _:
           on-click = "vicinae toggle";
         };
 
+        # Claude side-panel chat (SUPER+A also toggles). Spawns a ghostty
+        # window on first click, then toggles its special workspace.
+        "custom/claude" = {
+          format = "󰭹";
+          tooltip-format = "Claude chat (SUPER+A)";
+          on-click = "claude-popout-toggle";
+        };
+
         # Wallpaper theme indicator. Left/right click cycles wallpapers within
         # the current theme; middle click switches to the next theme. Tooltip
         # refreshes on SIGRTMIN+10 which variety-theme sends after a switch.
@@ -402,6 +411,7 @@ _:
       #memory,
       #custom-power,
       #custom-gemini,
+      #custom-claude,
       #custom-wallpaper,
       #custom-ccusage,
       #custom-gpu,
@@ -491,6 +501,7 @@ _:
 
       #idle_inhibitor,
       #custom-wallpaper,
+      #custom-claude,
       #custom-gemini {
         border-radius: 0;
         margin-left: 0;
@@ -512,6 +523,7 @@ _:
       #custom-dnd,
       #idle_inhibitor,
       #custom-wallpaper,
+      #custom-claude,
       #custom-gemini {
         border-right: 1px solid alpha(@outline, 0.15);
       }

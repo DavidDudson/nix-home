@@ -13,6 +13,7 @@
     ./programs/carapace.nix
     ./programs/direnv.nix
     ./programs/ghostty.nix
+    ./programs/claude-popout.nix
     ./programs/zellij
     ./programs/helix.nix
     ./programs/zed
