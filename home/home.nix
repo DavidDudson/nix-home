@@ -40,10 +40,14 @@
     enableNixpkgsReleaseCheck = false;
     stateVersion = "24.11";
 
-    file.".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
-    file.".claude/statusline.sh" = {
-      source = ./claude/statusline.sh;
-      executable = true;
+    file = {
+      ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
+      ".claude/statusline.sh" = {
+        source = ./claude/statusline.sh;
+        executable = true;
+      };
+      ".claude/skills/nixos-upgrade-summary/SKILL.md".source =
+        ./claude/skills/nixos-upgrade-summary/SKILL.md;
     };
   };
 }
