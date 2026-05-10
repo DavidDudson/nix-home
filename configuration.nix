@@ -31,6 +31,8 @@
     # Services
     ./modules/services/services.nix
 
+    # Local AI (Ollama + OpenWebUI)
+    ./modules/local-ai
   ];
 
   # Home Manager configuration

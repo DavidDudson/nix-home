@@ -31,6 +31,9 @@
 
     # MCP
     ./mcp/servers.nix
+
+    # Local AI (ComfyUI + CLI tools)
+    ./local-ai
   ];
 
   home = {

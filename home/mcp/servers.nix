@@ -35,7 +35,7 @@ let
     };
   };
 
-  # HTTP MCP servers (not supported by mcp-servers-nix)
+  # MCP servers not supported by mcp-servers-nix (HTTP + custom stdio).
   httpServersConfig = {
     mcpServers = {
       pixellab = {
@@ -43,6 +43,18 @@ let
         url = "https://api.pixellab.ai/mcp";
         headers = {
           Authorization = "Bearer \${PIXELLAB_API_KEY}";
+        };
+      };
+
+      # Game-art wrapper: tuned ComfyUI workflows exposed as discrete tools
+      # (generate_icon, generate_sprite, generate_background, generate_ui_panel).
+      # Requires `comfyui` launcher running on :8188 and SDXL + LoRAs installed.
+      # See home/local-ai/gameart-mcp for the implementation.
+      gameart = {
+        command = "gameart-mcp";
+        env = {
+          COMFY_URL = "http://127.0.0.1:8188";
+          GAMEART_OUTPUT_DIR = "\${HOME}/.local/share/gameart-mcp/output";
         };
       };
     };
