@@ -22,7 +22,8 @@ let
       playwright.enable = true;
       sequential-thinking.enable = true;
 
-      nixos.enable = true;
+      # Temporarily disabled: aioboto3 test failures in current nixpkgs.
+      nixos.enable = false;
     };
   };
 
