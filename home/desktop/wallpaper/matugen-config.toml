@@ -8,8 +8,8 @@ command = "true" # required by matugen 4.0; no-op since set = false
 set = false # awww handles wallpaper setting
 
 [templates.hyprland-colors]
-input_path = "~/.config/matugen/templates/hyprland-colors.conf"
-output_path = "~/.config/hypr/colors.conf"
+input_path = "~/.config/matugen/templates/hyprland-colors.lua"
+output_path = "~/.config/hypr/colors.lua"
 post_hook = "hyprctl reload"
 
 [templates.waybar-colors]

@@ -35,7 +35,7 @@ in
   # executables in ~/.local/bin so Variety and waybar can invoke them.
   home.activation.wallpaperSetup = ''
     for pair in \
-      "hypr/colors.conf:colors.conf" \
+      "hypr/colors.lua:colors.lua" \
       "waybar/colors.css:colors.css" \
       "mako/config:mako-config"
     do
@@ -45,6 +45,8 @@ in
         install -D -m 644 "$src" "$dest"
       fi
     done
+    # Remove legacy hyprlang colors.conf (replaced by colors.lua)
+    rm -f "$HOME/.config/hypr/colors.conf" || true
 
     install -D -m 755 "${./set_wallpaper.sh}" "$HOME/.local/bin/variety-set-wallpaper"
     install -D -m 755 "${./variety-theme.sh}" "$HOME/.local/bin/variety-theme"
@@ -58,9 +60,9 @@ in
     # a whole-directory source) so mako.nix can contribute its own template
     # that needs nix-time substitution of the papirus icon path.
     ".config/matugen/config.toml".source = ./matugen-config.toml;
-    ".config/matugen/templates/hyprland-colors.conf".source = ./templates/hyprland-colors.conf;
+    ".config/matugen/templates/hyprland-colors.lua".source = ./templates/hyprland-colors.lua;
     ".config/matugen/templates/waybar-colors.css".source = ./templates/waybar-colors.css;
-    ".config/matugen/fallback/colors.conf".source = ./colors-fallback.conf;
+    ".config/matugen/fallback/colors.lua".source = ./colors-fallback.lua;
     ".config/matugen/fallback/colors.css".source = ./colors-fallback.css;
   }
   // themeFiles;
