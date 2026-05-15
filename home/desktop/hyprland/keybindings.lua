@@ -62,7 +62,7 @@ for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
     hl.bind(mainMod .. " + " .. key,                       hl.dsp.focus({ workspace = tostring(i) }))
     hl.bind(mainMod .. " + SHIFT + " .. key,               hl.dsp.window.move({ workspace = tostring(i) }))
-    hl.bind(mainMod .. " + CTRL + SHIFT + " .. key,        hl.dsp.window.move({ workspace = tostring(i), silent = true }))
+    hl.bind(mainMod .. " + CTRL + SHIFT + " .. key,        hl.dsp.window.move({ workspace = tostring(i), follow = false }))
 end
 
 -- Scratchpad
