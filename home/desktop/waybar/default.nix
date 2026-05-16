@@ -10,6 +10,10 @@ _:
       source = ./bluetooth-menu.sh;
       executable = true;
     };
+    ".local/bin/waybar-memory" = {
+      source = ./memory.sh;
+      executable = true;
+    };
   };
 
   programs.waybar = {
@@ -40,7 +44,7 @@ _:
           "bluetooth"
           "custom/gpu"
           "cpu"
-          "memory"
+          "custom/memory"
           "temperature"
           "disk"
           "network"
@@ -97,14 +101,17 @@ _:
           };
         };
 
-        memory = {
+        # Custom memory module shows % in the bar and top-10 apps by RSS
+        # in the tooltip. Apps are grouped by `comm` so subprocess swarms
+        # (Chromium, Firefox, Electron) collapse into single rows.
+        "custom/memory" = {
+          exec = "~/.local/bin/waybar-memory";
+          return-type = "json";
           interval = 5;
-          format = "󰍛 {}%";
+          format = "󰍛 {}";
           max-length = 10;
-          states = {
-            warning = 80;
-            critical = 95;
-          };
+          # The script emits `class` (normal/warning/critical) so existing
+          # .warning / .critical CSS still applies via #custom-memory selectors.
         };
 
         tray = {
@@ -408,7 +415,7 @@ _:
 
       /* --- Common module styling --- */
 
-      #memory,
+      #custom-memory,
       #custom-power,
       #custom-gemini,
       #custom-claude,
@@ -459,7 +466,7 @@ _:
       }
 
       #cpu,
-      #memory {
+      #custom-memory {
         border-radius: 0;
         margin-left: 0;
         margin-right: 0;
@@ -517,7 +524,7 @@ _:
       /* Subtle dividers between grouped modules */
       #custom-gpu,
       #cpu,
-      #memory,
+      #custom-memory,
       #disk,
       #wireplumber,
       #custom-dnd,
@@ -531,14 +538,14 @@ _:
       /* --- Semantic colors --- */
 
       #cpu.warning,
-      #memory.warning,
+      #custom-memory.warning,
       #disk.warning {
         color: @tertiary;
       }
 
       #temperature.critical,
       #cpu.critical,
-      #memory.critical,
+      #custom-memory.critical,
       #disk.critical {
         color: @error;
         font-weight: bold;
