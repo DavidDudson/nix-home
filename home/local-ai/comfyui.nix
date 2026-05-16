@@ -23,6 +23,17 @@ let
 
       mkdir -p "$ROOT" "$MODELS"
 
+      # One-shot migration from the legacy ~/.local/share/comfyui location
+      # (used before the relocation to /var/lib/comfyui in 99ea272).
+      legacy="$HOME/.local/share/comfyui"
+      if [ -d "$legacy/models" ] && [ "$legacy" != "$ROOT" ]; then
+        echo "[comfyui] migrating models from $legacy/models → $MODELS"
+        # mv is cross-filesystem (/home → /); copies bytes then removes source.
+        find "$legacy/models" -mindepth 1 -maxdepth 1 -exec mv {} "$MODELS/" \;
+        rmdir "$legacy/models" 2>/dev/null || true
+        rmdir "$legacy" 2>/dev/null || true
+      fi
+
       if [ ! -d "$REPO/.git" ]; then
         echo "[comfyui] cloning repo into $REPO"
         git clone --depth 1 https://github.com/comfyanonymous/ComfyUI "$REPO"
