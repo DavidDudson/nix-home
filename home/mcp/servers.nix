@@ -56,6 +56,9 @@ let
         env = {
           COMFY_URL = "http://127.0.0.1:8188";
           GAMEART_OUTPUT_DIR = "\${HOME}/.local/share/gameart-mcp/output";
+          # Civitai's game-icon-institute LoRA is geo-blocked in AU. Substitute
+          # an HF-hosted 3d-icon SDXL LoRA (8glabs/3d-icon-sdxl-lora).
+          GAMEART_ICON_LORA = "3d-icon-sdxl-lora.safetensors";
         };
       };
     };

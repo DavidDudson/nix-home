@@ -2,8 +2,10 @@
 
 let
   # ComfyUI is not packaged in nixpkgs. This launcher bootstraps a venv on
-  # first run, then re-execs upstream main.py. Models live in
-  # ~/.local/share/comfyui/models so they survive ComfyUI repo rewrites.
+  # first run, then re-execs upstream main.py. Data lives in
+  # /var/lib/comfyui (root partition has more headroom than /home for the
+  # torch+CUDA wheels and model checkpoints). The directory is created and
+  # chowned by the host module (modules/local-ai/comfyui.nix).
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
     runtimeInputs = with pkgs; [
@@ -14,7 +16,7 @@ let
     text = ''
       set -euo pipefail
 
-      ROOT="''${COMFYUI_ROOT:-$HOME/.local/share/comfyui}"
+      ROOT="''${COMFYUI_ROOT:-/var/lib/comfyui}"
       REPO="$ROOT/repo"
       VENV="$ROOT/venv"
       MODELS="$ROOT/models"
