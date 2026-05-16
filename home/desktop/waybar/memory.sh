@@ -3,7 +3,11 @@
 # Apps are grouped by `comm` so all Firefox/Electron subprocesses collapse
 # into a single line, matching how the user actually thinks about memory.
 
-set -euo pipefail
+# NOTE: pipefail intentionally omitted. `head -N` closes its input pipe once
+# it has enough lines, sending SIGPIPE up the chain to `sort`/`awk`. With
+# pipefail set, that propagates a non-zero exit code, waybar treats the run
+# as failed, and the module flickers in and out of existence on every tick.
+set -eu
 
 read -r mem_total mem_avail < <(
     awk '/^MemTotal:/ {t=$2} /^MemAvailable:/ {a=$2} END {print t, a}' /proc/meminfo

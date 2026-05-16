@@ -14,6 +14,15 @@ _:
       source = ./memory.sh;
       executable = true;
     };
+    ".local/bin/waybar-cpu" = {
+      source = ./cpu.sh;
+      executable = true;
+    };
+    ".local/bin/waybar-quote" = {
+      source = ./quote.sh;
+      executable = true;
+    };
+    ".local/share/waybar-quotes.txt".source = ./quotes.txt;
   };
 
   programs.waybar = {
@@ -34,7 +43,10 @@ _:
           "hyprland/workspaces"
           "hyprland/submap"
         ];
-        modules-center = [ "clock" ];
+        modules-center = [
+          "clock"
+          "custom/quote"
+        ];
         modules-right = [
           "tray"
           "custom/systemd"
@@ -43,7 +55,7 @@ _:
           "privacy"
           "bluetooth"
           "custom/gpu"
-          "cpu"
+          "custom/cpu"
           "custom/memory"
           "temperature"
           "disk"
@@ -91,14 +103,15 @@ _:
           tooltip = false;
         };
 
-        cpu = {
+        # Custom CPU module shows total % in the bar and top-10 apps by
+        # CPU% in the tooltip. Mirrors custom/memory; apps grouped by
+        # `comm` so subprocess swarms collapse into single rows.
+        "custom/cpu" = {
+          exec = "~/.local/bin/waybar-cpu";
+          return-type = "json";
           interval = 5;
-          format = "󰻠 {}%";
+          format = "󰻠 {}";
           max-length = 10;
-          states = {
-            warning = 80;
-            critical = 95;
-          };
         };
 
         # Custom memory module shows % in the bar and top-10 apps by RSS
@@ -122,6 +135,17 @@ _:
           tooltip-format = "{calendar}";
           format-alt = "󰃭  {:%a, %d %b %Y}";
           format = "󰥔  {:%I:%M %p}";
+        };
+
+        # Scrolling quote/pun ticker. Rotates every 5 min via deterministic
+        # epoch-derived index in quote.sh; advances ~3 chars/sec.
+        "custom/quote" = {
+          exec = "~/.local/bin/waybar-quote";
+          return-type = "json";
+          interval = 1;
+          format = "󰠮  {}";
+          max-length = 68;
+          tooltip = false;
         };
 
         # Filter to wifi interfaces only (wl*) so module always reflects
@@ -416,6 +440,7 @@ _:
       /* --- Common module styling --- */
 
       #custom-memory,
+      #custom-quote,
       #custom-power,
       #custom-gemini,
       #custom-claude,
@@ -433,7 +458,7 @@ _:
       #wireplumber,
       #network,
       #clock,
-      #cpu,
+      #custom-cpu,
       #tray,
       #submap,
       #mpris,
@@ -465,7 +490,7 @@ _:
         margin-right: 0;
       }
 
-      #cpu,
+      #custom-cpu,
       #custom-memory {
         border-radius: 0;
         margin-left: 0;
@@ -523,7 +548,7 @@ _:
 
       /* Subtle dividers between grouped modules */
       #custom-gpu,
-      #cpu,
+      #custom-cpu,
       #custom-memory,
       #disk,
       #wireplumber,
@@ -537,14 +562,14 @@ _:
 
       /* --- Semantic colors --- */
 
-      #cpu.warning,
+      #custom-cpu.warning,
       #custom-memory.warning,
       #disk.warning {
         color: @tertiary;
       }
 
       #temperature.critical,
-      #cpu.critical,
+      #custom-cpu.critical,
       #custom-memory.critical,
       #disk.critical {
         color: @error;
