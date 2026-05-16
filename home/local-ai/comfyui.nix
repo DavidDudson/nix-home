@@ -54,4 +54,29 @@ let
 in
 {
   home.packages = [ comfyui ];
+
+  # Auto-start ComfyUI on graphical session. First boot does git clone +
+  # pip install (~3 GB) so it can take several minutes; restart-on-failure
+  # tolerates transient bootstrap errors. Listens on 127.0.0.1:8188.
+  systemd.user.services.comfyui = {
+    Unit = {
+      Description = "ComfyUI Stable Diffusion UI";
+      After = [
+        "graphical-session.target"
+        "network-online.target"
+      ];
+      Wants = [ "network-online.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${comfyui}/bin/comfyui";
+      Restart = "on-failure";
+      RestartSec = 10;
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 }
