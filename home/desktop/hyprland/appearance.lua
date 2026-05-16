@@ -6,11 +6,11 @@ hl.config({
     general = {
         gaps_in     = 5,
         gaps_out    = 10,
-        border_size = 2,
+        border_size = 1,
         col = {
-            -- Matugen-driven gradient — active picks primary→tertiary at 45°,
-            -- inactive fades into surface_container so unfocused windows recede.
-            active_border   = { colors = { c.primary, c.tertiary }, angle = 45 },
+            -- Uniform subtle border across all windows — no active/inactive
+            -- distinction. Vicinae-style flat, minimal chrome.
+            active_border   = c.surface_container,
             inactive_border = c.surface_container,
         },
         resize_on_border = true,
@@ -26,10 +26,7 @@ hl.config({
         dim_strength     = 0.15,
 
         shadow = {
-            enabled      = true,
-            range        = 20,
-            render_power = 3,
-            color        = c.shadow,
+            enabled = false,
         },
 
         blur = {

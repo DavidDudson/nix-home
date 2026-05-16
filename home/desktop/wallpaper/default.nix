@@ -18,13 +18,18 @@ let
     "minimal"
   ];
 
-  themeFiles = lib.foldl' (
-    acc: theme:
-    acc
-    // {
-      ".config/variety-profiles/${theme}/variety.conf".source = mkProfileConf theme;
-    }
-  ) { } themes;
+  # Activation lines that copy each theme's generated variety.conf into
+  # the live profile dir as a writable real file (not a nix-store symlink).
+  # Variety writes back to variety.conf on its own (download dirs, etc.)
+  # and variety-theme.sh injects the Wallhaven API key into it — both
+  # require a mutable file. Activation reruns every switch, so any nix
+  # template changes propagate; the API-key line is re-injected by
+  # variety-theme.sh at next session start.
+  themeInstallLines = lib.concatStringsSep "\n" (
+    map (theme: ''
+      install -D -m 644 "${mkProfileConf theme}" "$HOME/.config/variety-profiles/${theme}/variety.conf"
+    '') themes
+  );
 in
 {
   # Seed matugen outputs with fallback content so Hyprland / Waybar / Mako
@@ -50,6 +55,8 @@ in
 
     install -D -m 755 "${./set_wallpaper.sh}" "$HOME/.local/bin/variety-set-wallpaper"
     install -D -m 755 "${./variety-theme.sh}" "$HOME/.local/bin/variety-theme"
+
+    ${themeInstallLines}
   '';
 
   home.file = {
@@ -64,6 +71,5 @@ in
     ".config/matugen/templates/waybar-colors.css".source = ./templates/waybar-colors.css;
     ".config/matugen/fallback/colors.lua".source = ./colors-fallback.lua;
     ".config/matugen/fallback/colors.css".source = ./colors-fallback.css;
-  }
-  // themeFiles;
+  };
 }

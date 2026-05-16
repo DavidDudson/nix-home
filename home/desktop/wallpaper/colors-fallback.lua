@@ -10,5 +10,5 @@ return {
     surface_container   = "rgba(2a2a2aff)",
     on_surface          = "rgba(fff3e0ff)",
     error               = "rgba(ff5722ff)",
-    shadow              = "rgba(ff9900cc)",
+    shadow              = "rgba(00000040)",
 }

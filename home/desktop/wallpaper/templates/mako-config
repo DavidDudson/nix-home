@@ -25,11 +25,11 @@ font=FiraCode Nerd Font 11
 # Positioning
 anchor=top-right
 
-# Colors (matugen)
-background-color={{colors.surface.default.hex}}
-text-color={{colors.on_surface.default.hex}}
+# Colors — bg/text locked to Vicinae orchis-dark, border is wallpaper accent
+background-color=#1a1a1a
+text-color=#fff3e0
 border-color={{colors.primary.default.hex}}
-progress-color=over {{colors.surface_container.default.hex}}
+progress-color=over #2a2a2a
 
 [urgency=low]
 border-color={{colors.primary.default.hex}}

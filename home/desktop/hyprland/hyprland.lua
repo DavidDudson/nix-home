@@ -28,20 +28,35 @@ hl.config({
     },
 })
 
--- Plugin: hyprspace overview panel
-hl.config({
-    plugin = {
-        overview = {
-            centerAligned        = true,
-            onBottom             = false,
-            panelHeight          = 200,
-            workspaceMargin      = 12,
-            panelBorderWidth     = 2,
-            workspaceBorderSize  = 2,
-            drawActiveWorkspace  = true,
-        },
-    },
-})
+local colors = require("colors")
+
+-- Plugin keys aren't registered at the initial config parse, so apply them
+-- via config.reloaded — which fires after each plugin's PLUGIN_INIT calls
+-- reloadConfig() and the re-parse completes with plugin keys available.
+hl.on("config.reloaded", function()
+    -- hyprspace: workspace overview panel
+    hl.keyword("plugin:overview:centerAligned",       "true")
+    hl.keyword("plugin:overview:onBottom",            "false")
+    hl.keyword("plugin:overview:panelHeight",         "200")
+    hl.keyword("plugin:overview:workspaceMargin",     "12")
+    hl.keyword("plugin:overview:panelBorderWidth",    "2")
+    hl.keyword("plugin:overview:workspaceBorderSize", "2")
+    hl.keyword("plugin:overview:drawActiveWorkspace", "true")
+    hl.keyword("bind", "SUPER, TAB, overview:toggle")
+
+    -- hyprbars: 2px top accent strip in primary color, no text, no buttons.
+    -- Matugen drives the color (primary). Sits over the border (precedence)
+    -- so it reads as a focus hint. Hidden on unfocused windows via
+    -- windowrulev2 (focus:0 selector), mirroring the waybar workspace pill.
+    hl.keyword("plugin:hyprbars:bar_height",                 "2")
+    hl.keyword("plugin:hyprbars:bar_color",                  colors.primary)
+    hl.keyword("plugin:hyprbars:bar_text_size",              "0")
+    hl.keyword("plugin:hyprbars:bar_buttons_alignment",      "none")
+    hl.keyword("plugin:hyprbars:bar_part_of_window",         "false")
+    hl.keyword("plugin:hyprbars:bar_precedence_over_border", "true")
+    hl.keyword("plugin:hyprbars:bar_padding",                "0")
+    hl.keyword("windowrulev2", "nobar, focus:0")
+end)
 
 -- Sub-configs
 require("appearance")
@@ -59,16 +74,14 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
     hl.exec_cmd("hyprctl setcursor Bibata-Modern-Classic 24")
     hl.exec_cmd("awww-daemon")
-    hl.exec_cmd("~/.local/bin/variety-theme start")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("vicinae server")
-    hl.exec_cmd("~/.local/bin/fetch-secrets")
+    -- fetch-secrets before variety-theme so the Wallhaven API key is on
+    -- disk when variety-theme injects it into the active profile conf.
+    hl.exec_cmd("sh -c '~/.local/bin/fetch-secrets && ~/.local/bin/variety-theme start'")
 
     -- Scratchpad apps — hidden special workspaces toggled by F-keys.
     hl.exec_cmd("[workspace special:btop silent] ghostty -e btop")
     hl.exec_cmd("[workspace special:notes silent] zed ~/scratchpad.md")
 
-    -- Hyprspace overview keybind: plugin dispatcher exists only after load,
-    -- so register via hyprctl after a short delay.
-    hl.exec_cmd("sh -c 'sleep 1 && hyprctl keyword bind \"SUPER, TAB, overview:toggle\"'")
 end)

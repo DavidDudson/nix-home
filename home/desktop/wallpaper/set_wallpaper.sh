@@ -23,6 +23,9 @@ awww img "$WP" \
     --transition-pos center
 
 # Regenerate Material You colors from the wallpaper.
+# Bg/surface/foreground are locked to the Vicinae orchis-dark palette inside
+# the matugen templates; only accent-family vars (primary/secondary/tertiary/
+# error) shift with the wallpaper.
 # --source-color-index 0 picks the dominant color non-interactively;
 # matugen 4.0 would otherwise prompt via arrow-key UI and fail headlessly.
 matugen --source-color-index 0 image "$WP"

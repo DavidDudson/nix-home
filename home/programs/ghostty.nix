@@ -20,29 +20,30 @@ _:
 
       mouse-scroll-multiplier = 3;
 
-      background = "#282828";
-      foreground = "#d0d0d0";
-      cursor-color = "#d8d8d8";
-      selection-background = "#383838";
-      selection-foreground = "#f8f8f8";
+      # Vicinae orchis-dark palette
+      background = "#141414";
+      foreground = "#fff3e0";
+      cursor-color = "#ff9800";
+      selection-background = "#2a2a2a";
+      selection-foreground = "#fff3e0";
 
       palette = [
-        "0=#181818"
-        "1=#a34a27"
-        "2=#629755"
-        "3=#cc7832"
-        "4=#6897bb"
-        "5=#9876aa"
-        "6=#6897bb"
-        "7=#d0d0d0"
-        "8=#585858"
-        "9=#cc7832"
-        "10=#32cd32"
-        "11=#eedd82"
-        "12=#104158"
-        "13=#9876aa"
-        "14=#6897bb"
-        "15=#f8f8f8"
+        "0=#141414"
+        "1=#ff5722"
+        "2=#4caf50"
+        "3=#ff6600"
+        "4=#2196f3"
+        "5=#e040fb"
+        "6=#00bcd4"
+        "7=#fff3e0"
+        "8=#2a2a2a"
+        "9=#ff8a65"
+        "10=#81c784"
+        "11=#ffab40"
+        "12=#64b5f6"
+        "13=#ea80fc"
+        "14=#4dd0e1"
+        "15=#ffffff"
       ];
     };
   };
