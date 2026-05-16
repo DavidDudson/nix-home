@@ -1,6 +1,20 @@
 { pkgs, ... }:
 
 let
+  # PyPI's torch wheel is a manylinux binary that dlopen's libstdc++.so.6
+  # (and friends) at runtime by walking LD_LIBRARY_PATH. NixOS has none of
+  # those libs at /usr/lib, so the venv'd python import fails with
+  # `libstdc++.so.6: cannot open shared object file`. Inject the lib paths
+  # explicitly. zlib / libGL / glib / libxcrypt are the other usual suspects
+  # for torch + pillow + opencv extras.
+  torchLibs = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    libGL
+    glib
+    libxcrypt-legacy
+  ];
+
   # ComfyUI is not packaged in nixpkgs. This launcher bootstraps a venv on
   # first run, then re-execs upstream main.py. Data lives in
   # /var/lib/comfyui (root partition has more headroom than /home for the
@@ -11,10 +25,16 @@ let
     runtimeInputs = with pkgs; [
       git
       python311
-      stdenv.cc.cc.lib
     ];
     text = ''
       set -euo pipefail
+
+      # See `torchLibs` above — PyPI torch dlopen's these at runtime.
+      # /run/opengl-driver/lib is the NixOS-managed path for NVIDIA driver
+      # libraries (libcuda.so.1, libnvidia-*). Without it torch reports
+      # "Found no NVIDIA driver on your system" even though the kernel
+      # module is loaded.
+      export LD_LIBRARY_PATH="/run/opengl-driver/lib:${pkgs.lib.makeLibraryPath torchLibs}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
       ROOT="''${COMFYUI_ROOT:-/var/lib/comfyui}"
       REPO="$ROOT/repo"
