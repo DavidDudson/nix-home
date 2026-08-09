@@ -1,19 +1,16 @@
 { pkgs, ... }:
 
 let
-  # Nixpkgs ships hyprspace built against Hyprland 0.54, but the pinned
-  # Hyprland is 0.55+ and the LayoutManager header moved. Two upstream PRs
-  # are needed: #230 (0.55 API) and #231 (guard reloadConfig() against
-  # null values during the Lua config manager's startup reload, which
-  # otherwise segfaults and drops us into safe mode). colonelpanic8's
-  # branch stacks #231 on top of #230.
+  # Upstream Hyprspace has been unmaintained since 2026-05-28 and no longer
+  # compiles against Hyprland 0.56 (AnimationManager.hpp moved). ImanolBarba's
+  # PR #238 migrates to the V2 plugin API and tracks the 0.56 refactors.
   hyprspace = pkgs.hyprlandPlugins.hyprspace.overrideAttrs (_old: {
-    version = "unstable-2026-05-15-colonelpanic8";
+    version = "unstable-2026-07-25-ImanolBarba";
     src = pkgs.fetchFromGitHub {
-      owner = "colonelpanic8";
+      owner = "ImanolBarba";
       repo = "Hyprspace";
-      rev = "bf2ef21007e8963fcb0016ae26b6b21704946f80";
-      hash = "sha256-q+5ETwj+oiZBT9j6/huwB8nwV4nbZdZmCrchL2E7tDQ=";
+      rev = "0799be7464fac7ea959b7c6c7809dadd6c21c5aa";
+      hash = "sha256-P27tvgpduDsMjk9mSti4We+a3kzYWYWznZKizvnyS+Q=";
     };
   });
 in
@@ -24,11 +21,8 @@ in
     configType = "lua";
     # hyprspace: workspace overview panel. Bound to Super+Tab via the
     # hyprland.start hook in hyprland.lua (after plugin load).
-    # hyprbars: thin top accent strip used as a focus indicator
-    # (Vicinae-style, matching the waybar selected-workspace hint).
     plugins = [
       hyprspace
-      pkgs.hyprlandPlugins.hyprbars
     ];
     extraConfig = builtins.readFile ./hyprland.lua;
   };

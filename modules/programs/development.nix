@@ -40,7 +40,6 @@ in
     fenixPkgs.rust-analyzer
     clang
     llvmPackages.bintools
-    jetbrains.rust-rover
 
     # Cargo Tools
     cargo-audit # Security vulnerability checker
