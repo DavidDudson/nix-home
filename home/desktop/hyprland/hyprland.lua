@@ -28,8 +28,6 @@ hl.config({
     },
 })
 
-local colors = require("colors")
-
 -- Plugin keys aren't registered at the initial config parse, so apply them
 -- via config.reloaded — which fires after each plugin's PLUGIN_INIT calls
 -- reloadConfig() and the re-parse completes with plugin keys available.
@@ -43,19 +41,6 @@ hl.on("config.reloaded", function()
     hl.keyword("plugin:overview:workspaceBorderSize", "2")
     hl.keyword("plugin:overview:drawActiveWorkspace", "true")
     hl.keyword("bind", "SUPER, TAB, overview:toggle")
-
-    -- hyprbars: 2px top accent strip in primary color, no text, no buttons.
-    -- Matugen drives the color (primary). Sits over the border (precedence)
-    -- so it reads as a focus hint. Hidden on unfocused windows via
-    -- windowrulev2 (focus:0 selector), mirroring the waybar workspace pill.
-    hl.keyword("plugin:hyprbars:bar_height",                 "2")
-    hl.keyword("plugin:hyprbars:bar_color",                  colors.primary)
-    hl.keyword("plugin:hyprbars:bar_text_size",              "0")
-    hl.keyword("plugin:hyprbars:bar_buttons_alignment",      "none")
-    hl.keyword("plugin:hyprbars:bar_part_of_window",         "false")
-    hl.keyword("plugin:hyprbars:bar_precedence_over_border", "true")
-    hl.keyword("plugin:hyprbars:bar_padding",                "0")
-    hl.keyword("windowrulev2", "nobar, focus:0")
 end)
 
 -- Sub-configs
