@@ -18,6 +18,18 @@ _:
       source = ./cpu.sh;
       executable = true;
     };
+    ".local/bin/waybar-disk" = {
+      source = ./disk.sh;
+      executable = true;
+    };
+    ".local/bin/waybar-gpu" = {
+      source = ./gpu.sh;
+      executable = true;
+    };
+    ".local/bin/waybar-power" = {
+      source = ./power.sh;
+      executable = true;
+    };
     ".local/bin/waybar-quote" = {
       source = ./quote.sh;
       executable = true;
@@ -58,7 +70,7 @@ _:
           "custom/cpu"
           "custom/memory"
           "temperature"
-          "disk"
+          "custom/disk"
           "network"
           "wireplumber"
           "custom/mic"
@@ -111,7 +123,11 @@ _:
           return-type = "json";
           interval = 5;
           format = "󰻠 {}";
-          max-length = 10;
+          # min-length keeps the pill width stable across "1%" → "100%" so the
+          # bar doesn't reflow every tick; max-length caps it in case the
+          # script ever returns something unexpected.
+          min-length = 6;
+          max-length = 12;
         };
 
         # Custom memory module shows % in the bar and top-10 apps by RSS
@@ -122,7 +138,8 @@ _:
           return-type = "json";
           interval = 5;
           format = "󰍛 {}";
-          max-length = 10;
+          min-length = 6;
+          max-length = 12;
           # The script emits `class` (normal/warning/critical) so existing
           # .warning / .critical CSS still applies via #custom-memory selectors.
         };
@@ -255,15 +272,18 @@ _:
           tooltip = true;
         };
 
-        disk = {
+        # Custom disk module shows root % in the bar and a per-mount usage
+        # table in the tooltip. Mirrors custom/cpu and custom/memory; tooltip
+        # includes physical filesystems plus tmpfs/shm so virtual drives that
+        # actually consume RAM are visible.
+        "custom/disk" = {
+          exec = "~/.local/bin/waybar-disk";
+          return-type = "json";
           interval = 60;
-          format = "󰋊 {percentage_used}%";
-          path = "/";
-          tooltip-format = "{used} / {total} ({percentage_used}%)";
-          states = {
-            warning = 80;
-            critical = 90;
-          };
+          format = "󰋊 {}";
+          max-length = 10;
+          # Script emits `class` (normal/warning/critical) so #custom-disk.warning /
+          # .critical CSS still applies at the same 80/90 thresholds as before.
         };
 
         idle_inhibitor = {
@@ -294,13 +314,21 @@ _:
           ];
         };
 
-        # Continuous mode: single long-running nvidia-smi vs spawning every 5s.
-        # awk fflush() keeps output unbuffered so waybar sees each line.
+        # Custom GPU module: util% + temp in the bar, top-10 GPU processes by
+        # SM% in the tooltip (with per-process VRAM). Mirrors custom/cpu and
+        # custom/memory. Replaced the previous continuous-mode `nvidia-smi -l`
+        # approach because we now need json output for the tooltip.
         "custom/gpu" = {
-          exec = "nvidia-smi -l 5 --query-gpu=utilization.gpu,temperature.gpu --format=csv,noheader,nounits | awk -F', ' '{printf \"󰢮 %s%% 󰔏 %s°C\\n\", $1, $2; fflush()}'";
-          restart-interval = 30;
+          exec = "~/.local/bin/waybar-gpu";
+          return-type = "json";
+          interval = 5;
           format = "{}";
-          tooltip-format = "NVIDIA GPU";
+          # GPU pill is wider than cpu/memory because it carries util% + temp
+          # together ("󰢮 100% 󰔏 100°C"); cap matches the worst-case length.
+          min-length = 14;
+          max-length = 20;
+          # Script emits `class` (normal/warning/critical) so #custom-gpu.warning /
+          # .critical CSS applies on GPU utilization just like cpu/memory.
         };
 
         # Signal-driven: no polling. Click toggles + signals waybar to refresh.
@@ -377,7 +405,12 @@ _:
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
-          on-click = "vicinae vicinae://extensions/vicinae/power";
+          # Previous deeplink pointed at a non-existent extension. The
+          # vicinaehq/extensions repo only ships `power-profile` (CPU
+          # governors), not a session/shutdown menu — so click did nothing.
+          # waybar-power renders a session chooser via `vicinae dmenu`
+          # and dispatches to systemctl / hyprctl / hyprlock.
+          on-click = "~/.local/bin/waybar-power";
         };
       };
     };
@@ -451,7 +484,7 @@ _:
       #custom-mic,
       #custom-systemd,
       #idle_inhibitor,
-      #disk,
+      #custom-disk,
       #privacy,
       #battery,
       #backlight,
@@ -503,7 +536,7 @@ _:
       }
 
       /* IO: disk → network */
-      #disk {
+      #custom-disk {
         border-radius: 4px 0 0 4px;
         margin-right: 0;
       }
@@ -550,7 +583,7 @@ _:
       #custom-gpu,
       #custom-cpu,
       #custom-memory,
-      #disk,
+      #custom-disk,
       #wireplumber,
       #custom-dnd,
       #idle_inhibitor,
@@ -564,14 +597,14 @@ _:
 
       #custom-cpu.warning,
       #custom-memory.warning,
-      #disk.warning {
+      #custom-disk.warning {
         color: @tertiary;
       }
 
       #temperature.critical,
       #custom-cpu.critical,
       #custom-memory.critical,
-      #disk.critical {
+      #custom-disk.critical {
         color: @error;
         font-weight: bold;
       }
