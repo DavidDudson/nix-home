@@ -212,11 +212,12 @@ nix-shell --run '
 '
 ```
 
-**A passing pre-commit hook proves nothing outside `nix-shell`.**
-`.githooks/pre-commit` prints `warning: <tool> not found, skipping` and
-then passes, so a commit made from a plain shell reports
-`All checks passed.` having checked nothing. The hook is also check-only
-(`nixfmt --check`, `prettier --check`) and never writes.
+`.githooks/pre-commit` re-enters `nix-shell` itself when the tools are
+missing, so its checks do run from a plain shell. It is still check-only
+(`nixfmt --check`, `prettier --check`) and never writes, so run the
+formatting pass above yourself. If it prints
+`warning: could not enter nix-shell, checks will be limited`, treat that
+as a failed run rather than a pass.
 
 - `statix check` takes a single target, so pass `.` rather than a list
 - Markdown is linted at 80 columns, and every fence needs a language
@@ -316,4 +317,4 @@ files into the commit to get there.
 - Recommending `switch` after a kernel or driver bump.
 - Trying to run sudo commands yourself instead of handing them over.
 - Stashing, reverting, or committing the user's in progress work.
-- Believing `All checks passed.` from a hook run outside `nix-shell`.
+- Reading `could not enter nix-shell` from the hook as a passing run.

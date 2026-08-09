@@ -11,6 +11,24 @@ if [ -z "$nix_files" ] && [ -z "$sh_files" ] && [ -z "$json_files" ] && [ -z "$y
   exit 0
 fi
 
+# The lint tools only exist inside nix-shell. Rather than skipping them
+# with a warning when committing from a plain shell, re-enter the shell
+# and run this hook again there. HOOK_IN_NIX_SHELL stops that recursing.
+if [ -z "${HOOK_IN_NIX_SHELL:-}" ] && ! command -v nixfmt &>/dev/null; then
+  repo_root=$(git rev-parse --show-toplevel)
+
+  if [ -f "$repo_root/shell.nix" ] && command -v nix-shell &>/dev/null &&
+    nix-shell "$repo_root/shell.nix" --run true &>/dev/null; then
+    echo "Lint tools not on PATH, re-running these checks inside nix-shell..."
+    export HOOK_IN_NIX_SHELL=1
+    exec nix-shell "$repo_root/shell.nix" --run "$repo_root/.githooks/pre-commit"
+  fi
+
+  # Falling through means nix-shell is unusable here; the per-tool
+  # warnings below explain which checks were skipped.
+  echo "warning: could not enter nix-shell, checks will be limited"
+fi
+
 failed=0
 
 if [ -n "$nix_files" ]; then

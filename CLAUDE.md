@@ -383,16 +383,22 @@ pre-commit hook in the first place.
 None of these tools are on the system PATH. Outside `nix-shell` they do
 not exist.
 
-### The pre-commit hook is not a safety net
+### The pre-commit hook enters `nix-shell` for you
 
-`.githooks/pre-commit` checks staged files only, and when a tool is
-missing it prints `warning: <tool> not found, skipping` and **passes
-anyway**. Committing outside `nix-shell` therefore prints
-`All checks passed.` while having checked nothing.
+`.githooks/pre-commit` checks staged files only. If the lint tools are
+not on PATH it re-enters `nix-shell` and re-runs itself there, so the
+checks happen even when you commit from a plain shell. The first commit
+after a `shell.nix` change pays the evaluation cost; after that it is
+cached.
 
-It is also check-only — `nixfmt --check` and `prettier --check` report
-problems but never write. You still have to run the writing pass
-yourself.
+It still is not a substitute for running the tools yourself:
+
+- The hook is **check-only** — `nixfmt --check` and `prettier --check`
+  report problems but never write. Fixing is still your job.
+- If `nix-shell` cannot be entered at all it prints
+  `warning: could not enter nix-shell, checks will be limited` and falls
+  back to per-tool skip warnings. Treat that line as a failed run, not a
+  pass.
 
 ### Run this before every commit
 
