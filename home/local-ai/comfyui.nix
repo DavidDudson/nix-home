@@ -73,13 +73,17 @@ let
         source "$VENV/bin/activate"
       fi
 
-      # Point ComfyUI at the persistent models dir.
-      export COMFYUI_MODEL_DIR="$MODELS"
-
       cd "$REPO"
+      # --base-directory rewrites every default path in folder_paths.py to
+      # sit under $ROOT, so models live at $MODELS (= $ROOT/models) and
+      # ComfyUI actually discovers them. The previous COMFYUI_MODEL_DIR env
+      # var was a no-op — ComfyUI doesn't read it, so models in
+      # /var/lib/comfyui/models were silently ignored and only repo/models/
+      # was scanned.
       exec python main.py \
         --listen 127.0.0.1 \
         --port 8188 \
+        --base-directory "$ROOT" \
         --output-directory "$ROOT/output" \
         "$@"
     '';
