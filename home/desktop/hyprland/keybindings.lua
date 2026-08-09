@@ -57,12 +57,13 @@ hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x = 40,  y = 0,  re
 hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ x = 0,   y = -40, relative = true }))
 hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }))
 
--- Workspaces & move-to-workspace
+-- Workspaces & move-to-workspace. workspace = i (integer) selects by ID;
+-- tostring(i) would look up a workspace *name*, which is not what we want.
 for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
-    hl.bind(mainMod .. " + " .. key,                       hl.dsp.focus({ workspace = tostring(i) }))
-    hl.bind(mainMod .. " + SHIFT + " .. key,               hl.dsp.window.move({ workspace = tostring(i) }))
-    hl.bind(mainMod .. " + CTRL + SHIFT + " .. key,        hl.dsp.window.move({ workspace = tostring(i), follow = false }))
+    hl.bind(mainMod .. " + " .. key,                       hl.dsp.focus({ workspace = i }))
+    hl.bind(mainMod .. " + SHIFT + " .. key,               hl.dsp.window.move({ workspace = i }))
+    hl.bind(mainMod .. " + CTRL + SHIFT + " .. key,        hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
 -- Scratchpad
