@@ -56,7 +56,7 @@ Also check for `.override`, `permittedInsecurePackages`, and
 `nixpkgs.overlays`.
 
 For each hit, read the surrounding comment. A well-written override says
-*why* it exists: a version incompatibility, an upstream bug, an unmerged
+_why_ it exists: a version incompatibility, an upstream bug, an unmerged
 PR. That reason is the thing you are about to re-test.
 
 Build a short list of override mapped to the condition that justified it.
@@ -114,7 +114,7 @@ Three outcomes per override:
   current fork or PR rather than deleting it.
 
 Do not assume "newer nixpkgs means override obsolete". A plugin pinned
-for compatibility with compositor version N can break *harder* at N+1 if
+for compatibility with compositor version N can break _harder_ at N+1 if
 upstream went unmaintained. Verify by building, not by reading version
 numbers.
 
@@ -161,7 +161,7 @@ Find the root, not the cascade:
 rg -n "^error|builder failed|note:" /tmp/nixbuild.out | head -30
 ```
 
-The *first* error is the real one. Everything after it is `Build failed
+The _first_ error is the real one. Everything after it is `Build failed
 due to failed dependency`.
 
 **Check disk before believing a build error.** `/` here is around 197G
@@ -203,13 +203,15 @@ nix-shell --run 'nixfmt CHANGED.nix && deadnix CHANGED.nix \
 ```
 
 `statix check` takes a single target, so pass `.` rather than a file
-list. Run `shellcheck` on any changed `.sh`, and `markdownlint` on any
-changed `.md` — this repo lints markdown at 80 columns and requires a
-language on every fence.
+list. Run `shellcheck` on any changed `.sh`. For any changed `.md`, run
+both `prettier --write` and `markdownlint` — this repo lints markdown at
+80 columns and requires a language on every fence. The pre-commit hook
+silently skips these tools when they are not on PATH, so run them inside
+`nix-shell` rather than trusting a clean commit.
 
 ## Step 8 — Audit the diff for breaking changes
 
-Diff the *running* system against the built toplevel. Nothing is
+Diff the _running_ system against the built toplevel. Nothing is
 activated yet, so there is no new generation to compare against:
 
 ```sh
@@ -234,7 +236,7 @@ to write "(no release notes located)" rather than invent changelog
 content.
 
 **Then close the loop against the actual config.** A generic changelog is
-noise. The value is knowing whether *this* machine is exposed. Checks
+noise. The value is knowing whether _this_ machine is exposed. Checks
 worth running:
 
 - Login shell (Nushell) breaking syntax changes: grep
@@ -285,7 +287,7 @@ the upgrade changes in their own commit. Stage files by name so any pre
 existing uncommitted work found in step 1 stays out of it.
 
 Shape: one commit covering `flake.lock` plus the override changes, whose
-message explains *why* each override was removed, kept, or repointed.
+message explains _why_ each override was removed, kept, or repointed.
 Then `git push`.
 
 Do this without waiting to be asked, but never sweep unrelated dirty
