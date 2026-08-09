@@ -192,22 +192,37 @@ nix build --no-link -L \
 Then go back to step 4 for that package. A build break usually means an
 override needs repointing, not deleting.
 
-## Step 7 — Lint
+## Step 7 — Format and lint, before committing
 
-Per repo convention, before any commit:
+Always a pre-commit step. Never commit and clean up afterwards.
+
+The tools only exist inside `nix-shell`; nothing is on the system PATH.
+Pass the files actually changed:
 
 ```sh
 cd ~/repos/nix-home
-nix-shell --run 'nixfmt CHANGED.nix && deadnix CHANGED.nix \
-  && statix check . && echo LINT_OK'
+nix-shell --run '
+  nixfmt CHANGED.nix &&
+  deadnix CHANGED.nix &&
+  statix check . &&
+  shellcheck CHANGED.sh &&
+  prettier --write CHANGED.md &&
+  markdownlint CHANGED.md &&
+  echo LINT_OK
+'
 ```
 
-`statix check` takes a single target, so pass `.` rather than a file
-list. Run `shellcheck` on any changed `.sh`. For any changed `.md`, run
-both `prettier --write` and `markdownlint` — this repo lints markdown at
-80 columns and requires a language on every fence. The pre-commit hook
-silently skips these tools when they are not on PATH, so run them inside
-`nix-shell` rather than trusting a clean commit.
+**A passing pre-commit hook proves nothing outside `nix-shell`.**
+`.githooks/pre-commit` prints `warning: <tool> not found, skipping` and
+then passes, so a commit made from a plain shell reports
+`All checks passed.` having checked nothing. The hook is also check-only
+(`nixfmt --check`, `prettier --check`) and never writes.
+
+- `statix check` takes a single target, so pass `.` rather than a list
+- Markdown is linted at 80 columns, and every fence needs a language
+- `prettier --write` rewrites files — rebuild afterwards if a rewritten
+  file feeds the config
+- Never reach for `--no-verify`; fix the cause instead
 
 ## Step 8 — Audit the diff for breaking changes
 
@@ -301,3 +316,4 @@ files into the commit to get there.
 - Recommending `switch` after a kernel or driver bump.
 - Trying to run sudo commands yourself instead of handing them over.
 - Stashing, reverting, or committing the user's in progress work.
+- Believing `All checks passed.` from a hook run outside `nix-shell`.

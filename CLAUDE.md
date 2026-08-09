@@ -192,16 +192,8 @@ configuration.nix              ← Entry point (imports only, no config)
 - If the switch succeeds, commit the changes
 - Keep changes focused and logical
 - Use MCP servers to research options before implementing
-- After making changes, enter `nix-shell` and run
-  linting/formatting before committing:
-
-  ```sh
-  nix-shell
-  find . -name '*.nix' | xargs nixfmt
-  find . -name '*.nix' | xargs deadnix
-  statix check .
-  find . -name '*.sh' | xargs shellcheck
-  ```
+- Format and lint from inside `nix-shell` before every commit — see
+  [Formatting and Linting](#-formatting-and-linting)
 
 **DON'T**:
 
@@ -209,6 +201,7 @@ configuration.nix              ← Entry point (imports only, no config)
 - Skip testing before committing
 - Hardcode values that should be variables
 - Commit without running the linters first
+- Trust a passing pre-commit hook that was run outside `nix-shell`
 
 ### When Using MCP Servers
 
@@ -375,12 +368,68 @@ Before making changes:
 - Related settings grouped together
 - Easy to find, easy to modify
 
+## 🧹 Formatting and Linting
+
+**Formatting and linting is a pre-commit step, always.** Never commit
+first and clean up after — fix everything before the commit is created.
+
+### The tools live in `nix-shell`
+
+`shell.nix` provides `nixfmt`, `deadnix`, `statix`, `shellcheck`,
+`prettier`, `markdownlint`, `jq`, and `yamllint`. Its `shellHook` also
+runs `git config core.hooksPath .githooks`, which is what wires up the
+pre-commit hook in the first place.
+
+None of these tools are on the system PATH. Outside `nix-shell` they do
+not exist.
+
+### The pre-commit hook is not a safety net
+
+`.githooks/pre-commit` checks staged files only, and when a tool is
+missing it prints `warning: <tool> not found, skipping` and **passes
+anyway**. Committing outside `nix-shell` therefore prints
+`All checks passed.` while having checked nothing.
+
+It is also check-only — `nixfmt --check` and `prettier --check` report
+problems but never write. You still have to run the writing pass
+yourself.
+
+### Run this before every commit
+
+Pass the files you actually changed rather than the whole tree:
+
+```sh
+nix-shell --run '
+  nixfmt CHANGED.nix &&
+  deadnix CHANGED.nix &&
+  statix check . &&
+  shellcheck CHANGED.sh &&
+  prettier --write CHANGED.md &&
+  markdownlint CHANGED.md
+'
+```
+
+Notes:
+
+- `statix check` accepts a single target — pass `.`, not a file list
+- `prettier` covers `.md`, `.json`, `.yml`/`.yaml`; `.md` gets
+  `markdownlint` on top
+- Markdown is linted at 80 columns and every fenced block needs a
+  language tag
+- `prettier --write` rewrites files, so re-run the build afterwards if a
+  rewritten file feeds into the config
+
+### Never use `--no-verify`
+
+If the hook fails, fix the cause. Bypassing it lands unformatted code
+that the next contributor's hook will trip over.
+
 ## 📝 Commit Guidelines
 
 When committing changes:
 
-- **Always** enter `nix-shell` and run `nixfmt`,
-  `deadnix`, `statix`, and `shellcheck` before committing
+- **Always** format and lint from inside `nix-shell` first — see
+  [Formatting and Linting](#-formatting-and-linting)
 - Fix any issues found by the linters before proceeding with the commit
 - Use descriptive commit messages
 - Reference what was changed and why
