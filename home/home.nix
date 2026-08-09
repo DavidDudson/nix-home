@@ -49,6 +49,7 @@
       };
       ".claude/skills/nixos-upgrade-summary/SKILL.md".source =
         ./claude/skills/nixos-upgrade-summary/SKILL.md;
+      ".claude/skills/upgrade-os/SKILL.md".source = ./claude/skills/upgrade-os/SKILL.md;
     };
   };
 }
