@@ -8,12 +8,10 @@ SECRETS_FILE="$SECRETS_DIR/secrets.json"
 mkdir -p "$SECRETS_DIR"
 chmod 700 "$SECRETS_DIR"
 
-PIXELLAB_API_KEY=$(op read "op://Private/PixelLab/credential" 2>/dev/null || echo "")
 WALLHAVEN_API_KEY=$(op read "op://Private/Wallhaven API Key/credential" 2>/dev/null || echo "")
 
 cat > "$SECRETS_FILE" <<EOF
 {
-  "PIXELLAB_API_KEY": "$PIXELLAB_API_KEY",
   "WALLHAVEN_API_KEY": "$WALLHAVEN_API_KEY"
 }
 EOF

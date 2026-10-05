@@ -1,0 +1,79 @@
+---
+# Z-Image LoRA training config. Placeholders (@NAME@ etc.) are filled in by the
+# `lora-train` launcher; edit defaults here, not in the generated copy.
+#
+# Style LoRAs want 30-120 images that share a look. Every image must be one you
+# own, commissioned, or that carries a licence allowing it — CC0 asset packs
+# (Kenney, OpenGameArt) and your own art both qualify. Scraping a working
+# artist's portfolio to clone their style does not.
+job: extension
+config:
+  name: "@NAME@"
+  process:
+    - type: "sd_trainer"
+      training_folder: "@OUTPUT@"
+      device: cuda:0
+      # Added to every caption; use it in prompts later to summon the style.
+      trigger_word: "@TRIGGER@"
+      network:
+        type: "lora"
+        # rank 16 is the usual style-LoRA setting: enough capacity for palette
+        # and line treatment, small enough to stay ~50 MB and not overfit 40 images.
+        linear: 16
+        linear_alpha: 16
+      save:
+        dtype: float16
+        save_every: 250
+        max_step_saves_to_keep: 4
+      datasets:
+        - folder_path: "@DATASET@"
+          caption_ext: "txt"
+          # 5% caption dropout teaches the LoRA the style itself rather than
+          # binding it to the exact words used in the captions.
+          caption_dropout_rate: 0.05
+          shuffle_tokens: false
+          cache_latents_to_disk: true
+          resolution: [512, 768, 1024]
+      train:
+        batch_size: 1
+        # Caching text embeddings keeps the 4B encoder off the GPU during the
+        # training loop — the difference between fitting in 24 GB and not.
+        cache_text_embeddings: true
+        steps: @STEPS@
+        gradient_accumulation: 1
+        train_unet: true
+        train_text_encoder: false
+        gradient_checkpointing: true
+        noise_scheduler: "flowmatch"
+        optimizer: "adamw8bit"
+        lr: 1e-4
+        dtype: bf16
+      model:
+        name_or_path: "Tongyi-MAI/Z-Image-Turbo"
+        arch: "zimage"
+        # 6B in bf16 is ~12 GB; the 4090 has room without quantisation, which
+        # keeps quality up and avoids the accuracy-recovery adapter dance.
+        quantize: false
+        quantize_te: false
+        # Turbo is distilled, so its 8-step sampling fights gradient updates
+        # ("turbo drift"). This adapter temporarily un-distills the model during
+        # training and is dropped at inference, so the LoRA still runs at 8 steps.
+        assistant_lora_path: "ostris/zimage_turbo_training_adapter/zimage_turbo_training_adapter_v2.safetensors"
+      sample:
+        sampler: "flowmatch"
+        sample_every: 250
+        sample_start_step: 0
+        width: 1024
+        height: 1024
+        # Fixed seed so successive samples are comparable step to step.
+        seed: 42
+        walk_seed: false
+        guidance_scale: 1
+        sample_steps: 8
+        prompts:
+          - "[trigger] a health potion item icon, centred on a plain background"
+          - "[trigger] a knight character standing idle, full body"
+          - "[trigger] a forest clearing with a stone ruin, wide shot"
+meta:
+  name: "@NAME@"
+  version: "1.0"

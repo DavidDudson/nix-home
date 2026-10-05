@@ -30,6 +30,7 @@
     dust # Better du
     zoxide # Better cd
     just # Task runner
+    brotli # Compression; what trunk/servers use for wasm and web assets
     oxipng # Lossless PNG optimizer for game assets
     tokei # Code statistics
     hyperfine # Benchmarking

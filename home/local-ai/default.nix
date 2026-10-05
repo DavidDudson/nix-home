@@ -4,6 +4,7 @@
   imports = [
     ./comfyui.nix
     ./gameart-mcp
+    ./lora-train
   ];
 
   # User-level local-AI CLI tools.
