@@ -8,8 +8,8 @@ let
   extensionsRepo = pkgs.fetchFromGitHub {
     owner = "vicinaehq";
     repo = "extensions";
-    rev = "cf30b80f619282d45b1748eb76e784a4f875bb01";
-    hash = "sha256-KwNv+THKbNUey10q26NZPDMSzYTObRHaSDr81QP9CPY=";
+    rev = "def646b3655e13759d2b0a7b9d605f55fe83a5f7";
+    hash = "sha256-xG2Nvdhl+lcguYzkAHf6RkHQpM8c3rbN0NDHUiwT4CA=";
   };
   mkExt =
     name:
@@ -18,8 +18,10 @@ let
       src = extensionsRepo + "/extensions/${name}";
     };
 
-  # Builder for extensions with optional native deps that fail under node-gyp
-  # Sets npm_config_optional=false to skip optional native modules like usocket
+  # Builder for extensions with optional native deps that fail under node-gyp.
+  # Passes --ignore-scripts so install scripts for optional native modules —
+  # currently usocket, which node-gyp 7.1.2 cannot build against node 24 — are
+  # skipped rather than run.
   mkNativeExt =
     name:
     let
@@ -28,6 +30,22 @@ let
     pkgs.buildNpmPackage {
       inherit name src;
       npmFlags = [ "--ignore-scripts" ];
+      # usocket's index.js does require('debug') without declaring debug as a
+      # dependency, so esbuild cannot resolve it in trees that do not happen to
+      # hoist debug for another reason. A no-op stub is enough: --ignore-scripts
+      # leaves usocket's native binding uncompiled, so require('usocket')
+      # throws at runtime and dbus-next falls back to net.createConnection
+      # (lib/connection.js). Adding debug to the lockfile instead would break
+      # importNpmLock's offline cache with ENOTCACHED.
+      preBuild = ''
+        if [ -d node_modules/usocket ] && [ ! -d node_modules/debug ]; then
+          mkdir -p node_modules/debug
+          echo '{"name":"debug","version":"0.0.0-stub","main":"index.js"}' \
+            > node_modules/debug/package.json
+          echo 'module.exports = function () { return function () {}; };' \
+            > node_modules/debug/index.js
+        fi
+      '';
       installPhase = ''
         runHook preInstall
         mkdir -p $out
@@ -51,7 +69,6 @@ in
 
     extensions =
       map mkExt [
-        "bluetooth"
         "color-converter"
         "fuzzy-files"
         "github"
@@ -66,6 +83,8 @@ in
         "ssh"
       ]
       ++ [
+        # Both pull the optional native usocket module via package-lock.json
+        (mkNativeExt "bluetooth")
         (mkNativeExt "systemd")
       ];
 
