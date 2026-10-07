@@ -22,7 +22,8 @@ printf -v NOW '%(%s)T' -1
 INPUT=$(cat)
 
 CWD=""; CTX_PCT=0; FH_PCT=0; WK_PCT=0; FH_RESET=0; WK_RESET=0
-_re='"context_window":\{[^}]*"used_percentage":([0-9]+)'; [[ $INPUT =~ $_re ]] && CTX_PCT="${BASH_REMATCH[1]}"
+# context_window nests current_usage{} before used_percentage; allow one level.
+_re='"context_window":\{([^{}]|\{[^{}]*\})*"used_percentage":([0-9]+)'; [[ $INPUT =~ $_re ]] && CTX_PCT="${BASH_REMATCH[2]}"
 _re='"five_hour":\{[^}]*"used_percentage":([0-9]+)';     [[ $INPUT =~ $_re ]] && FH_PCT="${BASH_REMATCH[1]}"
 _re='"five_hour":\{[^}]*"resets_at":([0-9]+)';           [[ $INPUT =~ $_re ]] && FH_RESET="${BASH_REMATCH[1]}"
 _re='"seven_day":\{[^}]*"used_percentage":([0-9]+)';     [[ $INPUT =~ $_re ]] && WK_PCT="${BASH_REMATCH[1]}"
