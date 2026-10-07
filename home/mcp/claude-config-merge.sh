@@ -10,16 +10,19 @@
 # those writes fail. So we merge in place instead.
 #
 #   ~/.claude.json          <- mcpServers      (user-scope MCP; NOT a settings.json key)
-#   ~/.claude/settings.json <- statusLine, permissions
+#                              + extra top-level keys (claudeInChromeDefaultEnabled)
+#   ~/.claude/settings.json <- statusLine, permissions, plugins
 #
 # Nix owns the keys it declares and leaves every other key untouched. Servers
 # dropped from the Nix config are removed on the next switch, tracked through a
 # state file -- without it a merge would strand deleted servers forever.
 #
-# Arguments: $1 = mcpServers fragment, $2 = settings fragment. Both JSON files.
+# Arguments: $1 = mcpServers fragment, $2 = settings fragment,
+#            $3 = extra ~/.claude.json keys. All JSON files.
 
 MCP_FRAGMENT="$1"
 SETTINGS_FRAGMENT="$2"
+CLAUDE_JSON_EXTRA="$3"
 
 CLAUDE_JSON="$HOME/.claude.json"
 SETTINGS_JSON="$HOME/.claude/settings.json"
@@ -76,7 +79,8 @@ merged_claude="$(
   read_json_or_empty "$CLAUDE_JSON" | jq \
     --argjson want "$desired" \
     --argjson stale "$stale" \
-    '.mcpServers = (
+    --slurpfile extra "$CLAUDE_JSON_EXTRA" \
+    '(. * $extra[0]) | .mcpServers = (
        ((.mcpServers // {})
          | with_entries(select(.key as $k | $stale | index($k) | not)))
        * $want
@@ -86,11 +90,12 @@ write_atomic "$CLAUDE_JSON" "$merged_claude"
 
 jq -cn --argjson want "$desired" '$want | keys' >"$STATE_FILE"
 
-# --- statusLine + permissions -> ~/.claude/settings.json ---------------------
+# --- statusLine + permissions + plugins -> ~/.claude/settings.json -----------
 
 # `*` merges objects recursively but replaces arrays wholesale, so Nix fully
 # owns permissions.allow/deny while keys it does not mention (model, tui,
-# enabledPlugins, permissions.defaultMode) survive untouched.
+# permissions.defaultMode, runtime-installed enabledPlugins entries) survive
+# untouched.
 merged_settings="$(
   read_json_or_empty "$SETTINGS_JSON" | jq -s '.[0] * .[1]' - "$SETTINGS_FRAGMENT"
 )"

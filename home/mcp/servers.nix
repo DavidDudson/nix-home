@@ -73,6 +73,21 @@ let
     };
   };
 
+  # Plugins Nix guarantees. Merged into settings.json, so plugins installed at
+  # runtime via /plugin survive; Claude Code fetches the marketplace on start.
+  pluginsConfig = {
+    extraKnownMarketplaces.humanizer.source = {
+      source = "github";
+      repo = "blader/humanizer";
+    };
+    enabledPlugins."humanizer@humanizer" = true;
+  };
+
+  # Top-level ~/.claude.json keys (besides mcpServers) that Nix owns.
+  claudeJsonConfig = {
+    claudeInChromeDefaultEnabled = true;
+  };
+
   # Permission rules for Claude Code.
   permissionsConfig = {
     permissions = {
@@ -105,11 +120,14 @@ let
 
   # The keys that genuinely belong in settings.json.
   settingsJson = pkgs.runCommand "claude-settings.json" { nativeBuildInputs = [ pkgs.jq ]; } ''
-    jq -s '.[0] * .[1]' \
+    jq -s '.[0] * .[1] * .[2]' \
       ${pkgs.writeText "statusline.json" (builtins.toJSON statusLineConfig)} \
       ${pkgs.writeText "permissions.json" (builtins.toJSON permissionsConfig)} \
+      ${pkgs.writeText "plugins.json" (builtins.toJSON pluginsConfig)} \
       > $out
   '';
+
+  claudeJsonExtra = pkgs.writeText "claude-json-extra.json" (builtins.toJSON claudeJsonConfig);
 
   mergeScript = pkgs.writeShellApplication {
     name = "claude-config-merge";
@@ -126,6 +144,6 @@ in
   # runtime, so a read-only store symlink would break it. See the script for the
   # ownership rules and how servers removed from Nix get cleaned up.
   home.activation.claudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD ${lib.getExe mergeScript} ${mcpServersJson} ${settingsJson}
+    $DRY_RUN_CMD ${lib.getExe mergeScript} ${mcpServersJson} ${settingsJson} ${claudeJsonExtra}
   '';
 }
