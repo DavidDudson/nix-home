@@ -17,6 +17,11 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Private repo: git+ssh uses the SSH key, github: would need an API token.
+    ws = {
+      url = "git+ssh://git@github.com/DavidDudson/ws";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -25,6 +30,7 @@
       home-manager,
       fenix,
       mcp-servers-nix,
+      ws,
       ...
     }:
     {
@@ -37,7 +43,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {
-              inherit mcp-servers-nix;
+              inherit mcp-servers-nix ws;
             };
           }
         ];
