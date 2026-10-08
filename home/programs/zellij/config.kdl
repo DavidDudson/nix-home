@@ -266,7 +266,8 @@ load_plugins {
 
 scrollback_editor "hx"
 copy_command "wl-copy"
-mouse_mode false
+// Shift+drag for native terminal selection
+mouse_mode true
 
 default_mode "normal"
 
