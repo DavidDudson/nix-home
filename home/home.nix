@@ -6,6 +6,7 @@
   imports = [
     # Programs
     ./programs/git
+    ./programs/gh.nix
     ./programs/shell.nix
     ./programs/nushell
     ./programs/starship.nix
