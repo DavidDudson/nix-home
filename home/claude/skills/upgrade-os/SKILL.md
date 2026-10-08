@@ -12,8 +12,13 @@ description: >
 
 # upgrade-os
 
-Full NixOS upgrade run for `~/repos/nix-home`. Build first, activate
-last. The user always runs the privileged step themselves.
+Full NixOS upgrade run for nix-home. Build first, activate last. The
+user always runs the privileged step themselves.
+
+There is no local checkout: the system builds from GitHub `main`
+(`NH_FLAKE`). Work in a ws workspace on a fresh branch, e.g.
+`ws checkout nix-home chore/upgrade-2026-10-09`, and run every command
+below from that worktree. The upgrade reaches `main` through a PR.
 
 ## Ground rules
 
@@ -32,9 +37,9 @@ last. The user always runs the privileged step themselves.
 Run in parallel:
 
 ```sh
-git -C ~/repos/nix-home status
-git -C ~/repos/nix-home log --oneline -10
-nix flake metadata ~/repos/nix-home
+git status
+git log --oneline -10
+nix flake metadata .
 ```
 
 Note the lock date vs today. That gap sets expectations for how big the
@@ -49,7 +54,7 @@ it.
 
 ```sh
 rg -n "overrideAttrs|mkForce|fetchFromGitHub|packageOverrides" \
-  --glob '*.nix' ~/repos/nix-home
+  --glob '*.nix' .
 ```
 
 Also check for `.override`, `permittedInsecurePackages`, and
@@ -64,7 +69,7 @@ Build a short list of override mapped to the condition that justified it.
 ## Step 3 — Update inputs
 
 ```sh
-cd ~/repos/nix-home; nix flake update
+nix flake update
 ```
 
 `home-manager` is a flake input with `inputs.nixpkgs.follows =
@@ -82,7 +87,7 @@ What rev does nixpkgs now ship?
 
 ```sh
 nix eval --raw --impure --expr 'let
-  f = builtins.getFlake "/home/ddudson/repos/nix-home";
+  f = builtins.getFlake (toString ./.);
   p = f.inputs.nixpkgs.legacyPackages.x86_64-linux;
 in p.ATTR.src.rev'
 ```
@@ -100,7 +105,7 @@ input's store path and grep it:
 
 ```sh
 nix eval --raw --impure --expr 'toString (builtins.getFlake
-  "/home/ddudson/repos/nix-home").inputs.home-manager'
+  (toString ./.)).inputs.home-manager'
 rg -n "THE_THING_YOU_FORCED" -B4 -A8 THAT_PATH/modules/
 ```
 
@@ -128,7 +133,7 @@ Then build the override expression directly:
 
 ```sh
 nix build --no-link -L --impure --expr 'let
-  f = builtins.getFlake "/home/ddudson/repos/nix-home";
+  f = builtins.getFlake (toString ./.);
   pkgs = f.inputs.nixpkgs.legacyPackages.x86_64-linux;
 in pkgs.ATTR.overrideAttrs (_: {
   src = pkgs.fetchFromGitHub {
@@ -140,7 +145,6 @@ in pkgs.ATTR.overrideAttrs (_: {
 ## Step 5 — Build without activating
 
 ```sh
-cd ~/repos/nix-home
 nix build --no-link --print-out-paths \
   '.#nixosConfigurations.DavidDudsonPC.config.system.build.toplevel' \
   > /tmp/nixbuild.out 2>&1
@@ -200,7 +204,6 @@ The tools only exist inside `nix-shell`; nothing is on the system PATH.
 Pass the files actually changed:
 
 ```sh
-cd ~/repos/nix-home
 nix-shell --run '
   nixfmt CHANGED.nix &&
   deadnix CHANGED.nix &&
@@ -280,7 +283,7 @@ leaves the old kernel module loaded, so userspace and kernel module
 versions diverge until reboot. `boot` skips that window entirely.
 
 ```nu
-nh os boot
+cd WORKTREE; nh os boot .
 ```
 
 ```nu
@@ -291,10 +294,14 @@ Use **`nh os switch`** when the diff is userspace only: apps, CLI tools,
 and libraries with no kernel or compositor involvement.
 
 ```nu
-nh os switch
+cd WORKTREE; nh os switch .
 ```
 
 Always name the tradeoff of the option you did not pick.
+
+`WORKTREE` is the absolute path of the workspace's nix-home worktree.
+The `.` builds that branch rather than `main`, so the upgrade is proven
+on this machine before it merges.
 
 ## Step 10 — Commit and push
 
@@ -304,7 +311,9 @@ existing uncommitted work found in step 1 stays out of it.
 
 Shape: one commit covering `flake.lock` plus the override changes, whose
 message explains _why_ each override was removed, kept, or repointed.
-Then `git push`.
+Then push the branch, open a PR (`gh pr create`) and record it with
+`ws pr nix-home`. After it merges, `nh os switch --refresh` keeps the
+system on `main`.
 
 Do this without waiting to be asked, but never sweep unrelated dirty
 files into the commit to get there.

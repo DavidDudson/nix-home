@@ -188,8 +188,9 @@ configuration.nix              ← Entry point (imports only, no config)
 **DO**:
 
 - Edit the specific module file, not the main config
-- Run `nh os switch` after every change to verify it builds and activates
-- If the switch succeeds, commit the changes
+- Run `nh os test .` from the worktree after every change to verify
+  it builds and activates
+- If the test succeeds, commit the changes
 - Keep changes focused and logical
 - Use MCP servers to research options before implementing
 - Format and lint from inside `nix-shell` before every commit — see
@@ -251,7 +252,7 @@ configuration.nix              ← Entry point (imports only, no config)
 2. **Check if exists**: Use `grep -r "package-name" modules/programs/`
 3. **Use Context7**: Verify the package name and any special options
 4. **Add to appropriate file**: Keep alphabetical order within sections
-5. **Test**: `nh os switch`
+5. **Test**: `nh os test .`
 
 ### Adding a New MCP Server
 
@@ -278,7 +279,7 @@ programs = {
   sequential-thinking, nixos (currently enabled)
 - filesystem, playwright, terraform, time, notion, grafana, and more
 
-**After adding**, rebuild: `nh os switch`
+**After adding**, rebuild: `nh os test .`
 
 ### Modifying System Settings
 
@@ -466,11 +467,13 @@ Use MCP servers to look up:
 
 ## ⚠️ Important Notes
 
-1. **No sudo needed**: All files in `~/repos/nix-home` are user-editable
-2. **System import**: `/etc/nixos/configuration.nix` imports this directory
-3. **State version**: 24.11 (don't change without research)
-4. **Flakes enabled**: Experimental features are on
-5. **Always rebuild**: After changes, run `nh os switch`
+1. **No local checkout**: the system builds from GitHub `main`
+   (`NH_FLAKE=git+ssh://git@github.com/DavidDudson/nix-home`). Edit in a
+   ws workspace (`ws checkout nix-home <branch>`); changes reach the
+   system only once merged.
+2. **State version**: 24.11 (don't change without research)
+3. **Flakes enabled**: Experimental features are on
+4. **Always test**: Before merging, run `nh os test .` from the worktree
 
 ## 🔨 Rebuilding with nh
 
@@ -478,21 +481,26 @@ This project uses **nh** (nix helper) instead of raw
 `nixos-rebuild`. It provides colored build output,
 automatic diff display, and confirmation prompts.
 
-**Common commands** (run from `~/repos/nix-home`):
+**Common commands** (`NH_FLAKE` points at GitHub `main`; pass `.` to
+build the current worktree instead):
 
-| Command        | Description                                                 |
-| -------------- | ----------------------------------------------------------- |
-| `nh os switch` | Build and activate config (replaces `nixos-rebuild switch`) |
-| `nh os test`   | Activate without adding boot entry (for testing)            |
-| `nh os boot`   | Build and set as next boot entry without activating         |
-| `nh clean all` | Garbage collect old generations                             |
+| Command                  | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| `nh os switch --refresh` | Build and activate GitHub `main`                |
+| `nh os test .`           | Activate this worktree's branch, no boot entry  |
+| `nh os build .`          | Build this worktree's branch without activating |
+| `nh os boot`             | Build `main` and set as next boot entry         |
+| `nh clean all`           | Garbage collect old generations                 |
+
+`--refresh` matters: Nix caches a branch ref for `tarball-ttl` (1 h),
+so without it a switch right after a merge can build the old `main`.
 
 **Notes**:
 
 - nh auto-detects the hostname (`DavidDudsonPC`)
 - Shows a diff of what changed before applying
 - Asks for sudo when needed (no need to prefix with sudo)
-- Use `nh os switch` as the default after any config change
+- After a merge, `nh os switch --refresh` activates the new `main`
 
 ## 💡 Pro Tips
 

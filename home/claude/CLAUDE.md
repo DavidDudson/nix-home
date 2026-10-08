@@ -1,8 +1,8 @@
 # Global Instructions
 
 > This file is managed by home-manager. Edit the source
-> at `~/repos/nix-home/home/claude/CLAUDE.md`, not this
-> file directly.
+> at `home/claude/CLAUDE.md` in the nix-home repo
+> (`ws checkout nix-home <branch>`), not this file directly.
 
 ## Security
 
