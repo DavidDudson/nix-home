@@ -82,7 +82,8 @@
         "fenix": "fenix",
         "home-manager": "home-manager",
         "mcp-servers-nix": "mcp-servers-nix",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "ws": "ws"
       }
     },
     "rust-analyzer-src": {
@@ -100,6 +101,26 @@
         "ref": "nightly",
         "repo": "rust-analyzer",
         "type": "github"
+      }
+    },
+    "ws": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791464385,
+        "narHash": "sha256-S6FFOfWDR789MU9v+npX6J6nA/cKRduvh9ye7jQTXaw=",
+        "ref": "refs/heads/main",
+        "rev": "e53319a46606fcd5b56c6b9ee8f0854c80ff4723",
+        "revCount": 4,
+        "type": "git",
+        "url": "ssh://git@github.com/DavidDudson/ws"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/DavidDudson/ws"
       }
     }
   },
