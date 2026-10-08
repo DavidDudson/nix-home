@@ -68,4 +68,4 @@
   autosquash = true
   autostash = true
 [rerere]
-  enable = true
+  enabled = true
