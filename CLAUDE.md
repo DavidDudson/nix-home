@@ -287,6 +287,18 @@ programs = {
 3. **Edit the specific module**: Not the main config
 4. **Test thoroughly**: System changes can break boot
 
+### Bumping the ws Flake Input
+
+`ws` (the workspace manager) is the `ws` flake input, pinned in
+`flake.lock`. It does not float. After every merge to ws `main`, bump
+the lock in its own commit and PR:
+
+```sh
+nix flake update ws
+```
+
+`/upgrade-os` bumps it too, as part of updating every input.
+
 ## 🔧 Technical Details
 
 ### Package Management
