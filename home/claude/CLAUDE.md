@@ -51,3 +51,12 @@ instead of the traditional POSIX equivalents:
   are ambiguous rather than assuming.
 - During planning, confirm you have all relevant
   information before proceeding with implementation.
+- Never refer to an issue, ticket, epic or PR by
+  number alone; numbers mean nothing to the user.
+  Always give the full title with it, e.g.
+  "#32 Epic 4.3: Conditional adjustments".
+- Always hyperlink what you mention in chat: issues,
+  PRs, commits, CI runs, docs and artifacts. Use
+  Markdown links to the URL, e.g.
+  [#117 feat(dice): damage application](https://github.com/OWNER/REPO/pull/117),
+  never a bare number or an unlinked name.
