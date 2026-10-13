@@ -31,6 +31,14 @@ _re='"seven_day":\{[^}]*"resets_at":([0-9]+)';           [[ $INPUT =~ $_re ]] &&
 _re='"current_dir":"([^"]+)"';                           [[ $INPUT =~ $_re ]] && CWD="${BASH_REMATCH[1]}"
 : "${CWD:=$PWD}"
 
+# Record context % per session for the context-reset.sh UserPromptSubmit hook.
+_re='"session_id":"([^"]+)"'
+if [[ $INPUT =~ $_re ]]; then
+    CTX_DIR="${XDG_RUNTIME_DIR:-/tmp}/claude-ctx"
+    mkdir -p "$CTX_DIR"
+    printf '%s' "$CTX_PCT" >"$CTX_DIR/${BASH_REMATCH[1]}"
+fi
+
 # ── Rate limits: color by projected usage at reset ─────────────────
 # projected = used% * window / elapsed. Green <75%, yellow <100%, red >=100%.
 # Early in a window (<10% elapsed) projection is noisy; fall back to raw %.

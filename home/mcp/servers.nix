@@ -2,37 +2,10 @@
   config,
   lib,
   pkgs,
-  mcp-servers-nix,
   ...
 }:
 
 let
-  # Build MCP server configuration
-  mcpConfig = (import mcp-servers-nix { inherit pkgs; }).lib.mkConfig pkgs {
-    format = "json";
-    flavor = "claude-code";
-
-    programs = {
-      # Documentation and search
-      context7.enable = true;
-
-      # Development tools
-      github.enable = true;
-      git.enable = true;
-      fetch.enable = true;
-      time.enable = true;
-      filesystem.enable = true;
-
-      # AI capabilities
-      memory.enable = true;
-      playwright.enable = true;
-      sequential-thinking.enable = true;
-
-      # Temporarily disabled: aioboto3 test failures in current nixpkgs.
-      nixos.enable = false;
-    };
-  };
-
   # Status line configuration for Claude Code. The script itself is installed by
   # home/home.nix as `.claude/statusline.sh`; keep the two in step.
   statusLineConfig = {
@@ -43,32 +16,39 @@ let
     };
   };
 
-  # MCP servers not supported by mcp-servers-nix (HTTP + custom stdio).
-  httpServersConfig = {
-    mcpServers = {
-      # Game-art wrapper: tuned ComfyUI workflows exposed as discrete tools.
-      # Backgrounds/panels run Z-Image-Turbo (8 steps, ~3s), sprites and icons
-      # stay on SDXL where the style LoRAs are, generate_layered emits real RGBA
-      # layers via Qwen-Image-Layered, generate_text_art runs Ideogram 4 for
-      # legible in-image text, and generate_best/critique let qwen3-vl pick the
-      # winner out of a batch. Requires the `comfyui` launcher on :8188 and, for
-      # the judge, ollama on :11434. `health` reports which weights are present.
-      # See home/local-ai/gameart-mcp for the implementation.
-      gameart = {
-        command = "gameart-mcp";
-        env = {
-          COMFY_URL = "http://127.0.0.1:8188";
-          GAMEART_OUTPUT_DIR = "\${HOME}/.local/share/gameart-mcp/output";
-          # Civitai's game-icon-institute LoRA is geo-blocked in AU. Substitute
-          # an HF-hosted 3d-icon SDXL LoRA (8glabs/3d-icon-sdxl-lora).
-          GAMEART_ICON_LORA = "3d-icon-sdxl-lora.safetensors";
-          # Comfy-Org/BiRefNet in models/background_removal/ -- gives icons and
-          # sprites a real alpha channel instead of a keyed dark backdrop.
-          GAMEART_BG_REMOVAL_MODEL = "birefnet.safetensors";
-          # Local vision model that scores candidate renders (generate_best).
-          GAMEART_VLM_MODEL = "qwen3-vl:8b";
-          OLLAMA_URL = "http://127.0.0.1:11434";
-        };
+  # User-scope MCP servers, loaded in every session. Deliberately empty: each
+  # server's tool names and instructions cost context in every session, and the
+  # old set only duplicated built-ins (gh/git via Bash, Read/Edit, WebFetch,
+  # file memory, extended thinking, claude-in-chrome). Add one only for a
+  # capability Claude Code lacks, and prefer `optInServers`.
+  userServers = { };
+
+  # Opt-in servers, each written to ~/.claude/mcp/<name>.json and loaded only
+  # where needed: `claude --mcp-config ~/.claude/mcp/gameart.json`. Kept out of
+  # user scope so their tools cost nothing in sessions that never use them.
+  optInServers = {
+    # Game-art wrapper: tuned ComfyUI workflows exposed as discrete tools.
+    # Backgrounds/panels run Z-Image-Turbo (8 steps, ~3s), sprites and icons
+    # stay on SDXL where the style LoRAs are, generate_layered emits real RGBA
+    # layers via Qwen-Image-Layered, generate_text_art runs Ideogram 4 for
+    # legible in-image text, and generate_best/critique let qwen3-vl pick the
+    # winner out of a batch. Requires the `comfyui` launcher on :8188 and, for
+    # the judge, ollama on :11434. `health` reports which weights are present.
+    # See home/local-ai/gameart-mcp for the implementation.
+    gameart = {
+      command = "gameart-mcp";
+      env = {
+        COMFY_URL = "http://127.0.0.1:8188";
+        GAMEART_OUTPUT_DIR = "\${HOME}/.local/share/gameart-mcp/output";
+        # Civitai's game-icon-institute LoRA is geo-blocked in AU. Substitute
+        # an HF-hosted 3d-icon SDXL LoRA (8glabs/3d-icon-sdxl-lora).
+        GAMEART_ICON_LORA = "3d-icon-sdxl-lora.safetensors";
+        # Comfy-Org/BiRefNet in models/background_removal/ -- gives icons and
+        # sprites a real alpha channel instead of a keyed dark backdrop.
+        GAMEART_BG_REMOVAL_MODEL = "birefnet.safetensors";
+        # Local vision model that scores candidate renders (generate_best).
+        GAMEART_VLM_MODEL = "qwen3-vl:8b";
+        OLLAMA_URL = "http://127.0.0.1:11434";
       };
     };
   };
@@ -80,7 +60,38 @@ let
       source = "github";
       repo = "blader/humanizer";
     };
-    enabledPlugins."humanizer@humanizer" = true;
+    enabledPlugins = {
+      "humanizer@humanizer" = true;
+      # Off: duplicates of built-ins (/code-review, /simplify, gh via Bash) or
+      # unused, and each lists its skills and agents in every session.
+      "github@claude-plugins-official" = false;
+      "context7@claude-plugins-official" = false;
+      "code-review@claude-plugins-official" = false;
+      "code-simplifier@claude-plugins-official" = false;
+      "feature-dev@claude-plugins-official" = false;
+    };
+  };
+
+  # Usage: Opus plans, Sonnet executes. claude.ai connectors (Gmail, Drive,
+  # Calendar, Docs) stay on claude.ai and out of Claude Code sessions.
+  usageConfig = {
+    model = "opusplan";
+    env.ENABLE_CLAUDEAI_MCP_SERVERS = "false";
+  };
+
+  # Remind Claude to hand off and reset once context passes the threshold. The
+  # status line records the session's context % for the hook to read.
+  hooksConfig = {
+    hooks.UserPromptSubmit = [
+      {
+        hooks = [
+          {
+            type = "command";
+            command = "bash ${config.home.homeDirectory}/.claude/context-reset.sh";
+          }
+        ];
+      }
+    ];
   };
 
   # Top-level ~/.claude.json keys (besides mcpServers) that Nix owns.
@@ -110,20 +121,18 @@ let
   # `mcpServers` is not a settings.json key at all -- writing it there is
   # silently ignored, which is exactly how this config sat inert.
 
-  # Every MCP server, from both sources, as a bare { mcpServers: { ... } }.
-  mcpServersJson = pkgs.runCommand "claude-mcp-servers.json" { nativeBuildInputs = [ pkgs.jq ]; } ''
-    jq -s '{ mcpServers: ((.[0].mcpServers // {}) * (.[1].mcpServers // {})) }' \
-      ${mcpConfig} \
-      ${pkgs.writeText "http-servers.json" (builtins.toJSON httpServersConfig)} \
-      > $out
-  '';
+  mcpServersJson = pkgs.writeText "claude-mcp-servers.json" (
+    builtins.toJSON { mcpServers = userServers; }
+  );
 
   # The keys that genuinely belong in settings.json.
   settingsJson = pkgs.runCommand "claude-settings.json" { nativeBuildInputs = [ pkgs.jq ]; } ''
-    jq -s '.[0] * .[1] * .[2]' \
+    jq -s 'reduce .[] as $part ({}; . * $part)' \
       ${pkgs.writeText "statusline.json" (builtins.toJSON statusLineConfig)} \
       ${pkgs.writeText "permissions.json" (builtins.toJSON permissionsConfig)} \
       ${pkgs.writeText "plugins.json" (builtins.toJSON pluginsConfig)} \
+      ${pkgs.writeText "usage.json" (builtins.toJSON usageConfig)} \
+      ${pkgs.writeText "hooks.json" (builtins.toJSON hooksConfig)} \
       > $out
   '';
 
@@ -146,4 +155,13 @@ in
   home.activation.claudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD ${lib.getExe mergeScript} ${mcpServersJson} ${settingsJson} ${claudeJsonExtra}
   '';
+
+  home.file = lib.mapAttrs' (
+    name: server:
+    lib.nameValuePair ".claude/mcp/${name}.json" {
+      source = pkgs.writeText "claude-mcp-${name}.json" (
+        builtins.toJSON { mcpServers.${name} = server; }
+      );
+    }
+  ) optInServers;
 }
