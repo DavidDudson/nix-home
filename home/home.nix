@@ -48,10 +48,6 @@
         source = ./claude/statusline.sh;
         executable = true;
       };
-      ".claude/context-reset.sh" = {
-        source = ./claude/context-reset.sh;
-        executable = true;
-      };
       ".claude/skills/nixos-upgrade-summary/SKILL.md".source =
         ./claude/skills/nixos-upgrade-summary/SKILL.md;
       ".claude/skills/pickup/SKILL.md".source = ./claude/skills/pickup/SKILL.md;
