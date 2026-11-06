@@ -76,22 +76,9 @@ let
   # Calendar, Docs) stay on claude.ai and out of Claude Code sessions.
   usageConfig = {
     model = "opusplan";
+    # Compact at 300k tokens: 30% of the 1M window. settings.json takes tokens, not a percent.
+    autoCompactWindow = 300000;
     env.ENABLE_CLAUDEAI_MCP_SERVERS = "false";
-  };
-
-  # Remind Claude to hand off and reset once context passes the threshold. The
-  # status line records the session's context % for the hook to read.
-  hooksConfig = {
-    hooks.UserPromptSubmit = [
-      {
-        hooks = [
-          {
-            type = "command";
-            command = "bash ${config.home.homeDirectory}/.claude/context-reset.sh";
-          }
-        ];
-      }
-    ];
   };
 
   # Top-level ~/.claude.json keys (besides mcpServers) that Nix owns.
@@ -132,7 +119,6 @@ let
       ${pkgs.writeText "permissions.json" (builtins.toJSON permissionsConfig)} \
       ${pkgs.writeText "plugins.json" (builtins.toJSON pluginsConfig)} \
       ${pkgs.writeText "usage.json" (builtins.toJSON usageConfig)} \
-      ${pkgs.writeText "hooks.json" (builtins.toJSON hooksConfig)} \
       > $out
   '';
 

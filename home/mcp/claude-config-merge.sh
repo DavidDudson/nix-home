@@ -96,8 +96,19 @@ jq -cn --argjson want "$desired" '$want | keys' >"$STATE_FILE"
 # owns permissions.allow/deny while keys it does not mention (model, tui,
 # permissions.defaultMode, runtime-installed enabledPlugins entries) survive
 # untouched.
+#
+# The retired context-reset hook was written here by an earlier switch and the
+# merge would never remove it, so drop that one entry (and any list or object
+# it leaves empty). Other hooks are untouched.
 merged_settings="$(
-  read_json_or_empty "$SETTINGS_JSON" | jq -s '.[0] * .[1]' - "$SETTINGS_FRAGMENT"
+  read_json_or_empty "$SETTINGS_JSON" | jq -s '
+    def drop_reset: map(.hooks |= map(select((.command // "") | contains("context-reset.sh") | not)))
+                    | map(select(.hooks | length > 0));
+    (.[0]
+      | if .hooks.UserPromptSubmit then .hooks.UserPromptSubmit |= drop_reset else . end
+      | if (.hooks.UserPromptSubmit // [1]) == [] then del(.hooks.UserPromptSubmit) else . end
+      | if .hooks == {} then del(.hooks) else . end
+    ) * .[1]' - "$SETTINGS_FRAGMENT"
 )"
 write_atomic "$SETTINGS_JSON" "$merged_settings"
 
