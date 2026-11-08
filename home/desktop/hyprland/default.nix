@@ -1,18 +1,18 @@
 { pkgs, ... }:
 
 let
-  # ImanolBarba's V2 plugin API migration (PR #238) landed upstream on
-  # 2026-10-02, so the fork pin is retired for upstream HEAD. The override
-  # itself stays: nixpkgs still ships hyprspace at the pre-merge 2026-05-28
-  # rev, which does not compile against Hyprland 0.56 (AnimationManager.hpp
-  # moved). Drop it once nixpkgs picks up the merge.
+  # nixpkgs still ships hyprspace at the pre-V2-API 2026-05-28 rev, which does
+  # not compile against Hyprland 0.56+ (AnimationManager.hpp moved). Upstream
+  # HEAD carries the V2 plugin API migration plus the Hyprland 0.57 fix
+  # (2026-10-30); the previous 2026-10-02 pin lacked the 0.57 fix. Drop once
+  # nixpkgs picks up a rev at or past 8345bf6f.
   hyprspace = pkgs.hyprlandPlugins.hyprspace.overrideAttrs (_old: {
-    version = "unstable-2026-10-02";
+    version = "unstable-2026-10-30";
     src = pkgs.fetchFromGitHub {
       owner = "KZDKM";
       repo = "Hyprspace";
-      rev = "cf08bed82621c1fb943ef4934ff0ba36540fea77";
-      hash = "sha256-P27tvgpduDsMjk9mSti4We+a3kzYWYWznZKizvnyS+Q=";
+      rev = "8345bf6f623d486ca3f87f416ccf1412416eef08";
+      hash = "sha256-4b3RPW+fEP0HLFFnY3JnRgeAspgpWa1Cjzlq3UKmQLk=";
     };
   });
 in

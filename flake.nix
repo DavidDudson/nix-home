@@ -2,9 +2,10 @@
   description = "DavidDudsonPC NixOS configuration";
 
   inputs = {
-    # Using nixos-unstable-small for faster updates than nixos-unstable while still being CI-tested.
-    # Switch back to nixos-unstable once it catches up if preferred.
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    # nixos-unstable only advances once Hydra has built the big packages, so
+    # chromium and friends come from the binary cache. nixos-unstable-small
+    # runs ahead of the cache and forced a from-source chromium build.
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

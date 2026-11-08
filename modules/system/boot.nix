@@ -13,9 +13,8 @@ _:
     };
 
     initrd = {
-      # systemd initrd so LUKS can auto-unlock via TPM2 (enrolled with systemd-cryptenroll)
-      systemd.enable = true;
-
+      # systemd initrd (the only kind now) lets LUKS auto-unlock via TPM2
+      # (enrolled with systemd-cryptenroll)
       luks.devices.luksCrypted = {
         device = "/dev/disk/by-label/nixos-luks";
         allowDiscards = true;

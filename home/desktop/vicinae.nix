@@ -59,8 +59,6 @@ in
 {
   programs.vicinae = {
     enable = true;
-    useLayerShell = true;
-
     systemd = {
       enable = true;
       autoStart = true;
@@ -89,6 +87,7 @@ in
       ];
 
     settings = {
+      launcher_window.layer_shell.enabled = true;
       font = {
         family = "FiraCode Nerd Font";
         size = 13;

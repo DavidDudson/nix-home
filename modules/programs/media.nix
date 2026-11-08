@@ -15,7 +15,6 @@
     discord
 
     # Media Tools
-    aseprite
     ffmpeg
     imagemagick # Batch texture/sprite manipulation
     pavucontrol
