@@ -98,6 +98,9 @@ let
       allow = [
         "Bash(sudo nixos-rebuild switch)"
         "Bash(sudo nixos-rebuild switch --upgrade)"
+        # Auto mode's classifier blocks marking a PR ready as an unrequested
+        # action in a connected app.
+        "Bash(gh pr ready:*)"
       ];
       deny = [
         "Bash(sudo *)"
