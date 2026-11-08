@@ -1,7 +1,7 @@
 source theme.nu
 
-let carapace_completer = {|spans|
-    carapace $spans.0 nushell ...$spans | from json
+let carapace_completer = {|place|
+    carapace $place.command.0 nushell ...$place.command | from json
 }
 
 $env.config = {
