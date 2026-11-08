@@ -62,6 +62,12 @@ limit_label() {
     [ "$reset" -gt 0 ] && out+=" ${DIM}$(fmt_left "$left")"
     printf '%s' "${out}${RESET}"
 }
+# Share the account-wide limits with the overbridge sidebar (only inside an overbridge workspace).
+if [ -n "${OVERBRIDGE_ROOT:-}" ] && { [ "$FH_RESET" -gt 0 ] || [ "$WK_RESET" -gt 0 ]; } && [ -d "$OVERBRIDGE_ROOT/.overbridge" ]; then
+    _lf="$OVERBRIDGE_ROOT/.overbridge/limits.json"
+    printf '{"at":%s000,"fiveHour":{"pct":%s,"resetsAt":%s},"weekly":{"pct":%s,"resetsAt":%s}}\n' \
+        "$NOW" "$FH_PCT" "$FH_RESET" "$WK_PCT" "$WK_RESET" >"$_lf.$$" 2>/dev/null && mv -f "$_lf.$$" "$_lf" 2>/dev/null
+fi
 FIVE_HR=$(limit_label "⏳" "$FH_PCT" "$FH_RESET" 18000)
 WEEKLY=$(limit_label "📅" "$WK_PCT" "$WK_RESET" 604800)
 

@@ -144,6 +144,29 @@ keybinds clear-defaults=true {
         bind "Alt i" { MoveTab "left"; }
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
+        // Workspace tabs (the overbridge sidebar numbers them in tab order)
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        bind "Alt 6" { GoToTab 6; }
+        bind "Alt 7" { GoToTab 7; }
+        bind "Alt 8" { GoToTab 8; }
+        bind "Alt 9" { GoToTab 9; }
+        bind "Alt ," { GoToPreviousTab; }
+        bind "Alt ." { GoToNextTab; }
+        // Next workspace that needs you: waiting for input, then finished, then finished with background tasks
+        bind "Alt w" {
+            Run "overbridge" "next" {
+                floating true
+                close_on_exit true
+                x "100%"
+                y "100%"
+                width 1
+                height 1
+            }
+        }
         bind "Ctrl q" { Quit; }
     }
     shared_except "locked" "move" {
