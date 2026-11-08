@@ -57,12 +57,32 @@
         "type": "github"
       }
     },
+    "overbridge": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794113116,
+        "narHash": "sha256-D7XK4X/yvh0rAarFAK9pjQ22BSO4ePV62396Wn1oDao=",
+        "ref": "refs/heads/main",
+        "rev": "eeaae50eee6a8aa655a83118cac15b453632038f",
+        "revCount": 26,
+        "type": "git",
+        "url": "ssh://git@github.com/DavidDudson/overbridge"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/DavidDudson/overbridge"
+      }
+    },
     "root": {
       "inputs": {
         "fenix": "fenix",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "ws": "ws"
+        "overbridge": "overbridge"
       }
     },
     "rust-analyzer-src": {
@@ -80,26 +100,6 @@
         "ref": "nightly",
         "repo": "rust-analyzer",
         "type": "github"
-      }
-    },
-    "ws": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791675206,
-        "narHash": "sha256-u1REGR8W6BDxaxxIM6aD+JnA0Dycxcr9ESp70bvj2Hc=",
-        "ref": "refs/heads/main",
-        "rev": "f8b59592a46fdaf23d3911516b2ace1f4289bcc2",
-        "revCount": 6,
-        "type": "git",
-        "url": "ssh://git@github.com/DavidDudson/ws"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/DavidDudson/ws"
       }
     }
   },

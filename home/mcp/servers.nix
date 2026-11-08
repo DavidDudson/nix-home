@@ -60,8 +60,14 @@ let
       source = "github";
       repo = "blader/humanizer";
     };
+    extraKnownMarketplaces.overbridge.source = {
+      source = "github";
+      repo = "DavidDudson/overbridge";
+    };
     enabledPlugins = {
       "humanizer@humanizer" = true;
+      "overbridge@overbridge" = true;
+      "overbridge-review@overbridge" = true;
       # Off: duplicates of built-ins (/code-review, /simplify, gh via Bash) or
       # unused, and each lists its skills and agents in every session.
       "github@claude-plugins-official" = false;

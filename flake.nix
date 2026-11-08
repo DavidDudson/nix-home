@@ -15,8 +15,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Private repo: git+ssh uses the SSH key, github: would need an API token.
-    ws = {
-      url = "git+ssh://git@github.com/DavidDudson/ws";
+    overbridge = {
+      url = "git+ssh://git@github.com/DavidDudson/overbridge";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -26,7 +26,7 @@
       nixpkgs,
       home-manager,
       fenix,
-      ws,
+      overbridge,
       ...
     }:
     {
@@ -39,7 +39,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {
-              inherit ws;
+              inherit overbridge;
             };
           }
         ];

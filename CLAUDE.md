@@ -142,14 +142,15 @@ add it to `userServers` there instead.
 2. **Edit the specific module**: Not the main config
 3. **Test thoroughly**: System changes can break boot
 
-### Bumping the ws Flake Input
+### Bumping the overbridge Flake Input
 
-`ws` (the workspace manager) is the `ws` flake input, pinned in
-`flake.lock`. It does not float. After every merge to ws `main`, bump
-the lock in its own commit and PR:
+`overbridge` (the workspace manager, also installed as `ws`) is the
+`overbridge` flake input, pinned in `flake.lock`. It does not float.
+After every merge to overbridge `main`, bump the lock in its own commit
+and PR:
 
 ```sh
-nix flake update ws
+nix flake update overbridge
 ```
 
 `/upgrade-os` bumps it too, as part of updating every input.

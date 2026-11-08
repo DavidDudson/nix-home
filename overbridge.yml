@@ -1,0 +1,10 @@
+---
+version: 1
+
+project-management:
+  name: github
+  project: DavidDudson/nix-home
+
+commands:
+  test: nix flake check
+  format: nixfmt .
