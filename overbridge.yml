@@ -8,3 +8,6 @@ project-management:
 commands:
   test: nix flake check
   format: nixfmt .
+
+# The top panel's editor button opens the workspace in Zed.
+ide: zed
