@@ -75,6 +75,9 @@ in
     # Document Conversion
     pandoc
 
+    # Python (agents reach for it for quick scripts; devshells inherit it from PATH)
+    python3
+
     # JavaScript/TypeScript
     bun
 
