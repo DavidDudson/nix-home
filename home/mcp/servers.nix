@@ -98,6 +98,11 @@ let
       allow = [
         "Bash(sudo nixos-rebuild switch)"
         "Bash(sudo nixos-rebuild switch --upgrade)"
+        # PR feedback loop (resolve-coderabbit, resolve-feedback): push through the devshell, reply to a review
+        # comment, resolve a review thread. Narrow on purpose: no blanket `gh api` or `git push`.
+        "Bash(.claude/scripts/devshell.sh git push*)"
+        "Bash(gh api repos/*/pulls/*/comments/*/replies *)"
+        "Bash(gh api graphql -f query='mutation*resolveReviewThread*)"
       ];
       deny = [
         "Bash(sudo *)"
