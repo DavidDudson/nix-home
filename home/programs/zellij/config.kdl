@@ -26,9 +26,9 @@ keybinds clear-defaults=true {
         bind "Alt ." { GoToNextTab; }
         bind "Alt i" { MoveTab "left"; }
         bind "Alt o" { MoveTab "right"; }
-        // Panes
+        // Panes (Alt X and Alt D are shifted: helix binds Alt-x and Alt-d, reedline Alt-d)
         bind "Alt n" { NewPane; }
-        bind "Alt x" { CloseFocus; }
+        bind "Alt X" { CloseFocus; }
         bind "Alt z" { ToggleFocusFullscreen; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt +" { Resize "Increase"; }
@@ -37,7 +37,7 @@ keybinds clear-defaults=true {
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
         // Session
-        bind "Alt d" { Detach; }
+        bind "Alt D" { Detach; }
         // Next workspace that needs you: waiting for input, then finished, then finished with background tasks
         bind "Alt w" {
             Run "overbridge" "next" {
