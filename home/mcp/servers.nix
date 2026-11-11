@@ -2,10 +2,18 @@
   config,
   lib,
   pkgs,
+  overbridge,
   ...
 }:
 
 let
+  # The overbridge marketplace shipped in the pinned flake input. A directory
+  # source tracks flake.lock exactly and is the same registration overbridge
+  # itself uses, so `overbridge start` finds no mismatched marketplace.
+  overbridgeMarketplace = "${
+    overbridge.packages.${pkgs.stdenv.hostPlatform.system}.default
+  }/share/overbridge";
+
   # Status line configuration for Claude Code. The script itself is installed by
   # home/home.nix as `.claude/statusline.sh`; keep the two in step.
   statusLineConfig = {
@@ -61,8 +69,8 @@ let
       repo = "blader/humanizer";
     };
     extraKnownMarketplaces.overbridge.source = {
-      source = "github";
-      repo = "DavidDudson/overbridge";
+      source = "directory";
+      path = overbridgeMarketplace;
     };
     enabledPlugins = {
       "humanizer@humanizer" = true;
@@ -76,6 +84,21 @@ let
       "code-simplifier@claude-plugins-official" = false;
       "feature-dev@claude-plugins-official" = false;
     };
+  };
+
+  # Plugins force-installed and force-updated on every switch, so the
+  # overbridge skills always match the pinned overbridge. Marketplace name ->
+  # `claude plugin marketplace add` source; plugin ids are `name@marketplace`.
+  syncPluginsConfig = {
+    marketplaces = {
+      humanizer = "blader/humanizer";
+      overbridge = overbridgeMarketplace;
+    };
+    plugins = [
+      "humanizer@humanizer"
+      "overbridge@overbridge"
+      "overbridge-review@overbridge"
+    ];
   };
 
   # Usage: Opus plans, Sonnet executes. claude.ai connectors (Gmail, Drive,
@@ -139,21 +162,38 @@ let
     text = builtins.readFile ./claude-config-merge.sh;
   };
 
+  syncPluginsScript = pkgs.writeShellApplication {
+    name = "claude-plugins-sync";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.coreutils
+    ];
+    text = builtins.readFile ./claude-plugins-sync.sh;
+  };
+
 in
 {
-  # Merge rather than symlink: Claude Code writes to both target files at
-  # runtime, so a read-only store symlink would break it. See the script for the
-  # ownership rules and how servers removed from Nix get cleaned up.
-  home.activation.claudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD ${lib.getExe mergeScript} ${mcpServersJson} ${settingsJson} ${claudeJsonExtra}
-  '';
+  home = {
+    # Merge rather than symlink: Claude Code writes to both target files at
+    # runtime, so a read-only store symlink would break it. See the script for the
+    # ownership rules and how servers removed from Nix get cleaned up.
+    activation.claudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${lib.getExe mergeScript} ${mcpServersJson} ${settingsJson} ${claudeJsonExtra}
+    '';
 
-  home.file = lib.mapAttrs' (
-    name: server:
-    lib.nameValuePair ".claude/mcp/${name}.json" {
-      source = pkgs.writeText "claude-mcp-${name}.json" (
-        builtins.toJSON { mcpServers.${name} = server; }
-      );
-    }
-  ) optInServers;
+    # Runs after the settings merge. Needs `claude` on PATH; warns and carries on
+    # when it is missing or offline, so a switch never fails on it.
+    activation.claudePlugins = lib.hm.dag.entryAfter [ "claudeConfig" ] ''
+      $DRY_RUN_CMD ${lib.getExe syncPluginsScript} ${pkgs.writeText "claude-sync-plugins.json" (builtins.toJSON syncPluginsConfig)}
+    '';
+
+    file = lib.mapAttrs' (
+      name: server:
+      lib.nameValuePair ".claude/mcp/${name}.json" {
+        source = pkgs.writeText "claude-mcp-${name}.json" (
+          builtins.toJSON { mcpServers.${name} = server; }
+        );
+      }
+    ) optInServers;
+  };
 }
