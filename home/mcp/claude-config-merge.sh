@@ -100,11 +100,14 @@ jq -cn --argjson want "$desired" '$want | keys' >"$STATE_FILE"
 # The retired context-reset hook was written here by an earlier switch and the
 # merge would never remove it, so drop that one entry (and any list or object
 # it leaves empty). Other hooks are untouched.
+# The overbridge marketplace moved from a github source to the pinned store path; drop the old
+# entry so the recursive merge does not leave a stale `repo` key beside `path`.
 merged_settings="$(
   read_json_or_empty "$SETTINGS_JSON" | jq -s '
     def drop_reset: map(.hooks |= map(select((.command // "") | contains("context-reset.sh") | not)))
                     | map(select(.hooks | length > 0));
     (.[0]
+      | del(.extraKnownMarketplaces.overbridge)
       | if .hooks.UserPromptSubmit then .hooks.UserPromptSubmit |= drop_reset else . end
       | if (.hooks.UserPromptSubmit // [1]) == [] then del(.hooks.UserPromptSubmit) else . end
       | if .hooks == {} then del(.hooks) else . end
