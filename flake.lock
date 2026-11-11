@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794290140,
-        "narHash": "sha256-0sUGN6HTbfxgDT0FN0WMplSrnA5vRpnoewLRwS4R4JM=",
+        "lastModified": 1794372280,
+        "narHash": "sha256-HAuumJir3HyLhdenqOPcxSyb/7Z9XeQEYpZn/d7pxgY=",
         "ref": "refs/heads/main",
-        "rev": "d9a51d26757b0703bef5812de02dba57db497ab7",
-        "revCount": 65,
+        "rev": "a26d68e92462b2cb3cda73490a48bd34daeecfa5",
+        "revCount": 80,
         "type": "git",
         "url": "ssh://git@github.com/DavidDudson/overbridge"
       },
