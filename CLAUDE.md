@@ -43,9 +43,9 @@ configuration.nix              ← Entry point (imports only, no config)
     │   ├── zed/
     │   │   ├── default.nix
     │   │   └── settings.json
-    │   └── zellij/
+    │   └── tmux/
     │       ├── default.nix
-    │       └── config.kdl
+    │       └── tmux.conf
     ├── desktop/              ← User desktop settings
     │   ├── gtk.nix
     │   ├── hyprland/

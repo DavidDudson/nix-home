@@ -15,7 +15,7 @@
     ./programs/direnv.nix
     ./programs/ghostty.nix
     ./programs/claude-popout.nix
-    ./programs/zellij
+    ./programs/tmux
     ./programs/helix.nix
     ./programs/zed
     ./programs/yazi.nix
