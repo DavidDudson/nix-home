@@ -7,7 +7,6 @@
     terminal = "tmux-256color";
     baseIndex = 0;
     escapeTime = 10;
-    # No prefix, no status bar: no key is taken from the apps in the panes.
     extraConfig = builtins.readFile ./tmux.conf;
   };
 
