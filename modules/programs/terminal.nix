@@ -10,9 +10,6 @@
     # Terminal Emulators
     rio
 
-    # Terminal Multiplexers
-    zellij
-
     # Shell & Prompt
     starship
 
