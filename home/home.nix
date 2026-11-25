@@ -16,6 +16,7 @@
     ./programs/ghostty.nix
     ./programs/claude-popout.nix
     ./programs/tmux
+    ./programs/overbridge
     ./programs/helix.nix
     ./programs/zed
     ./programs/yazi.nix
