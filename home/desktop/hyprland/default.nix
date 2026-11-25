@@ -1,21 +1,5 @@
 { pkgs, ... }:
 
-let
-  # nixpkgs still ships hyprspace at the pre-V2-API 2026-05-28 rev, which does
-  # not compile against Hyprland 0.56+ (AnimationManager.hpp moved). Upstream
-  # HEAD carries the V2 plugin API migration plus the Hyprland 0.57 fix
-  # (2026-10-30); the previous 2026-10-02 pin lacked the 0.57 fix. Drop once
-  # nixpkgs picks up a rev at or past 8345bf6f.
-  hyprspace = pkgs.hyprlandPlugins.hyprspace.overrideAttrs (_old: {
-    version = "unstable-2026-10-30";
-    src = pkgs.fetchFromGitHub {
-      owner = "KZDKM";
-      repo = "Hyprspace";
-      rev = "8345bf6f623d486ca3f87f416ccf1412416eef08";
-      hash = "sha256-4b3RPW+fEP0HLFFnY3JnRgeAspgpWa1Cjzlq3UKmQLk=";
-    };
-  });
-in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -24,7 +8,7 @@ in
     # hyprspace: workspace overview panel. Bound to Super+Tab via the
     # hyprland.start hook in hyprland.lua (after plugin load).
     plugins = [
-      hyprspace
+      pkgs.hyprlandPlugins.hyprspace
     ];
     extraConfig = builtins.readFile ./hyprland.lua;
   };
