@@ -48,9 +48,11 @@ let
         post-add = "if [ -f .envrc ]; then direnv allow; fi";
 
         # Refuse to remove a workspace holding commits that exist on no remote.
+        # Scoped to HEAD: workspaces share one bare repo, so --branches would
+        # include every other workspace's unpushed branches.
         # `overbridge rm --force` overrides.
         pre-remove = ''
-          unpushed=$(git log --branches --not --remotes --oneline)
+          unpushed=$(git log HEAD --not --remotes --oneline)
           if [ -n "$unpushed" ]; then
             echo "$OVERBRIDGE_REPO has unpushed commits:" >&2
             echo "$unpushed" >&2
