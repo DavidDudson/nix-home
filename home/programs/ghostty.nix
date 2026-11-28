@@ -6,7 +6,7 @@ _:
 
     settings = {
       font-family = "FiraCode Nerd Font";
-      font-size = 13;
+      font-size = 12;
 
       window-decoration = "none";
       window-padding-x = 5;
